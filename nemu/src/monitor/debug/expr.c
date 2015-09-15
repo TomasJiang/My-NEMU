@@ -5,6 +5,10 @@
  */
 #include <sys/types.h>
 #include <regex.h>
+#include <stdlib.h>
+
+int op_pos(int p, int q);
+bool check_parentheses(int p, int q);
 
 enum {
 	NOTYPE = 256, EQ,
@@ -129,3 +133,95 @@ uint32_t expr(char *e, bool *success) {
 	return 0;
 }
 
+uint32_t eval(int p, int q)
+{
+	if(p > q) {
+		Assert(0, "function eval: p > q!\n");
+	}
+	else if (p == q) {
+		Assert(tokens[p].type == INT, "function eval: not a INT!\n");
+		return atoi(tokens[p].str);
+	}
+	else if(check_parentheses(p, q) == true) {
+		return eval(p + 1, q - 1);
+	}
+	else {
+		int op = op_pos(p, q);
+		uint32_t val1 = eval(p, op - 1);
+		uint32_t val2 = eval(op + 1, q);
+
+		switch(tokens[op].type) {
+			case '+':
+				return val1 + val2;
+			case '-':
+				return val1 - val2;
+			case '*':
+				return val1 * val2;
+			case '/':
+				return val1 / val2;
+			default:
+				assert(0);
+		}
+	}
+}
+
+bool check_parentheses(int p, int q)
+{
+	bool result = false;
+	int i, parentNum = 0;
+	if(tokens[p].type == '(')
+		result = true;
+	for(i = p; i <= q; ++i)
+	{
+		if(tokens[i].type == '(')
+			++parentNum;
+		if(tokens[i].type == ')')
+			--parentNum;
+		if(parentNum == 0 && i != q)
+			result = false;
+		Assert(parentNum >= 0, "The expression is not surrounded by a matched pair of parentheses\n");
+	}
+
+	Assert(parentNum == 0, "The expression is not surrounded by a matched pair of parentheses\n");
+	return result;
+}
+
+
+int op_pos(int p, int q)
+{
+	bool hasCandidate = false;
+	int candidate = -1, parentNum = 0, i;
+	for(i = p; i <= q; ++i) {
+		switch(tokens[i].type)
+		{
+			case '*':
+			case '/':
+				if(parentNum)
+					break;
+				return i;
+			case '+':
+			case '-':
+				if(parentNum)
+					break;
+				if(hasCandidate)
+					return candidate;
+				else
+				{
+					hasCandidate = true;
+					candidate = i;
+					break;
+				}
+			case '(':
+				++parentNum;
+				break;
+			case ')':
+				--parentNum;
+				break;
+			case INT:
+				break;
+			default:
+				assert(0);
+		}
+	}
+	return -1;
+}
