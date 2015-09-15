@@ -33,7 +33,7 @@ static struct rule {
 	{"\\+", '+'},					// plus
 	{"\\-", '-'},					// minus
 	{"\\*", '*'},					// mul
-	{"\\\\", '\\'},					// divide
+	{"\\", '\\'},					// divide
 	{"\\(", '('},					// lparen
 	{"\\)", ')'},					// rparen
 	{"==", EQ}						// equal
