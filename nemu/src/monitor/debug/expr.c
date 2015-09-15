@@ -199,31 +199,26 @@ int op_pos(int p, int q)
 {
 	bool hasCandidate = false;
 	int candidate = -1, parentNum = 0, i;
-	for(i = p; i <= q; ++i) {
+	for(i = q; i >= p; --i) {
 		switch(tokens[i].type)
 		{
-			case '*':
-			case '/':
-				if(parentNum)
-					break;
-				return i;
 			case '+':
 			case '-':
 				if(parentNum)
 					break;
-				if(hasCandidate)
-					return candidate;
-				else
-				{
-					hasCandidate = true;
-					candidate = i;
+				return i;
+			case '*':
+			case '/':
+				if(parentNum)
 					break;
-				}
+				if(!hasCandidate)
+					candidate = i;
+				break;
 			case '(':
-				++parentNum;
+				--parentNum;
 				break;
 			case ')':
-				--parentNum;
+				++parentNum;
 				break;
 			case INT:
 				break;
