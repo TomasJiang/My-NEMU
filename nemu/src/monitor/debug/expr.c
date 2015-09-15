@@ -91,8 +91,6 @@ static bool make_token(char *e) {
 					case INT:
 						Assert(substr_len < 32, "integer is too big!\n");
 						sprintf(tokens[nr_token].str, "%.*s", substr_len, substr_start);
-						tokens[nr_token++].type = INT;
-						break;
 					case '+':
 					case '-':
 					case '*':
@@ -100,7 +98,7 @@ static bool make_token(char *e) {
 					case '(':
 					case ')':
 					case EQ:
-						tokens[nr_token++].type = EQ;
+						tokens[nr_token++].type = rules[i].token_type;
 						break;
 					default:
 						panic("please implement me");
