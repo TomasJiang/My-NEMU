@@ -212,7 +212,10 @@ int op_pos(int p, int q)
 				if(parentNum)
 					break;
 				if(!hasCandidate)
+				{
+					hasCandidate = true;
 					candidate = i;
+				}
 				break;
 			case '(':
 				--parentNum;
