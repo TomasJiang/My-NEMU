@@ -131,7 +131,7 @@ uint32_t expr(char *e, bool *success) {
 
 	/* TODO: Insert codes to evaluate the expression. */
 
-	Log("nr_token = %d\n", nr_token);
+	Log("nr_token = %d", nr_token);
 	uint32_t result = eval(0, nr_token-1);
 	*success = true;
 	printf("%d\n", result);
@@ -141,9 +141,9 @@ uint32_t expr(char *e, bool *success) {
 
 uint32_t eval(int p, int q)
 {
-	Log("p = %d, q = %d\n", p, q);
+	Log("p = %d, q = %d", p, q);
 	if(p > q) {
-		Assert(0, "function eval: p > q!\n");
+		Assert(0, "function eval: p > q!");
 	}
 	else if (p == q) {
 		Assert(tokens[p].type == INT, "function eval: not a INT!\n");
@@ -154,6 +154,7 @@ uint32_t eval(int p, int q)
 	}
 	else {
 		int op = op_pos(p, q);
+		Log("op = %d", op);
 		uint32_t val1 = eval(p, op - 1);
 		uint32_t val2 = eval(op + 1, q);
 
