@@ -32,6 +32,13 @@ static int cmd_c(char *args) {
 	return 0;
 }
 
+static int cmd_p(char *args) {
+	bool success;
+	expr(args, &success);
+	Assert(success, "expr is not successful!\n");
+	return 0;
+}
+
 static int cmd_q(char *args) {
 	return -1;
 }
@@ -45,6 +52,7 @@ static struct {
 } cmd_table [] = {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
+	{ "p", "TODO", cmd_p },
 	{ "q", "Exit NEMU", cmd_q },
 
 	/* TODO: Add more commands */

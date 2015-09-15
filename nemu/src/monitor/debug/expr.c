@@ -7,8 +7,9 @@
 #include <regex.h>
 #include <stdlib.h>
 
-int op_pos(int p, int q);
+uint32_t eval(int p, int q);
 bool check_parentheses(int p, int q);
+int op_pos(int p, int q);
 
 enum {
 	NOTYPE = 256, EQ,
@@ -129,7 +130,11 @@ uint32_t expr(char *e, bool *success) {
 	}
 
 	/* TODO: Insert codes to evaluate the expression. */
-	panic("please implement me");
+
+	uint32_t result = eval(0, nr_token-1);
+	*success = true;
+	printf("%d\n", result);
+
 	return 0;
 }
 
