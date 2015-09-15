@@ -231,5 +231,8 @@ int op_pos(int p, int q)
 				assert(0);
 		}
 	}
-	return -1;
+	if(hasCandidate)
+		return candidate;
+	else
+		return -1;
 }
