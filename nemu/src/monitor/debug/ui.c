@@ -49,14 +49,15 @@ static int cmd_si(char *args) {
 static int cmd_info(char *args) {
 	if(strcmp(args, "r") == 0)
 	{
-		printf("R_EAX: %d\n", reg_l(0));
-		printf("R_ECX: %d\n", reg_l(1));
-		printf("R_EDX: %d\n", reg_l(2));
-		printf("R_EBX: %d\n", reg_l(3));
-		printf("R_ESP: %d\n", reg_l(4));
-		printf("R_EBP: %d\n", reg_l(5));
-		printf("R_ESI: %d\n", reg_l(6));
-		printf("R_EDI: %d\n", reg_l(7));
+		printf("eax\t\t%08x%08d\n", reg_l(0), reg_l(0));
+		printf("ecx\t\t%08x%08d\n", reg_l(1), reg_l(1));
+		printf("edx\t\t%08x%08d\n", reg_l(2), reg_l(2));
+		printf("ebx\t\t%08x%08d\n", reg_l(3), reg_l(3));
+		printf("esp\t\t%08x%08d\n", reg_l(4), reg_l(4));
+		printf("ebp\t\t%08x%08d\n", reg_l(5), reg_l(5));
+		printf("esi\t\t%08x%08d\n", reg_l(6), reg_l(6));
+		printf("edi\t\t%08x%08d\n", reg_l(7), reg_l(7));
+		printf("eip\t\t%08x%08d\n", cpu.eip, cpu.eip);
 	}
 	else if(strcmp(args, "w") == 0)
 		Log("info w todo");
