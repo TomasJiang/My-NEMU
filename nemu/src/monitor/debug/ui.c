@@ -68,7 +68,7 @@ static int cmd_info(char *args) {
 
 static int cmd_x(char *args) {
 	unsigned int n, addr;
-	sscanf(args, "%u0x%x", &n, &addr);
+	sscanf(args, "%u 0x%x", &n, &addr);
 	printf("n = %u, addr = 0x%x\n", n, addr);
 	return 0;
 }
