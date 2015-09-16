@@ -46,6 +46,11 @@ static int cmd_si(char *args) {
 	return 0;
 }
 
+static int cmd_info(char *args) {
+	printf("%s", args);
+	return 0;
+}
+
 static int cmd_q(char *args) {
 	return -1;
 }
@@ -60,7 +65,7 @@ static struct {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "si", "TODO", cmd_si },
-	//{ "info", "TODO", cmd_info },
+	{ "info", "TODO", cmd_info },
 	{ "p", "TODO", cmd_p },
 	{ "q", "Exit NEMU", cmd_q },
 
