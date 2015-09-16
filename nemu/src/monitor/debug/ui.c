@@ -74,9 +74,10 @@ static int cmd_x(char *args) {
 	for(i = 0; i < n; ++i)
 	{
 		unsigned int j, addroff = addr + i*4;
+		printf("0x%08x:\t", addroff);
 		for(j = 0; j < 4; ++j)
 		{
-			printf("0x%08x:\t%02x ", addroff, swaddr_read(addroff + j, 1));
+			printf("%02x ", swaddr_read(addroff + j, 1));
 		}
 		printf("\n");
 	}
