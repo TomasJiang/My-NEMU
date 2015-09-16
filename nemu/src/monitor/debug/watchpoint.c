@@ -19,5 +19,3 @@ void init_wp_list() {
 }
 
 /* TODO: Implement the functionality of watchpoint */
-
-
