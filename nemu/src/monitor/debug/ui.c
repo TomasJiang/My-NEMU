@@ -49,9 +49,6 @@ static int cmd_si(char *args) {
 static int cmd_info(char *args) {
 	if(strcmp(args, "r") == 0)
 	{
-		int i;
-		for(i = 0; i < 8; ++i)
-			printf("%d\n", reg_l(i));
 	}
 	if(strcmp(args, "w") == 0)
 	{
