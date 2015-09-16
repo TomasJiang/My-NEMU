@@ -73,7 +73,7 @@ static int cmd_x(char *args) {
 	//memory.c: uint32_t swaddr_read(swaddr_t addr, size_t len)
 	for(i = 0; i < n; ++i)
 	{
-		printf("%x\n", swaddr_read(addr + i, 4));
+		printf("%02x \n", swaddr_read(addr + i, 4));
 	}
 	return 0;
 }
