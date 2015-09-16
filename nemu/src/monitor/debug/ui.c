@@ -67,11 +67,12 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
-	unsigned int n, addr;
+	unsigned int n, addr, temp;
 	sscanf(args, "%u 0x%x", &n, &addr);
 	//Log("n = %u, addr = 0x%x\n", n, addr);
 	//memory.c: uint32_t swaddr_read(swaddr_t addr, size_t len)
-	swaddr_read(addr, n);
+	temp = swaddr_read(addr, n);
+	Log("%x\n", temp);
 	return 0;
 }
 
