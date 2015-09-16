@@ -73,10 +73,10 @@ static int cmd_x(char *args) {
 	//memory.c: uint32_t swaddr_read(swaddr_t addr, size_t len)
 	for(i = 0; i < n; ++i)
 	{
-		int j;
+		unsigned int j, addroff = addr + i*4;
 		for(j = 0; j < 4; ++j)
 		{
-			printf("%02x ", swaddr_read(addr + i*4 + j, 1));
+			printf("0x%08x:\t%02x ", addroff, swaddr_read(addroff + j, 1));
 		}
 		printf("\n");
 	}
