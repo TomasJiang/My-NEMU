@@ -49,11 +49,19 @@ static int cmd_si(char *args) {
 static int cmd_info(char *args) {
 	if(strcmp(args, "r") == 0)
 	{
+		printf("R_EAX: %d", reg_l(0));
+		printf("R_ECX: %d", reg_l(1));
+		printf("R_EDX: %d", reg_l(2));
+		printf("R_EBX: %d", reg_l(3));
+		printf("R_ESP: %d", reg_l(4));
+		printf("R_EBP: %d", reg_l(5));
+		printf("R_ESI: %d", reg_l(6));
+		printf("R_EDI: %d", reg_l(7));
 	}
-	if(strcmp(args, "w") == 0)
-	{
+	else if(strcmp(args, "w") == 0)
 		Log("info w todo");
-	}
+	else
+		Log("Error args");
 	return 0;
 }
 
