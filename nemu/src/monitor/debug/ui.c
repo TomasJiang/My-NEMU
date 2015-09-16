@@ -66,6 +66,13 @@ static int cmd_info(char *args) {
 	return 0;
 }
 
+static int cmd_x(char *args) {
+	unsigned int n, addr;
+	sscanf(args, "%u0x%x", &n, &addr);
+	printf("n = %d, addr = 0x%x\n", n, addr);
+	return 0;
+}
+
 static int cmd_q(char *args) {
 	return -1;
 }
@@ -82,6 +89,7 @@ static struct {
 	{ "si", "TODO", cmd_si },
 	{ "info", "TODO", cmd_info },
 	{ "p", "TODO", cmd_p },
+	{ "x", "TODO", cmd_x },
 	{ "q", "Exit NEMU", cmd_q },
 
 	/* TODO: Add more commands */
