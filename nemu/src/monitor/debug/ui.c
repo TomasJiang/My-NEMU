@@ -49,15 +49,15 @@ static int cmd_si(char *args) {
 static int cmd_info(char *args) {
 	if(strcmp(args, "r") == 0)
 	{
-		printf("eax\t\t0x%08x\t\t%08d\n", reg_l(0), reg_l(0));
-		printf("ecx\t\t0x%08x\t\t%08d\n", reg_l(1), reg_l(1));
-		printf("edx\t\t0x%08x\t\t%08d\n", reg_l(2), reg_l(2));
-		printf("ebx\t\t0x%08x\t\t%08d\n", reg_l(3), reg_l(3));
-		printf("esp\t\t0x%08x\t\t%08d\n", reg_l(4), reg_l(4));
-		printf("ebp\t\t0x%08x\t\t%08d\n", reg_l(5), reg_l(5));
-		printf("esi\t\t0x%08x\t\t%08d\n", reg_l(6), reg_l(6));
-		printf("edi\t\t0x%08x\t\t%08d\n", reg_l(7), reg_l(7));
-		printf("eip\t\t0x%08x\t\t%08d\n", cpu.eip, cpu.eip);
+		printf("eax\t\t0x%08x\t\t%10d\n", reg_l(0), reg_l(0));
+		printf("ecx\t\t0x%08x\t\t%10d\n", reg_l(1), reg_l(1));
+		printf("edx\t\t0x%08x\t\t%10d\n", reg_l(2), reg_l(2));
+		printf("ebx\t\t0x%08x\t\t%10d\n", reg_l(3), reg_l(3));
+		printf("esp\t\t0x%08x\t\t%10d\n", reg_l(4), reg_l(4));
+		printf("ebp\t\t0x%08x\t\t%10d\n", reg_l(5), reg_l(5));
+		printf("esi\t\t0x%08x\t\t%10d\n", reg_l(6), reg_l(6));
+		printf("edi\t\t0x%08x\t\t%10d\n", reg_l(7), reg_l(7));
+		printf("eip\t\t0x%08x\t\t%10d\n", cpu.eip, cpu.eip);
 	}
 	else if(strcmp(args, "w") == 0)
 		Log("info w todo");
