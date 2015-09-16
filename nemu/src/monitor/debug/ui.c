@@ -67,12 +67,14 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
-	unsigned int n, addr, temp;
+	unsigned int i, n, addr;
 	sscanf(args, "%u 0x%x", &n, &addr);
 	//Log("n = %u, addr = 0x%x\n", n, addr);
 	//memory.c: uint32_t swaddr_read(swaddr_t addr, size_t len)
-	temp = swaddr_read(addr, n);
-	Log("%x\n", temp);
+	for(i = 0; i < n; ++i)
+	{
+		printf("%08x\n", swaddr_read(addr + i * 4, 4));
+	}
 	return 0;
 }
 
