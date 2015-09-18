@@ -159,16 +159,12 @@ uint32_t expr(char *e, bool *success) {
 
 void pushi(IStack *pistack, uint32_t t)
 {
-	Log("pistack->topStack = %d", pistack->topStack);
 	pistack->vals[pistack->topStack++] = t;
-	Log("pushi %d", t);
 }
 
 uint32_t popi(IStack *pistack)
 {
-	int t = pistack->vals[--pistack->topStack];
-	Log("pop %d", t);
-	return t;
+	return pistack->vals[--pistack->topStack];
 }
 
 uint32_t topi(IStack *pistack)
@@ -178,10 +174,8 @@ uint32_t topi(IStack *pistack)
 
 uint32_t eval()
 {
-	Log("eval begin");
     Token post[100];
 	int len = in2post(post);
-	Log("in2post end. len = %d", len);
 	
 	IStack *pistack = (IStack *)malloc(sizeof(IStack));
 	pistack->topStack = 0;
@@ -189,7 +183,6 @@ uint32_t eval()
 	int i;
 	for(i = 0; i < len; ++i)
 	{
-		Log("post[i].type = %d", post[i].type);
 		switch(post[i].type)
 		{
 			case REG:
@@ -203,7 +196,6 @@ uint32_t eval()
 			case INT:
 				sscanf(post[i].str, "%d", &val);
 				pushi(pistack, val);
-				Log("pushi end");
 				break;
 			case DEREF:
 				val = swaddr_read(popi(pistack), 4);
@@ -346,9 +338,6 @@ int in2post(Token *postTokens)
 		postTokens[k++] = popt(ptstack);
 	}
 
-	int j;
-	for(j = 0; j < k; ++j)
-		Log("postTokens[%d] = %d", j, postTokens[j].type);
 	free(ptstack);
 	return k;
 }
