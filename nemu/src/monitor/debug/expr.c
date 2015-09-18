@@ -220,8 +220,8 @@ uint32_t eval()
 	Log("enter eval main, len = %d", len);
 	
 	IStack *pistack = (IStack *)malloc(sizeof(IStack));
-	int val = 0, i = 0;
-	while(i < len)
+	int val = 0, i;
+	for(i = 0; i < len; ++i)
 	{
 		switch(post[i].type)
 		{
