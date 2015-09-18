@@ -160,12 +160,15 @@ uint32_t expr(char *e, bool *success) {
 
 void pushi(IStack *pistack, uint32_t t)
 {
+	Log("pushi %d", t);
 	pistack->vals[pistack->topStack++] = t;
 }
 
 uint32_t popi(IStack *pistack)
 {
-	return pistack->vals[--pistack->topStack];
+	int t = pistack->vals[--pistack->topStack];
+	Log("pop %d", t);
+	return t;
 }
 
 uint32_t topi(IStack *pistack)
