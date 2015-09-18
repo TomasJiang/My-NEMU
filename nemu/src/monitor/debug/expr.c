@@ -122,6 +122,7 @@ static bool make_token(char *e) {
 								int fop = tokens[nr_token-1].type;
 								if(fop == REG || fop == HEX || fop == INT)
 								{
+									Log("*");
 									tokens[nr_token++].type = '*';
 								}
 								else
