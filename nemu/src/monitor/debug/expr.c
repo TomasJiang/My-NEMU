@@ -7,7 +7,6 @@
 #include <regex.h>
 #include <stdlib.h>
 
-// uint32_t eval(int p, int q);
 typedef struct token {
 	int type;
 	char str[32];
@@ -16,7 +15,7 @@ typedef struct token {
 typedef struct IStack
 {
 	int topStack;
-	int tokens[100];
+	uint32_t vals[100];
 } IStack;
 
 typedef struct TStack
@@ -25,12 +24,10 @@ typedef struct TStack
 	Token tokens[100];
 } TStack;
 
-bool check_parentheses(int p, int q);
-int op_pos(int p, int q);
 int prec(Token t);
 int in2post(Token *postTokens);
 uint32_t eval();
-int regval(char *reg);
+uint32_t regval(char *reg);
 void eval_biop(IStack *pistack, int op);
 
 enum {
@@ -41,11 +38,6 @@ static struct rule {
 	char *regex;
 	int token_type;
 } rules[] = {
-
-	/* TODO: Add more rules.
-	 * Pay attention to the precedence level of different rules.
-	 */
-
 	{" +",	NOTYPE},				// spaces
 	{"\\$[a-z]{3}", REG}, 			// register
 	{"0x[a-fA-F0-9]+", HEX},		// hexadecimal
@@ -152,64 +144,26 @@ uint32_t expr(char *e, bool *success) {
 		return 0;
 	}
 
-	/* TODO: Insert codes to evaluate the expression. */
-
 	uint32_t result = eval();
 	*success = true;
-	printf("%d\n", result);
+	printf("0x%8x\n", result);
 
 	return 0;
 }
 
-/*
-uint32_t eval(int p, int q)
+void pushi(IStack *pistack, uint32_t t)
 {
-	Log("p = %d, q = %d", p, q);
-	if(p > q) {
-		Assert(0, "function eval: p > q!");
-	}
-	else if (p == q) {
-		Assert(tokens[p].type == INT, "function eval: not a INT!\n");
-		return atoi(tokens[p].str);
-	}
-	else if(check_parentheses(p, q) == true) {
-		return eval(p + 1, q - 1);
-	}
-	else {
-		int op = op_pos(p, q);
-		Log("op = %d", op);
-		uint32_t val1 = eval(p, op - 1);
-		uint32_t val2 = eval(op + 1, q);
-
-		switch(tokens[op].type) {
-			case '+':
-				return val1 + val2;
-			case '-':
-				return val1 - val2;
-			case '*':
-				return val1 * val2;
-			case '/':
-				return val1 / val2;
-			default:
-				assert(0);
-		}
-	}
-}
-*/
-
-void pushi(IStack *pistack, int t)
-{
-	pistack->tokens[pistack->topStack++] = t;
+	pistack->vals[pistack->topStack++] = t;
 }
 
-int popi(IStack *pistack)
+uint32_t popi(IStack *pistack)
 {
-	return pistack->tokens[--pistack->topStack];
+	return pistack->vals[--pistack->topStack];
 }
 
-int topi(IStack *pistack)
+uint32_t topi(IStack *pistack)
 {
-	return pistack->tokens[pistack->topStack-1];
+	return pistack->vals[pistack->topStack-1];
 }
 
 uint32_t eval()
@@ -218,7 +172,8 @@ uint32_t eval()
 	int len = in2post(post);
 	
 	IStack *pistack = (IStack *)malloc(sizeof(IStack));
-	int val = 0, i;
+	uint32_t val = 0;
+	int i;
 	for(i = 0; i < len; ++i)
 	{
 		switch(post[i].type)
@@ -251,7 +206,7 @@ uint32_t eval()
 				break;
 		}	
 	}
-	int result = popi(pistack);
+	uint32_t result = popi(pistack);
 	if(pistack->topStack)
 	{
 		panic("Stack is not empty!");
@@ -261,7 +216,7 @@ uint32_t eval()
 	return result;
 }
 
-int regval(char *reg)
+uint32_t regval(char *reg)
 {
 	int i;
 	for(i = 0; i < 8; ++i)
@@ -286,8 +241,8 @@ int regval(char *reg)
 
 void eval_biop(IStack *pistack, int op)
 {
-	int rval = popi(pistack);
-	int lval = popi(pistack);
+	uint32_t rval = popi(pistack);
+	uint32_t lval = popi(pistack);
 	switch(op)
 	{
 		case '*':
@@ -402,69 +357,4 @@ int prec(Token t)
 			panic("Wrong Type!");
 			exit(0);
 	}
-}
-
-bool check_parentheses(int p, int q)
-{
-	bool result = false;
-	int i, parentNum = 0;
-	if(tokens[p].type == '(')
-		result = true;
-	for(i = p; i <= q; ++i)
-	{
-		if(tokens[i].type == '(')
-			++parentNum;
-		if(tokens[i].type == ')')
-			--parentNum;
-		if(parentNum == 0 && i != q)
-			result = false;
-		Assert(parentNum >= 0, "The expression is not surrounded by a matched pair of parentheses\n");
-	}
-
-	Assert(parentNum == 0, "The expression is not surrounded by a matched pair of parentheses\n");
-	return result;
-}
-
-int op_pos(int p, int q)
-{
-	bool hasCandidate = false;
-	int candidate = -1, parentNum = 0, i;
-	for(i = q; i >= p; --i) {
-		switch(tokens[i].type)
-		{
-			case EQ:
-			case NEQ:
-			case AND:
-			case OR:
-			case '+':
-			case '-':
-				if(parentNum)
-					break;
-				return i;
-			case '*':
-			case '/':
-				if(parentNum)
-					break;
-				if(!hasCandidate)
-				{
-					hasCandidate = true;
-					candidate = i;
-				}
-				break;
-			case '(':
-				--parentNum;
-				break;
-			case ')':
-				++parentNum;
-				break;
-			case INT:
-				break;
-			default:
-				assert(0);
-		}
-	}
-	if(hasCandidate)
-		return candidate;
-	else
-		return -1;
 }
