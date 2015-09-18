@@ -154,6 +154,7 @@ uint32_t expr(char *e, bool *success) {
 	*success = true;
 	printf("0x%08x\n", result);
 
+	nr_token = 0;
 	return 0;
 }
 
@@ -174,6 +175,7 @@ uint32_t topi(IStack *pistack)
 
 uint32_t eval()
 {
+	Log("eval begin");
     Token post[100];
 	int len = in2post(post);
 	
