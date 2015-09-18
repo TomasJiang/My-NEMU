@@ -12,7 +12,7 @@ bool check_parentheses(int p, int q);
 int op_pos(int p, int q);
 
 enum {
-	NOTYPE = 256, HEX, INT, EQ, NEQ, AND, OR, NOT, REG
+	NOTYPE = 256, REG, HEX, INT, EQ, NEQ, AND, OR, NOT
 };
 
 static struct rule {
@@ -25,10 +25,9 @@ static struct rule {
 	 */
 
 	{" +",	NOTYPE},				// spaces
-	{"0x", HEX},
+	{"\\$[a-z]{3}", REG}, 			// register
 	{"0x[a-fA-F0-9]+", HEX},		// hexadecimal
 	{"[0-9]+", INT},				// integer
-	{"\\$[a-z]{3}", REG}, 			// register
 	{"\\+", '+'},					// plus
 	{"\\-", '-'},					// minus
 	{"\\*", '*'},					// mul
