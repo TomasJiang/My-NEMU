@@ -8,8 +8,30 @@
 #include <stdlib.h>
 
 // uint32_t eval(int p, int q);
+typedef struct token {
+	int type;
+	char str[32];
+} Token;
+
+typedef struct IStack
+{
+	int topStack;
+	int tokens[100];
+} IStack;
+
+typedef struct TStack
+{
+	int topStack;
+	Token tokens[100];
+} TStack;
+
 bool check_parentheses(int p, int q);
 int op_pos(int p, int q);
+int prec(Token t);
+int in2post(Token *postTokens);
+uint32_t eval();
+int regval(char *reg);
+void eval_biop(IStack *pistack, int op);
 
 enum {
 	NOTYPE = 256, REG, HEX, INT, EQ, NEQ, AND, OR, NOT
@@ -62,11 +84,6 @@ void init_regex() {
 	}
 }
 
-typedef struct token {
-	int type;
-	char str[32];
-} Token;
-
 Token tokens[32];
 int nr_token;
 
@@ -95,27 +112,27 @@ static bool make_token(char *e) {
 				switch(rules[i].token_type) {
 					case NOTYPE:
 						break;
+					case REG:
+					case HEX:
 					case INT:
-						Assert(substr_len < 32, "integer is too big!\n");
 						sprintf(tokens[nr_token].str, "%.*s", substr_len, substr_start);
 					case '+':
 					case '-':
 					case '*':
 					case '/':
-					case '(':
-					case ')':
 					case EQ:
 					case NEQ:
 					case AND:
 					case OR:
 					case NOT:
+					case '(':
+					case ')':
 						tokens[nr_token++].type = rules[i].token_type;
 						break;
 					default:
 						panic("please implement me");
 						break;
 				}
-
 				break;
 			}
 		}
@@ -137,13 +154,11 @@ uint32_t expr(char *e, bool *success) {
 
 	/* TODO: Insert codes to evaluate the expression. */
 
-	/*
 	Log("nr_token = %d", nr_token);
-	uint32_t result = eval(0, nr_token-1);
+	uint32_t result = eval();
 	*success = true;
 	printf("%d\n", result);
 
-	*/
 	return 0;
 }
 
@@ -183,69 +198,212 @@ uint32_t eval(int p, int q)
 }
 */
 
-/*
-uint32_t eval()
+void pushi(IStack *pistack, int t)
 {
-    Token *post;
-	post = in2post();
-	
-	int stack[100];
-	int val1;
-	int val2;
-	for(int i = 0; i < nr_token;)
-	{
-		switch(tokens[i].type)
-		{
-			case INT:
-				push(stack, tokens[i]);
-				break;
-			case '+':
-				rval = pop(stack);
-				lval = pop(stack);
-				push(stack, rval + lval);
-				break;
-			case '-':
-				rval = pop(stack);
-				lval = pop(stack);
-
-		}	
-	}
+	pistack->tokens[pistack->topStack++] = t;
 }
 
-
-Token *in2post() // tokens[0, nr_token-1]
+int popi(IStack *pistack)
 {
-	int stack[100];
-	int topStack = 0;
-	Token postTokens[100];
+	return pistack->tokens[--pistack->topStack];
+}
 
-	int k = 0;
-	for(int i = 0; i < nr_token; )
+int topi(IStack *pistack)
+{
+	return pistack->tokens[pistack->topStack-1];
+}
+
+uint32_t eval()
+{
+    Token post[100];
+	int len = in2post(post);
+	
+	IStack *pistack = (IStack *)malloc(sizeof(IStack));
+	int val = 0, i = 0;
+	while(i < len)
 	{
-		if(tokens[i].type == INT)
-			postTokens[k++] = tokens[i++];
-		else
+		switch(post[i].type)
 		{
-			if(!topStack)
-			{
-				push(stack, tokens[i++]);
+			case REG:
+				val = regval(post[i].str + 1);
+				pushi(pistack, val);
 				break;
+			case HEX:
+				sscanf(post[i].str, "%x", &val);
+				pushi(pistack, val);
+				break;
+			case INT:
+				sscanf(post[i].str, "%d", &val);
+				pushi(pistack, val);
+				break;
+			case '+':
+			case '-':
+			case '*':
+			case '/':
+			case EQ:
+			case NEQ:
+			case AND:
+			case OR:
+				eval_biop(pistack, post[i].type);
+				break;
+			case NOT:
+				val = popi(pistack);
+				pushi(pistack, !val);
+				break;
+		}	
+	}
+	int result = popi(pistack);
+	if(!pistack->topStack)
+	{
+		panic("Stack is not empty!");
+		exit(-1);
+	}
+	free(pistack);
+	return result;
+}
+
+int regval(char *reg)
+{
+	int i;
+	for(i = 0; i < 8; ++i)
+	{
+		if(!strcmp(reg, regsl[i]))
+		{
+			return reg_l(i);
+		}
+		if(!strcmp(reg, regsw[i]))
+		{
+			return reg_w(i);
+		}
+		if(!strcmp(reg, regsb[i]))
+		{
+			return reg_b(i);
+		}
+	}
+
+	panic("No such register!");
+	return -1;
+}
+
+void eval_biop(IStack *pistack, int op)
+{
+	int rval = popi(pistack);
+	int lval = popi(pistack);
+	switch(op)
+	{
+		case '*':
+			pushi(pistack, lval * rval);
+			break;
+		case '/':
+			pushi(pistack, lval / rval);
+			break;
+		case '+':
+			pushi(pistack, lval + rval);
+			break;
+		case '-':
+			pushi(pistack, lval - rval);
+			break;
+		case EQ:
+			pushi(pistack, lval == rval);
+			break;
+		case NEQ:
+			pushi(pistack, lval != rval);
+			break;
+		case AND:
+			pushi(pistack, lval && rval);
+			break;
+		case OR:
+			pushi(pistack, lval || rval);
+			break;
+		default:
+			panic("Wrong Type!");
+			exit(-1);
+	}
+	return;
+}
+			
+void pusht(TStack *ptstack, Token t)
+{
+	ptstack->tokens[ptstack->topStack++] = t;
+}
+
+Token popt(TStack *ptstack)
+{
+	return ptstack->tokens[--ptstack->topStack];
+}
+
+Token topt(TStack *ptstack)
+{
+	return ptstack->tokens[ptstack->topStack-1];
+}
+
+int in2post(Token *postTokens) // tokens[0, nr_token-1]
+{
+	TStack *ptstack = (TStack *)malloc(sizeof(TStack));
+
+	int k = 0, i = 0;
+	while(i < nr_token)
+	{
+		if(tokens[i].type == REG ||	tokens[i].type == HEX || 
+				tokens[i].type == INT)
+		{
+			postTokens[k++] = tokens[i++];
+		}
+		else 
+		{
+			if(!ptstack->topStack) {
+				pusht(ptstack, tokens[i++]);
 			}
-			else if(prec(tokens[i]) > prec(stack[topStack]))
-			{
-				push(tokens[i++]);
-				break;
+			else if(topt(ptstack).type == '(' && tokens[i].type == ')') {
+				popt(ptstack);
+				i++;
 			}
-			else
-			{
-				postToken[k++] = pop();
-				break;
+			else if(prec(tokens[i]) > prec(topt(ptstack))) {
+				pusht(ptstack, tokens[i++]);
+			}
+			else {
+				postTokens[k++] = popt(ptstack);
 			}
 		}
 	}
-	return postTokens;
+
+	while(!ptstack->topStack)
+	{
+		postTokens[k++] = popt(ptstack);
+	}
+
+	free(ptstack);
+	return k;
 }
-*/
+
+int prec(Token t)
+{
+	switch(t.type)
+	{
+		case '(':
+			return 20;
+		case '*':
+		case '/':
+			return 10;
+		case '+':
+		case '-':
+			return 9;
+		case NOT:
+			return 8;
+		case AND:
+			return 7;
+		case EQ:
+		case NEQ:
+			return 6;
+		case OR:
+			return 5;
+		case ')':
+			return -1;
+		default:
+			panic("Wrong Type!");
+			exit(0);
+	}
+}
 
 bool check_parentheses(int p, int q)
 {
