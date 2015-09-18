@@ -7,12 +7,12 @@
 #include <regex.h>
 #include <stdlib.h>
 
-uint32_t eval(int p, int q);
+// uint32_t eval(int p, int q);
 bool check_parentheses(int p, int q);
 int op_pos(int p, int q);
 
 enum {
-	NOTYPE = 256, INT, EQ, NEQ, AND, OR, NOT
+	NOTYPE = 256, INT, EQ, NEQ, AND, OR, NOT, REG, HEX
 };
 
 static struct rule {
@@ -26,6 +26,8 @@ static struct rule {
 
 	{" +",	NOTYPE},				// spaces
 	{"[0-9]+", INT},				// integer
+	{"0x[a-fA-F0-9]+", HEX},		// hexadecimal
+	{"$[a-z]{3}", REG}, 			// register
 	{"\\+", '+'},					// plus
 	{"\\-", '-'},					// minus
 	{"\\*", '*'},					// mul
@@ -35,9 +37,8 @@ static struct rule {
 	{"==", EQ},						// equal
 	{"!=", NEQ},					// not equal
 	{"&&", AND},					// and
-	{"\\|\\|", OR},						// or
+	{"\\|\\|", OR},					// or
 	{"!",  NOT}						// not
-
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -136,17 +137,20 @@ uint32_t expr(char *e, bool *success) {
 
 	/* TODO: Insert codes to evaluate the expression. */
 
+	/*
 	Log("nr_token = %d", nr_token);
 	uint32_t result = eval(0, nr_token-1);
 	*success = true;
 	printf("%d\n", result);
 
+	*/
 	return 0;
 }
 
+/*
 uint32_t eval(int p, int q)
 {
-	//Log("p = %d, q = %d", p, q);
+	Log("p = %d, q = %d", p, q);
 	if(p > q) {
 		Assert(0, "function eval: p > q!");
 	}
@@ -159,7 +163,7 @@ uint32_t eval(int p, int q)
 	}
 	else {
 		int op = op_pos(p, q);
-		//Log("op = %d", op);
+		Log("op = %d", op);
 		uint32_t val1 = eval(p, op - 1);
 		uint32_t val2 = eval(op + 1, q);
 
@@ -177,6 +181,71 @@ uint32_t eval(int p, int q)
 		}
 	}
 }
+*/
+
+/*
+uint32_t eval()
+{
+    Token *post;
+	post = in2post();
+	
+	int stack[100];
+	int val1;
+	int val2;
+	for(int i = 0; i < nr_token;)
+	{
+		switch(tokens[i].type)
+		{
+			case INT:
+				push(stack, tokens[i]);
+				break;
+			case '+':
+				rval = pop(stack);
+				lval = pop(stack);
+				push(stack, rval + lval);
+				break;
+			case '-':
+				rval = pop(stack);
+				lval = pop(stack);
+
+		}	
+	}
+}
+
+
+Token *in2post() // tokens[0, nr_token-1]
+{
+	int stack[100];
+	int topStack = 0;
+	Token postTokens[100];
+
+	int k = 0;
+	for(int i = 0; i < nr_token; )
+	{
+		if(tokens[i].type == INT)
+			postTokens[k++] = tokens[i++];
+		else
+		{
+			if(!topStack)
+			{
+				push(stack, tokens[i++]);
+				break;
+			}
+			else if(prec(tokens[i]) > prec(stack[topStack]))
+			{
+				push(tokens[i++]);
+				break;
+			}
+			else
+			{
+				postToken[k++] = pop();
+				break;
+			}
+		}
+	}
+	return postTokens;
+}
+*/
 
 bool check_parentheses(int p, int q)
 {
@@ -199,6 +268,7 @@ bool check_parentheses(int p, int q)
 	return result;
 }
 
+int precedence[300];
 
 int op_pos(int p, int q)
 {
@@ -207,6 +277,10 @@ int op_pos(int p, int q)
 	for(i = q; i >= p; --i) {
 		switch(tokens[i].type)
 		{
+			case EQ:
+			case NEQ:
+			case AND:
+			case OR:
 			case '+':
 			case '-':
 				if(parentNum)
