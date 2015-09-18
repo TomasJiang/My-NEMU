@@ -91,10 +91,13 @@ void cpu_exec(volatile uint32_t n) {
 			{
 				wp->oldvalue = result;
 				nemu_state = STOP;
+				Log("nemu_state = STOP ? %s", nemu_state == STOP ? "YES" : "NO");
 				break;
 			}
 			wp = wp->next;
 		}
+
+		Log("nemu_state = STOP ? %s", nemu_state == STOP ? "YES" : "NO");
 
 		if(nemu_state != RUNNING) {
 			Log("RETURN");
