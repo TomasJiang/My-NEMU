@@ -116,9 +116,15 @@ static bool make_token(char *e) {
 						break;
 					case '*':
 						{
-							int fop = tokens[nr_token-1].type;
-							if(fop != REG || fop != HEX || fop != INT)
+							if(nr_token == 0)
 								tokens[nr_token++].type = DEREF;
+							else {
+								int fop = tokens[nr_token-1].type;
+								if(fop != REG || fop != HEX || fop != INT)
+									tokens[nr_token++].type = DEREF;
+								else
+									tokens[nr_token++].type = '*';
+							}
 							break;
 						}
 					default:
