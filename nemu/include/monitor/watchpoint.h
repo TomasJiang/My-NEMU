@@ -7,9 +7,12 @@ typedef struct watchpoint {
 	int NO;
 	struct watchpoint *next;
 
-	/* TODO: Add more members if necessary */
-
-
+	char str[32];
+	uint32_t oldvalue;
 } WP;
+
+WP *head_wp();
+WP *new_wp();
+void free_wp(WP *wp);
 
 #endif

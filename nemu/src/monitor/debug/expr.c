@@ -155,9 +155,8 @@ uint32_t expr(char *e, bool *success) {
 
 	uint32_t result = eval();
 	*success = true;
-	printf("0x%08x\n", result);
 
-	return 0;
+	return result;
 }
 
 void pushi(IStack *pistack, uint32_t t)

@@ -34,8 +34,9 @@ static int cmd_c(char *args) {
 
 static int cmd_p(char *args) {
 	bool success;
-	expr(args, &success);
-	Assert(success, "expr is not successful!\n");
+	uint32_t result = expr(args, &success);
+	Assert(success, "Invalid expression\n");
+	printf("0x%08x", result);
 	return 0;
 }
 
@@ -69,8 +70,6 @@ static int cmd_info(char *args) {
 static int cmd_x(char *args) {
 	unsigned int i, n, addr;
 	sscanf(args, "%u 0x%x", &n, &addr);
-	//Log("n = %u, addr = 0x%x\n", n, addr);
-	//memory.c: uint32_t swaddr_read(swaddr_t addr, size_t len)
 	for(i = 0; i < n; ++i)
 	{
 		unsigned int j, addroff = addr + i*4;
@@ -81,6 +80,16 @@ static int cmd_x(char *args) {
 		}
 		printf("\n");
 	}
+	return 0;
+}
+
+static int cmd_w(char *args) {
+	WP *wp = new_wp();
+	strcpy(wp->str, args);
+	bool success = false;
+	uint32_t result = expr(args, &success);
+	Assert(success, "Invalid expression!");
+	wp->oldvalue = result;
 	return 0;
 }
 
@@ -101,9 +110,8 @@ static struct {
 	{ "info", "TODO", cmd_info },
 	{ "p", "TODO", cmd_p },
 	{ "x", "TODO", cmd_x },
-	{ "q", "Exit NEMU", cmd_q },
-
-	/* TODO: Add more commands */
+	{ "w", "TODO", cmd_w },
+	{ "q", "Exit NEMU", cmd_q }
 
 };
 
