@@ -120,12 +120,12 @@ static bool make_token(char *e) {
 								tokens[nr_token++].type = DEREF;
 							else {
 								int fop = tokens[nr_token-1].type;
-								if(fop != REG && fop != HEX && fop != INT)
+								if(fop == REG || fop == HEX || fop == INT)
 								{
-									tokens[nr_token++].type = DEREF;
+									tokens[nr_token++].type = '*';
 								}
 								else
-									tokens[nr_token++].type = '*';
+									tokens[nr_token++].type = DEREF;
 							}
 							break;
 						}
