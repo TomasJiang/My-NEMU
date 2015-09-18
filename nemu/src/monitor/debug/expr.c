@@ -390,7 +390,7 @@ int in2post(Token *postTokens) // tokens[0, nr_token-1]
 	Log("in2post");
 	for(j = 0; j < k; ++j)
 	{
-		printf("%d ", postTokens[j].type);
+		Log("post[%d] = %d ", j, postTokens[j].type);
 	}
 
 	return k;
