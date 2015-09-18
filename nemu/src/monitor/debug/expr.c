@@ -198,7 +198,6 @@ uint32_t eval()
 				break;
 			case DEREF:
 				val = swaddr_read(popi(pistack), 4);
-				Log("val = %x", val);
 				pushi(pistack, val);
 				break;
 			case '+':
