@@ -121,15 +121,9 @@ static bool make_token(char *e) {
 							else {
 								int fop = tokens[nr_token-1].type;
 								if(fop == REG || fop == HEX || fop == INT)
-								{
-									Log("*");
 									tokens[nr_token++].type = '*';
-								}
 								else
-								{
 									tokens[nr_token++].type = DEREF;
-									Log("DEFER");
-								}
 							}
 							break;
 						}
