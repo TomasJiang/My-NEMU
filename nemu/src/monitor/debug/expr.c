@@ -31,7 +31,7 @@ uint32_t regval(char *reg);
 void eval_biop(IStack *pistack, int op);
 
 enum {
-	NOTYPE = 256, REG, HEX, INT, EQ, NEQ, AND, OR, NOT
+	NOTYPE = 256, REG, HEX, INT, DEREF, EQ, NEQ, AND, OR, NOT
 };
 
 static struct rule {
@@ -95,12 +95,6 @@ static bool make_token(char *e) {
 
 				// Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
 				position += substr_len;
-
-				/* TODO: Now a new token is recognized with rules[i]. Add codes
-				 * to record the token in the array ``tokens''. For certain 
-				 * types of tokens, some extra actions should be performed.
-				 */
-
 				switch(rules[i].token_type) {
 					case NOTYPE:
 						break;
@@ -110,7 +104,6 @@ static bool make_token(char *e) {
 						sprintf(tokens[nr_token].str, "%.*s", substr_len, substr_start);
 					case '+':
 					case '-':
-					case '*':
 					case '/':
 					case EQ:
 					case NEQ:
@@ -121,6 +114,13 @@ static bool make_token(char *e) {
 					case ')':
 						tokens[nr_token++].type = rules[i].token_type;
 						break;
+					case '*':
+						{
+							int fop = tokens[nr_token-1].type;
+							if(fop != REG || fop != HEX || fop != INT)
+								tokens[nr_token++].type = DEREF;
+							break;
+						}
 					default:
 						panic("please implement me");
 						break;
@@ -146,7 +146,7 @@ uint32_t expr(char *e, bool *success) {
 
 	uint32_t result = eval();
 	*success = true;
-	printf("0x%8x\n", result);
+	printf("0x%08x\n", result);
 
 	return 0;
 }
@@ -188,6 +188,11 @@ uint32_t eval()
 				break;
 			case INT:
 				sscanf(post[i].str, "%d", &val);
+				pushi(pistack, val);
+				break;
+			case DEREF:
+				val = swaddr_read(popi(pistack), 4);
+				Log("val = %x", val);
 				pushi(pistack, val);
 				break;
 			case '+':
@@ -336,6 +341,8 @@ int prec(Token t)
 	{
 		case '(':
 			return 20;
+		case DEREF:
+			return 11;
 		case '*':
 		case '/':
 			return 10;
