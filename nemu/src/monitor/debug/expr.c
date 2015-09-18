@@ -185,6 +185,7 @@ uint32_t eval()
 	int i;
 	for(i = 0; i < len; ++i)
 	{
+		Log("post[i].type = %d", post[i].type);
 		switch(post[i].type)
 		{
 			case REG:
