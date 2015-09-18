@@ -376,6 +376,8 @@ int in2post(Token *postTokens) // tokens[0, nr_token-1]
 		}
 	}
 
+	Log("k = %d", k);
+
 	while(!ptstack->topStack)
 	{
 		postTokens[k++] = popt(ptstack);
