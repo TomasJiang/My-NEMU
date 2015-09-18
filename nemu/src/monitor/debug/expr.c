@@ -27,7 +27,7 @@ static struct rule {
 	{" +",	NOTYPE},				// spaces
 	{"[0-9]+", INT},				// integer
 	{"0x[a-fA-F0-9]+", HEX},		// hexadecimal
-	{"$[a-z]{3}", REG}, 			// register
+	{"\\$[a-z]{3}", REG}, 			// register
 	{"\\+", '+'},					// plus
 	{"\\-", '-'},					// minus
 	{"\\*", '*'},					// mul
