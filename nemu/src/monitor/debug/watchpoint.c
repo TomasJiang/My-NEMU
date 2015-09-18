@@ -29,6 +29,7 @@ WP *new_wp()
 	WP *wp = free_;
 	free_ = wp->next;
 	wp->next = head;
+	head = wp;
 	return wp;
 }
 
