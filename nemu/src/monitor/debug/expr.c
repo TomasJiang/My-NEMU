@@ -120,14 +120,12 @@ static bool make_token(char *e) {
 								tokens[nr_token++].type = DEREF;
 							else {
 								int fop = tokens[nr_token-1].type;
-								Log("fop = %d", fop);
 								if(fop == REG || fop == HEX
 										|| fop == INT || fop == ')')
 									tokens[nr_token++].type = '*';
 								else
 								{
 									tokens[nr_token++].type = DEREF;
-									Log("DEREF");
 								}
 							}
 							break;
@@ -164,15 +162,12 @@ uint32_t expr(char *e, bool *success) {
 
 void pushi(IStack *pistack, uint32_t t)
 {
-	Log("pushi %d", t);
 	pistack->vals[pistack->topStack++] = t;
 }
 
 uint32_t popi(IStack *pistack)
 {
-	int t =  pistack->vals[--pistack->topStack];
-	Log("popi %d", t);
-	return t;
+	return pistack->vals[--pistack->topStack];
 }
 
 uint32_t topi(IStack *pistack)
@@ -299,15 +294,12 @@ void eval_biop(IStack *pistack, int op)
 			
 void pusht(TStack *ptstack, Token t)
 {
-	Log("pusht %d", t.type);
 	ptstack->tokens[ptstack->topStack++] = t;
 }
 
 Token popt(TStack *ptstack)
 {
-	Token t = ptstack->tokens[--ptstack->topStack];
-	Log("popt %d", t.type);
-	return t;
+	return ptstack->tokens[--ptstack->topStack];
 }
 
 Token topt(TStack *ptstack)
