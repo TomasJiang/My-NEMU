@@ -154,7 +154,6 @@ uint32_t expr(char *e, bool *success) {
 
 	/* TODO: Insert codes to evaluate the expression. */
 
-	Log("nr_token = %d", nr_token);
 	uint32_t result = eval();
 	*success = true;
 	printf("%d\n", result);
@@ -200,15 +199,12 @@ uint32_t eval(int p, int q)
 
 void pushi(IStack *pistack, int t)
 {
-	Log("pushi %d", t);
 	pistack->tokens[pistack->topStack++] = t;
 }
 
 int popi(IStack *pistack)
 {
-	int i = pistack->tokens[--pistack->topStack];
-	Log("popi %d", i);
-	return i;
+	return pistack->tokens[--pistack->topStack];
 }
 
 int topi(IStack *pistack)
@@ -220,7 +216,6 @@ uint32_t eval()
 {
     Token post[100];
 	int len = in2post(post);
-	Log("enter eval main, len = %d", len);
 	
 	IStack *pistack = (IStack *)malloc(sizeof(IStack));
 	int val = 0, i;
@@ -328,21 +323,12 @@ void eval_biop(IStack *pistack, int op)
 			
 void pusht(TStack *ptstack, Token t)
 {
-	if(t.type == INT)
-		Log("Push token %s : INT", t.str);
-	else
-		Log("Push token %d", t.type);
 	ptstack->tokens[ptstack->topStack++] = t;
 }
 
 Token popt(TStack *ptstack)
 {
-	Token t = ptstack->tokens[--ptstack->topStack];
-	if(t.type == INT)
-		Log("Pop token %s : INT", t.str);
-	else
-		Log("Pop token %d", t.type);
-	return t;
+	return ptstack->tokens[--ptstack->topStack];
 }
 
 Token topt(TStack *ptstack)
@@ -380,23 +366,12 @@ int in2post(Token *postTokens) // tokens[0, nr_token-1]
 		}
 	}
 
-	Log("k = %d", k);
-	Log("topStack = %d", ptstack->topStack);
-
 	while(ptstack->topStack)
 	{
 		postTokens[k++] = popt(ptstack);
 	}
 
 	free(ptstack);
-	int j;
-	Log("k = %d", k);
-	Log("in2post");
-	for(j = 0; j < k; ++j)
-	{
-		Log("post[%d] = %d ", j, postTokens[j].type);
-	}
-
 	return k;
 }
 
