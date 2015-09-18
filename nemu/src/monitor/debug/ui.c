@@ -32,6 +32,10 @@ static int cmd_c(char *args) {
 	return 0;
 }
 
+static int cmd_q(char *args) {
+	return -1;
+}
+
 static int cmd_p(char *args) {
 	bool success;
 	uint32_t result = expr(args, &success);
@@ -90,11 +94,22 @@ static int cmd_w(char *args) {
 	uint32_t result = expr(args, &success);
 	Assert(success, "Invalid expression!");
 	wp->oldvalue = result;
+	printf("Add watchpoint %d: %s\n", wp->NO, wp->str);
 	return 0;
 }
 
-static int cmd_q(char *args) {
-	return -1;
+static int cmd_d(char *args) {
+	int n = atoi(args);
+	WP *wp = head_wp();
+	while(wp)
+	{
+		if(wp->NO == n)
+		{
+			free_wp(wp);
+		}
+		wp = wp->next;
+	}
+	return 0;
 }
 
 static int cmd_help(char *args);
@@ -106,13 +121,13 @@ static struct {
 } cmd_table [] = {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
+	{ "q", "Exit NEMU", cmd_q },
 	{ "si", "TODO", cmd_si },
 	{ "info", "TODO", cmd_info },
 	{ "p", "TODO", cmd_p },
 	{ "x", "TODO", cmd_x },
 	{ "w", "TODO", cmd_w },
-	{ "q", "Exit NEMU", cmd_q }
-
+	{ "d", "TODO", cmd_d }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
