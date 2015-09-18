@@ -12,11 +12,7 @@ bool check_parentheses(int p, int q);
 int op_pos(int p, int q);
 
 enum {
-	NOTYPE = 256, EQ,
-
-	/* TODO: Add more token types */
-	INT,
-
+	NOTYPE = 256, INT, EQ, NEQ, AND, OR, NOT
 };
 
 static struct rule {
@@ -36,7 +32,12 @@ static struct rule {
 	{"\\/", '/'},					// divide
 	{"\\(", '('},					// lparen
 	{"\\)", ')'},					// rparen
-	{"==", EQ}						// equal
+	{"==", EQ},						// equal
+	{"!=", NEQ},					// not equal
+	{"&&", AND},					// and
+	{"||", OR},						// or
+	{"!",  NOT}						// not
+
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -82,7 +83,7 @@ static bool make_token(char *e) {
 				char *substr_start = e + position;
 				int substr_len = pmatch.rm_eo;
 
-				//Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
+				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
 				position += substr_len;
 
 				/* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -103,6 +104,10 @@ static bool make_token(char *e) {
 					case '(':
 					case ')':
 					case EQ:
+					case NEQ:
+					case AND:
+					case OR:
+					case NOT:
 						tokens[nr_token++].type = rules[i].token_type;
 						break;
 					default:
@@ -131,7 +136,7 @@ uint32_t expr(char *e, bool *success) {
 
 	/* TODO: Insert codes to evaluate the expression. */
 
-	//Log("nr_token = %d", nr_token);
+	Log("nr_token = %d", nr_token);
 	uint32_t result = eval(0, nr_token-1);
 	*success = true;
 	printf("%d\n", result);
