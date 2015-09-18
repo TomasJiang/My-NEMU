@@ -105,10 +105,13 @@ static int cmd_d(char *args) {
 	{
 		if(wp->NO == n)
 		{
+			printf("Delete watchpoint %d: %s\n", wp->NO, wp->str);
 			free_wp(wp);
+			return 0;
 		}
 		wp = wp->next;
 	}
+	printf("No watchpoint %d", n);
 	return 0;
 }
 
@@ -157,7 +160,6 @@ static int cmd_help(char *args) {
 
 void ui_mainloop() {
 	while(1) {
-		Log("Enter ui_mainloop()");
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
 
