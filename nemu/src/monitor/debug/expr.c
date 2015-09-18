@@ -324,12 +324,21 @@ void eval_biop(IStack *pistack, int op)
 			
 void pusht(TStack *ptstack, Token t)
 {
+	if(t.type == INT)
+		Log("Push token %s : INT", t.str);
+	else
+		Log("Push token %d", t.type);
 	ptstack->tokens[ptstack->topStack++] = t;
 }
 
 Token popt(TStack *ptstack)
 {
-	return ptstack->tokens[--ptstack->topStack];
+	Token t = ptstack->tokens[--ptstack->topStack];
+	if(t.type == INT)
+		Log("Pop token %s : INT", t.str);
+	else
+		Log("Pop token %d", t.type);
+	return t;
 }
 
 Token topt(TStack *ptstack)
