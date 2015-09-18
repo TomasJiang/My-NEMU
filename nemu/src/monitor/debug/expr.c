@@ -201,6 +201,7 @@ uint32_t eval()
 			case INT:
 				sscanf(post[i].str, "%d", &val);
 				pushi(pistack, val);
+				Log("pushi end");
 				break;
 			case DEREF:
 				val = swaddr_read(popi(pistack), 4);
