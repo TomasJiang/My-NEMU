@@ -317,19 +317,18 @@ int in2post(Token *postTokens)
 		}
 		else 
 		{
-			if(!ptstack->topStack) {
+			if(!ptstack->topStack)
 				pusht(ptstack, tokens[i++]);
-			}
+			else if(tokens[i].type == '(') 
+				pusht(ptstack, tokens[i++]);
 			else if(topt(ptstack).type == '(' && tokens[i].type == ')') {
 				popt(ptstack);
 				i++;
 			}
-			else if(prec(tokens[i]) > prec(topt(ptstack))) {
+			else if(prec(tokens[i]) > prec(topt(ptstack))) 
 				pusht(ptstack, tokens[i++]);
-			}
-			else {
+			else
 				postTokens[k++] = popt(ptstack);
-			}
 		}
 	}
 
@@ -346,8 +345,6 @@ int prec(Token t)
 {
 	switch(t.type)
 	{
-		case '(':
-			return 20;
 		case DEREF:
 			return 11;
 		case '*':
@@ -365,6 +362,7 @@ int prec(Token t)
 			return 6;
 		case OR:
 			return 5;
+		case '(':
 		case ')':
 			return -1;
 		default:
