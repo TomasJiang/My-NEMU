@@ -123,7 +123,10 @@ static bool make_token(char *e) {
 								if(fop == REG || fop == HEX || fop == INT)
 									tokens[nr_token++].type = '*';
 								else
+								{
 									tokens[nr_token++].type = DEREF;
+									Log("DEREF");
+								}
 							}
 							break;
 						}
