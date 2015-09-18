@@ -121,7 +121,8 @@ static bool make_token(char *e) {
 							else {
 								int fop = tokens[nr_token-1].type;
 								Log("fop = %d", fop);
-								if(fop == REG || fop == HEX || fop == INT)
+								if(fop == REG || fop == HEX
+										|| fop == INT || fop == ')')
 									tokens[nr_token++].type = '*';
 								else
 								{
