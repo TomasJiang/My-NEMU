@@ -121,7 +121,8 @@ static bool make_token(char *e) {
 							else {
 								Log("break point");
 								int fop = tokens[nr_token-1].type;
-								Log("fop = %d", fop);
+								Log("fop = %d, fop == INT ? %s", fop,
+										fop == INT ? "YES" : "NO");
 								if(fop != REG || fop != HEX || fop != INT)
 								{
 									tokens[nr_token++].type = DEREF;
