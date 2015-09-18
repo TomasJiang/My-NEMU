@@ -215,6 +215,7 @@ int topi(IStack *pistack)
 
 uint32_t eval()
 {
+	Log("enter eval");
     Token post[100];
 	int len = in2post(post);
 	
@@ -374,6 +375,7 @@ int in2post(Token *postTokens) // tokens[0, nr_token-1]
 
 	free(ptstack);
 	int j;
+	Log("in2post");
 	for(j = 0; j < k; ++j)
 	{
 		printf("%d ", postTokens[j].type);
