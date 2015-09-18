@@ -373,6 +373,12 @@ int in2post(Token *postTokens) // tokens[0, nr_token-1]
 	}
 
 	free(ptstack);
+	int j;
+	for(j = 0; j < k; ++j)
+	{
+		printf("%d ", postTokens[j].type);
+	}
+
 	return k;
 }
 
@@ -425,8 +431,6 @@ bool check_parentheses(int p, int q)
 	Assert(parentNum == 0, "The expression is not surrounded by a matched pair of parentheses\n");
 	return result;
 }
-
-int precedence[300];
 
 int op_pos(int p, int q)
 {
