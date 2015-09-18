@@ -217,6 +217,7 @@ uint32_t eval()
 {
     Token post[100];
 	int len = in2post(post);
+	Log("enter eval main");
 	
 	IStack *pistack = (IStack *)malloc(sizeof(IStack));
 	int val = 0, i = 0;
