@@ -64,8 +64,10 @@ void cpu_exec(volatile uint32_t n) {
 		/* Execute one instruction, including instruction fetch,
 		 * instruction decode, and the actual execution. */
 		int instr_len = exec(cpu.eip);
+		Log("$eip = %x", cpu.eip);
 
 		cpu.eip += instr_len;
+		Log("$eip = %x", cpu.eip);
 
 #ifdef DEBUG
 		print_bin_instr(eip_temp, instr_len);
@@ -75,6 +77,7 @@ void cpu_exec(volatile uint32_t n) {
 			printf("%s\n", asm_buf);
 		}
 #endif
+		Log("$eip = %x", cpu.eip);
 
 		/* TODO: check watchpoints here. */
 		WP *wp = head_wp();
