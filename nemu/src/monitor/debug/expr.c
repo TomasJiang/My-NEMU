@@ -126,7 +126,10 @@ static bool make_token(char *e) {
 									tokens[nr_token++].type = '*';
 								}
 								else
+								{
 									tokens[nr_token++].type = DEREF;
+									Log("DEFER");
+								}
 							}
 							break;
 						}
