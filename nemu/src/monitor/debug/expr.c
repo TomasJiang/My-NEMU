@@ -119,14 +119,10 @@ static bool make_token(char *e) {
 							if(nr_token == 0)
 								tokens[nr_token++].type = DEREF;
 							else {
-								Log("break point");
 								int fop = tokens[nr_token-1].type;
-								Log("fop = %d, fop == INT ? %s", fop,
-										fop == INT ? "YES" : "NO");
-								if(fop != REG || fop != HEX || fop != INT)
+								if(fop != REG && fop != HEX && fop != INT)
 								{
 									tokens[nr_token++].type = DEREF;
-									Log("DEREF");
 								}
 								else
 									tokens[nr_token++].type = '*';
