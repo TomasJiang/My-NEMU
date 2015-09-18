@@ -36,7 +36,7 @@ static int cmd_p(char *args) {
 	bool success;
 	uint32_t result = expr(args, &success);
 	Assert(success, "Invalid expression\n");
-	printf("0x%08x", result);
+	printf("0x%08x\n", result);
 	return 0;
 }
 
