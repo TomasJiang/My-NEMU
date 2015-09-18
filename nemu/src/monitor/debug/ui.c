@@ -65,9 +65,16 @@ static int cmd_info(char *args) {
 		printf("eip\t\t0x%08x\t\t%10d\n", cpu.eip, cpu.eip);
 	}
 	else if(strcmp(args, "w") == 0)
-		Log("info w todo");
+	{
+		WP *wp = head_wp();
+		while(wp)
+		{
+			printf("watchpoint %d: %s\n", wp->NO, wp->str);
+			wp = wp->next;
+		}
+	}
 	else
-		Log("Error args");
+		Assert(0, "Error args");
 	return 0;
 }
 
