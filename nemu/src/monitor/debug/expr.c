@@ -154,7 +154,6 @@ uint32_t expr(char *e, bool *success) {
 	*success = true;
 	printf("0x%08x\n", result);
 
-	nr_token = 0;
 	return 0;
 }
 
@@ -308,7 +307,7 @@ Token topt(TStack *ptstack)
 	return ptstack->tokens[ptstack->topStack-1];
 }
 
-int in2post(Token *postTokens) // tokens[0, nr_token-1]
+int in2post(Token *postTokens)
 {
 	TStack *ptstack = (TStack *)malloc(sizeof(TStack));
 
@@ -343,6 +342,9 @@ int in2post(Token *postTokens) // tokens[0, nr_token-1]
 		postTokens[k++] = popt(ptstack);
 	}
 
+	int j;
+	for(j = 0; j < k; ++j)
+		Log("postTokens[%d] = %d", j, postTokens[j].type);
 	free(ptstack);
 	return k;
 }
