@@ -200,12 +200,15 @@ uint32_t eval(int p, int q)
 
 void pushi(IStack *pistack, int t)
 {
+	Log("pushi %d", t);
 	pistack->tokens[pistack->topStack++] = t;
 }
 
 int popi(IStack *pistack)
 {
-	return pistack->tokens[--pistack->topStack];
+	int i = pistack->tokens[--pistack->topStack];
+	Log("popi %d", i);
+	return i;
 }
 
 int topi(IStack *pistack)
