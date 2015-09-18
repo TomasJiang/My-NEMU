@@ -142,6 +142,7 @@ static int cmd_help(char *args) {
 
 void ui_mainloop() {
 	while(1) {
+		Log("Enter ui_mainloop()");
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
 
