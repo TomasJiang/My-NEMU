@@ -50,7 +50,6 @@ void cpu_exec(volatile uint32_t n) {
 #endif
 
 	setjmp(jbuf);
-	Log("$eip = %x", cpu.eip);
 
 	for(; n > 0; n --) {
 #ifdef DEBUG
@@ -64,10 +63,8 @@ void cpu_exec(volatile uint32_t n) {
 		/* Execute one instruction, including instruction fetch,
 		 * instruction decode, and the actual execution. */
 		int instr_len = exec(cpu.eip);
-		Log("$eip = %x", cpu.eip);
 
 		cpu.eip += instr_len;
-		Log("$eip = %x", cpu.eip);
 
 #ifdef DEBUG
 		print_bin_instr(eip_temp, instr_len);
@@ -77,30 +74,25 @@ void cpu_exec(volatile uint32_t n) {
 			printf("%s\n", asm_buf);
 		}
 #endif
-		Log("$eip = %x", cpu.eip);
 
 		WP *wp = head_wp();
-		Log("wp == NULL ? %s", wp ? "NO" : "YES");
 		while(wp)
 		{
 			bool success = false;
 			uint32_t result = expr(wp->str, &success);
-			Log("result = %d", result);
 			Assert(success, "Invalid expression!");
 			if(result != wp->oldvalue)
 			{
 				wp->oldvalue = result;
 				nemu_state = STOP;
-				Log("nemu_state = STOP ? %s", nemu_state == STOP ? "YES" : "NO");
+				printf("BREAK: \"%s\" changed.\n", wp->str);
 				break;
 			}
 			wp = wp->next;
 		}
 
-		Log("nemu_state = STOP ? %s", nemu_state == STOP ? "YES" : "NO");
 
 		if(nemu_state != RUNNING) {
-			Log("RETURN");
 			return;
 		}
 	}
