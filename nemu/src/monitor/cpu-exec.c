@@ -85,10 +85,12 @@ void cpu_exec(volatile uint32_t n) {
 		{
 			bool success = false;
 			uint32_t result = expr(wp->str, &success);
+			Log("result = %x", result);
 			Assert(success, "Invalid expression!");
 			Log("result = %x", result);
 			if(result != wp->oldvalue)
 			{
+				Log("result = %x", result);
 				wp->oldvalue = result;
 				nemu_state = STOP;
 				Log("nemu_state = STOP ? %s", nemu_state == STOP ? "YES" : "NO");
