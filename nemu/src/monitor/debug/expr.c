@@ -257,7 +257,7 @@ uint32_t eval()
 		}	
 	}
 	int result = popi(pistack);
-	if(!pistack->topStack)
+	if(pistack->topStack)
 	{
 		panic("Stack is not empty!");
 		exit(-1);
