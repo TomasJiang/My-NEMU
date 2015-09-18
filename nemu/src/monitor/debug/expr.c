@@ -238,6 +238,8 @@ uint32_t eval()
 uint32_t regval(char *reg)
 {
 	int i;
+	if(!strcmp(reg, "eip"))
+		return cpu.eip;
 	for(i = 0; i < 8; ++i)
 	{
 		if(!strcmp(reg, regsl[i]))
