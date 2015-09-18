@@ -184,6 +184,7 @@ uint32_t eval()
 	Log("in2post end. len = %d", len);
 	
 	IStack *pistack = (IStack *)malloc(sizeof(IStack));
+	pistack->topStack = 0;
 	uint32_t val = 0;
 	int i;
 	for(i = 0; i < len; ++i)
@@ -312,6 +313,7 @@ Token topt(TStack *ptstack)
 int in2post(Token *postTokens)
 {
 	TStack *ptstack = (TStack *)malloc(sizeof(TStack));
+	ptstack->topStack = 0;
 
 	int k = 0, i = 0;
 	while(i < nr_token)
