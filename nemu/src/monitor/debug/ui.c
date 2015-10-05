@@ -133,7 +133,7 @@ static struct {
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
 	{ "si", "Step NUM instructions", cmd_si },
-	{ "info", "r-List of all registers and their contents\n\t\tw-Print status of all watchpoints", cmd_info },
+	{ "info", "r-List of all registers and their contents\n\tw-Print status of all watchpoints", cmd_info },
 	{ "p", "Print value of expression EXP", cmd_p },
 	{ "x", "Print content of address EXP", cmd_x },
 	{ "w", "Set a watchpoint for an expression", cmd_w },
