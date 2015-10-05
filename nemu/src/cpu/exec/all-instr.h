@@ -13,6 +13,7 @@
 #include "arith/idiv.h"
 #include "arith/div.h"
 
+#include "logic/cmp.h"
 #include "logic/and.h"
 #include "logic/or.h"
 #include "logic/not.h"
