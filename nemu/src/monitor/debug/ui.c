@@ -37,6 +37,10 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_p(char *args) {
+	if(!args) {
+		printf("USAGE: p EXP\n");
+		return 0;
+	}
 	bool success;
 	uint32_t result = expr(args, &success);
 	Assert(success, "Invalid expression\n");
@@ -45,8 +49,7 @@ static int cmd_p(char *args) {
 }
 
 static int cmd_si(char *args) {
-	if(!args)
-	{
+	if(!args) {
 		printf("USAGE: si NUM\n");
 		return 0;
 	}
@@ -56,6 +59,11 @@ static int cmd_si(char *args) {
 }
 
 static int cmd_info(char *args) {
+	if(!args) {
+		printf("USAGE: info r/w\n");
+		return 0;
+	}
+
 	if(strcmp(args, "r") == 0)
 	{
 		printf("eax\t\t0x%08x\t\t%10d\n", reg_l(0), reg_l(0));
