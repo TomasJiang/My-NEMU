@@ -45,8 +45,8 @@ static int cmd_p(char *args) {
 }
 
 static int cmd_si(char *args) {
+	Assert(args, "USAGE: si NUM\n");
 	int n = atoi(args);
-
 	cpu_exec(n);
 	return 0;
 }
