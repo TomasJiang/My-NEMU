@@ -6,6 +6,8 @@
 #include "arith/dec.h"
 #include "arith/inc.h"
 #include "arith/neg.h"
+#include "arith/add.h"
+#include "arith/sub.h"
 #include "arith/imul.h"
 #include "arith/mul.h"
 #include "arith/idiv.h"
