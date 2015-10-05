@@ -133,7 +133,7 @@ static struct {
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
 	{ "si", "Step NUM instructions", cmd_si },
-	{ "info", "r - List of all registers and their contents; w - status of all watchpoints", cmd_info },
+	{ "info", "r-List of all registers and their contents; w-Print status of all watchpoints", cmd_info },
 	{ "p", "Print value of expression EXP", cmd_p },
 	{ "x", "Print content of address EXP", cmd_x },
 	{ "w", "Set a watchpoint for an expression", cmd_w },
@@ -150,7 +150,7 @@ static int cmd_help(char *args) {
 	if(arg == NULL) {
 		/* no argument given */
 		for(i = 0; i < NR_CMD; i ++) {
-			printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
+			printf("%s\t - %s\n", cmd_table[i].name, cmd_table[i].description);
 		}
 	}
 	else {
