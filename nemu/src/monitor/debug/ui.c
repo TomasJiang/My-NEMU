@@ -91,6 +91,11 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
+	if(!args) {
+		printf("USAGE: x EXP\n");
+		return 0;
+	}
+
 	unsigned int i, n, addr;
 	sscanf(args, "%u 0x%x", &n, &addr);
 	for(i = 0; i < n; ++i)
@@ -107,6 +112,11 @@ static int cmd_x(char *args) {
 }
 
 static int cmd_w(char *args) {
+	if(!args) {
+		printf("USAGE: w EXP\n");
+		return 0;
+	}
+
 	WP *wp = new_wp();
 	strcpy(wp->str, args);
 	bool success = false;
@@ -118,6 +128,11 @@ static int cmd_w(char *args) {
 }
 
 static int cmd_d(char *args) {
+	if(!args) {
+		printf("USAGE: d NUM\n");
+		return 0;
+	}
+
 	int n = atoi(args);
 	WP *wp = head_wp();
 	while(wp)
