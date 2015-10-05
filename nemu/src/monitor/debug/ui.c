@@ -132,12 +132,12 @@ static struct {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
-	{ "si", "TODO", cmd_si },
-	{ "info", "TODO", cmd_info },
-	{ "p", "TODO", cmd_p },
-	{ "x", "TODO", cmd_x },
-	{ "w", "TODO", cmd_w },
-	{ "d", "TODO", cmd_d }
+	{ "si", "Step NUM instructions", cmd_si },
+	{ "info", "r - List of all registers and their contents; w - status of all watchpoints", cmd_info },
+	{ "p", "Print value of expression EXP", cmd_p },
+	{ "x", "Print content of address EXP", cmd_x },
+	{ "w", "Set a watchpoint for an expression", cmd_w },
+	{ "d", "Delete a specified watchpoint", cmd_d }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
