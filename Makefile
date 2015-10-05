@@ -70,3 +70,6 @@ test: $(nemu_BIN) $(testcase_BIN) entry
 
 submit: clean
 	cd .. && tar cvj $(shell pwd | grep -o '[^/]*$$') > $(STU_ID).tar.bz2
+
+count: 
+	find ./nemu -regextype "posix-egrep" -regex ".*\.(h|c)" | xargs grep -v ^$$ | wc -l

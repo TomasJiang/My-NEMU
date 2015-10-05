@@ -85,8 +85,9 @@ static int cmd_info(char *args) {
 			wp = wp->next;
 		}
 	}
-	else
-		Assert(0, "Error args");
+	else {
+		printf("USAGE: info r/w\n");
+	}
 	return 0;
 }
 
@@ -135,10 +136,8 @@ static int cmd_d(char *args) {
 
 	int n = atoi(args);
 	WP *wp = head_wp();
-	while(wp)
-	{
-		if(wp->NO == n)
-		{
+	while(wp) {
+		if(wp->NO == n) {
 			printf("Delete watchpoint %d: %s\n", wp->NO, wp->str);
 			free_wp(wp);
 			return 0;
