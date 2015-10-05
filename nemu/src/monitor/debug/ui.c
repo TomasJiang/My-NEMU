@@ -150,7 +150,7 @@ static int cmd_help(char *args) {
 	if(arg == NULL) {
 		/* no argument given */
 		for(i = 0; i < NR_CMD; i ++) {
-			printf("%s\t - %s\n", cmd_table[i].name, cmd_table[i].description);
+			printf("%s\t- %s\n", cmd_table[i].name, cmd_table[i].description);
 		}
 	}
 	else {
