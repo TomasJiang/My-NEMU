@@ -31,6 +31,21 @@ typedef struct {
 		};
 	};
 
+	struct
+	{
+		unsigned CF: 1;
+		unsigned padding1: 1;
+		unsigned PF: 1;
+		unsigned padding2: 3;
+		unsigned ZF: 1;
+		unsigned SF: 1;
+		unsigned padding3: 1;
+		unsigned IF: 1;
+		unsigned DF: 1;
+		unsigned OF: 1;
+		unsigned padding: 20;
+	} eflags;
+
 	swaddr_t eip;
 
 } CPU_state;

@@ -85,6 +85,7 @@ void restart() {
 	load_entry();
 
 	/* Set the initial instruction pointer. */
+	cpu.eflags.padding1 = 1;
 	cpu.eip = ENTRY_START;
 
 	/* Initialize DRAM. */
