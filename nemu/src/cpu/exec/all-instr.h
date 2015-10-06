@@ -18,7 +18,6 @@
 #include "logic/or.h"
 #include "logic/not.h"
 #include "logic/xor.h"
-#include "logic/je.h"
 #include "logic/sar.h"
 #include "logic/shl.h"
 #include "logic/shr.h"
@@ -27,6 +26,7 @@
 
 #include "control/push.h"
 #include "control/call.h"
+#include "control/je.h"
 
 #include "string/rep.h"
 
