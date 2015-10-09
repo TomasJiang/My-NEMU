@@ -126,7 +126,10 @@ static int cmd_w(char *args) {
 	strcpy(wp->str, args);
 	bool success = false;
 	uint32_t result = expr(args, &success);
-	Assert(success, "Invalid expression!");
+	if(!success) {
+		printf("Invalid expression.");
+		return 0;
+	}
 	wp->oldvalue = result;
 	printf("Add watchpoint %d: %s\n", wp->NO, wp->str);
 	return 0;
