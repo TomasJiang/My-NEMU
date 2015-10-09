@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <elf.h>
 
+uint32_t find_identity(char *id, bool *success);
 char *exec_file = NULL;
 
 static char *strtab = NULL;
 static Elf32_Sym *symtab = NULL;
-static int nr_symtab_entry;
+int nr_symtab_entry;
 
 void load_elf_tables(int argc, char *argv[]) {
 	int ret;
@@ -80,10 +81,18 @@ void load_elf_tables(int argc, char *argv[]) {
 
 	assert(strtab != NULL && symtab != NULL);
 
-	for(i = 0; i < nr_symtab_entry; ++i) {
-		printf("st_name:\t0x%08x\n", symtab[i].st_name);
-	}
-
 	fclose(fp);
 }
 
+uint32_t find_identity(char *id, bool *success) {
+	int i;
+	for(i = 0; i < nr_symtab_entry; ++i) {
+		if(symtab[i].st_info == STT_OBJECT &&
+				!strcmp(strtab + symtab[i].st_name, id)) {
+			*success = true;
+			return symtab[i].st_name;
+		}
+	}
+	*success = false;
+	return 0;
+}

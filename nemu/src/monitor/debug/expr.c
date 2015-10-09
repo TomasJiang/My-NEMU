@@ -29,9 +29,10 @@ int in2post(Token *postTokens);
 uint32_t eval();
 uint32_t regval(char *reg);
 void eval_biop(IStack *pistack, int op);
+uint32_t find_identity(char *id, bool *success);
 
 enum {
-	NOTYPE = 256, REG, HEX, INT, DEREF, EQ, NEQ, AND, OR, NOT
+	NOTYPE = 256, REG, HEX, INT, DEREF, EQ, NEQ, AND, OR, NOT, ID
 };
 
 static struct rule {
@@ -52,7 +53,8 @@ static struct rule {
 	{"!=", NEQ},					// not equal
 	{"&&", AND},					// and
 	{"\\|\\|", OR},					// or
-	{"!",  NOT}						// not
+	{"!",  NOT},					// not
+	{"[_a-zA-Z]+[_a-zA-Z0-9]*", ID} // identity
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -101,6 +103,7 @@ static bool make_token(char *e) {
 					case REG:
 					case HEX:
 					case INT:
+					case ID:
 						sprintf(tokens[nr_token].str, "%.*s", substr_len, substr_start);
 					case '+':
 					case '-':
@@ -199,6 +202,17 @@ uint32_t eval()
 				sscanf(post[i].str, "%d", &val);
 				pushi(pistack, val);
 				break;
+			case ID: {
+					bool success = false;
+					Log("eval %s", post[i].str);
+					val = find_identity(post[i].str, &success);
+					if(!success) {
+						printf("No such dentity!\n");
+						return -1;
+					}
+					pushi(pistack, val);
+					break;
+				}
 			case DEREF:
 				val = swaddr_read(popi(pistack), 4);
 				pushi(pistack, val);
@@ -234,20 +248,13 @@ uint32_t regval(char *reg)
 	int i;
 	if(!strcmp(reg, "eip"))
 		return cpu.eip;
-	for(i = 0; i < 8; ++i)
-	{
+	for(i = 0; i < 8; ++i) {
 		if(!strcmp(reg, regsl[i]))
-		{
 			return reg_l(i);
-		}
 		if(!strcmp(reg, regsw[i]))
-		{
 			return reg_w(i);
-		}
 		if(!strcmp(reg, regsb[i]))
-		{
 			return reg_b(i);
-		}
 	}
 
 	panic("No such register!");
@@ -258,8 +265,7 @@ void eval_biop(IStack *pistack, int op)
 {
 	uint32_t rval = popi(pistack);
 	uint32_t lval = popi(pistack);
-	switch(op)
-	{
+	switch(op) {
 		case '*':
 			pushi(pistack, lval * rval);
 			break;
@@ -315,7 +321,7 @@ int in2post(Token *postTokens)
 	while(i < nr_token)
 	{
 		if(tokens[i].type == REG ||	tokens[i].type == HEX || 
-				tokens[i].type == INT)
+				tokens[i].type == INT || tokens[i].type == ID)
 		{
 			postTokens[k++] = tokens[i++];
 		}
