@@ -7,12 +7,15 @@ void print_operand(Operand *op) {
 		case OP_TYPE_REG:
 			Log("type: OP_TYPE_REG");
 			Log("reg = 0x%x", op->reg);
+			break;
 		case OP_TYPE_MEM:
 			Log("type: OP_TYPE_MEM");
 			Log("reg = 0x%x", op->addr);
+			break;
 		case OP_TYPE_IMM:
 			Log("type: OP_TYPE_IMM");
 			Log("reg = 0x%x", op->imm);
+			break;
 	}
 	Log("size = %u", op->size);
 	Log("val = 0x%x", op->val);
