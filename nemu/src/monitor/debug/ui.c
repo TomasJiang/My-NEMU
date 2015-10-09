@@ -76,7 +76,7 @@ static int cmd_info(char *args) {
 		printf("  esi\t\t0x%08x\t\t%10d\n", reg_l(6), reg_l(6));
 		printf("  edi\t\t0x%08x\t\t%10d\n", reg_l(7), reg_l(7));
 		printf("  eip\t\t0x%08x\t\t%10d\n", cpu.eip, cpu.eip);
-		printf("  eflags\t\tCF-%u PF-%u ZF-%u SF-%u IF-%u DF-%u OF-%u\n",
+		printf("  eflags\tCF-%u PF-%u ZF-%u SF-%u IF-%u DF-%u OF-%u\n",
 				cpu.eflags.CF, cpu.eflags.PF, cpu.eflags.ZF,
 				cpu.eflags.SF, cpu.eflags.IF, cpu.eflags.DF, cpu.eflags.OF);
 	}
