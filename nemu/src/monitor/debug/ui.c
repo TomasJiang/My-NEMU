@@ -66,17 +66,17 @@ static int cmd_info(char *args) {
 
 	if(strcmp(args, "r") == 0)
 	{
-		printf("REG\t\tHEX \t\t\tDEC \n");
-		printf("eax\t\t0x%08x\t\t%10d\n", reg_l(0), reg_l(0));
-		printf("ecx\t\t0x%08x\t\t%10d\n", reg_l(1), reg_l(1));
-		printf("edx\t\t0x%08x\t\t%10d\n", reg_l(2), reg_l(2));
-		printf("ebx\t\t0x%08x\t\t%10d\n", reg_l(3), reg_l(3));
-		printf("esp\t\t0x%08x\t\t%10d\n", reg_l(4), reg_l(4));
-		printf("ebp\t\t0x%08x\t\t%10d\n", reg_l(5), reg_l(5));
-		printf("esi\t\t0x%08x\t\t%10d\n", reg_l(6), reg_l(6));
-		printf("edi\t\t0x%08x\t\t%10d\n", reg_l(7), reg_l(7));
-		printf("eip\t\t0x%08x\t\t%10d\n", cpu.eip, cpu.eip);
-		printf("eflags\t\tCF-%u PF-%u ZF-%u SF-%u IF-%u DF-%u OF-%u\n",
+		printf("  REG\t\tHEX \t\t\tDEC \n");
+		printf("  eax\t\t0x%08x\t\t%10d\n", reg_l(0), reg_l(0));
+		printf("  ecx\t\t0x%08x\t\t%10d\n", reg_l(1), reg_l(1));
+		printf("  edx\t\t0x%08x\t\t%10d\n", reg_l(2), reg_l(2));
+		printf("  ebx\t\t0x%08x\t\t%10d\n", reg_l(3), reg_l(3));
+		printf("  esp\t\t0x%08x\t\t%10d\n", reg_l(4), reg_l(4));
+		printf("  ebp\t\t0x%08x\t\t%10d\n", reg_l(5), reg_l(5));
+		printf("  esi\t\t0x%08x\t\t%10d\n", reg_l(6), reg_l(6));
+		printf("  edi\t\t0x%08x\t\t%10d\n", reg_l(7), reg_l(7));
+		printf("  eip\t\t0x%08x\t\t%10d\n", cpu.eip, cpu.eip);
+		printf("  eflags\t\tCF-%u PF-%u ZF-%u SF-%u IF-%u DF-%u OF-%u\n",
 				cpu.eflags.CF, cpu.eflags.PF, cpu.eflags.ZF,
 				cpu.eflags.SF, cpu.eflags.IF, cpu.eflags.DF, cpu.eflags.OF);
 	}
