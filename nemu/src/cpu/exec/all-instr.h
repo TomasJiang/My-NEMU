@@ -27,6 +27,7 @@
 #include "control/push.h"
 #include "control/call.h"
 #include "control/jmp.h"
+#include "control/jbe.h"
 #include "control/je.h"
 
 #include "string/rep.h"
