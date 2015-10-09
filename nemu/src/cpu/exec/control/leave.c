@@ -1,4 +1,4 @@
-#include "cpu/helper.h"
+#include "cpu/exec/helper.h"
 
 make_helper(leave) {
 	// leave:
@@ -11,5 +11,6 @@ make_helper(leave) {
 	cpu.esp = cpu.ebp;
 	cpu.ebp = cpu.esp;
 	cpu.esp += 4;
+	print_asm("leave");
 	return 1;
 }
