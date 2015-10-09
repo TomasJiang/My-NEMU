@@ -94,7 +94,7 @@ make_group(group7,
 /* TODO: Add more instructions!!! */
 
 helper_fun opcode_table [256] = {
-/* 0x00 */	add_r2rm_b, inv, add_rm2r_b, add_rm2r_v,
+/* 0x00 */	add_r2rm_b, add_r2rm_v, add_rm2r_b, add_rm2r_v,
 /* 0x04 */	add_i2a_b, add_i2a_v, inv, inv,
 /* 0x08 */	inv, inv, inv, inv,
 /* 0x0c */	inv, inv, inv, _2byte_esc,
@@ -206,7 +206,7 @@ helper_fun _2byte_opcode_table [256] = {
 /* 0xa8 */	inv, inv, inv, inv,
 /* 0xac */	inv, inv, inv, inv,
 /* 0xb0 */	inv, inv, inv, inv, 
-/* 0xb4 */	inv, inv, inv, inv, 
+/* 0xb4 */	inv, inv, movzx_rm2r_b, movzx_rm2r_v, 
 /* 0xb8 */	inv, inv, inv, inv,
 /* 0xbc */	inv, inv, inv, inv,
 /* 0xc0 */	inv, inv, inv, inv,
