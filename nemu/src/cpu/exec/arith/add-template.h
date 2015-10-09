@@ -1,10 +1,15 @@
+#include "atlas.h"
 #include "cpu/exec/template-start.h"
 
 #define instr add
 
 static void do_execute() {
+	printf("op_dest\n");
+	print_operand(op_dest);
+	printf("op_src\n");
+	print_operand(op_src);
 	DATA_TYPE result = op_dest->val + op_src->val;
-	OPERAND_W(op_src, result);
+	OPERAND_W(op_dest, result);
 
 	// OF, SF, ZF, CF, and PF
 	unsigned df = 0x1 & (op_dest->val >> 31);
