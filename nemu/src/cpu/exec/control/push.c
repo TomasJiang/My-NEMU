@@ -14,18 +14,9 @@
 
 /* for instruction encoding overloading */
 
-make_helper(push_m_w) {
-	cpu.esp -= 2;
-	swaddr_write(cpu.esp, 2, instr_fetch(eip + 1, 2));
-	return 3;
-}
-
-make_helper(push_m_l) {
-	cpu.esp -= 2;
-	swaddr_write(cpu.esp, 4, instr_fetch(eip + 1, 4));
-	return 5;
-}
+	// ESP = ESP - 4;
+	// (SS:ESP) = (SOURCE); (* dword assignment *)
 
 make_helper_v(push_i)
 make_helper_v(push_r)
-make_helper_v(push_m)
+make_helper_v(push_rm)
