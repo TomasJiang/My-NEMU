@@ -5,16 +5,16 @@ void print_operand(Operand *op) {
 	Log("ADD PRINTOP:\n");
 	switch(op->type) {
 		case OP_TYPE_REG:
-			printf("type: OP_TYPE_REG\n");
-			printf("reg = 0x%x\n", op->reg);
+			Log("type: OP_TYPE_REG\n");
+			Log("reg = 0x%x\n", op->reg);
 		case OP_TYPE_MEM:
-			printf("type: OP_TYPE_MEM\n");
-			printf("reg = 0x%x\n", op->addr);
+			Log("type: OP_TYPE_MEM\n");
+			Log("reg = 0x%x\n", op->addr);
 		case OP_TYPE_IMM:
-			printf("type: OP_TYPE_IMM\n");
-			printf("reg = 0x%x\n", op->imm);
+			Log("type: OP_TYPE_IMM\n");
+			Log("reg = 0x%x\n", op->imm);
 	}
-	printf("size = %u", op->size);
-	printf("val = 0x%x\n", op->val);
+	Log("size = %u", op->size);
+	Log("val = 0x%x\n", op->val);
 	return;
 }
