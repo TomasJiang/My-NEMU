@@ -85,7 +85,7 @@ void cpu_exec(volatile uint32_t n) {
 				wp->oldvalue = result;
 				nemu_state = STOP;
 				printf("BREAK: \"%s\" changed.\n", wp->str);
-				printf("$eip = %0x08x\n", cpu.eip);
+				printf("$eip = 0x%08x\n", cpu.eip);
 				break;
 			}
 			wp = wp->next;
