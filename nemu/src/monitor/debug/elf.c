@@ -88,7 +88,7 @@ uint32_t find_identity(char *id, bool *success) {
 	int i;
 	printf("STT_OBJECT = %d\n", STT_OBJECT);
 	for(i = 0; i < nr_symtab_entry; ++i) {
-		printf("%d: info - %d", i, symtab[i].st_info);
+		printf("%d: info - %d\n", i, symtab[i].st_info);
 		if(symtab[i].st_info == STT_OBJECT) {
 			printf("%s\n", strtab + symtab[i].st_name);
 			if(!strcmp(strtab + symtab[i].st_name, id)) {
