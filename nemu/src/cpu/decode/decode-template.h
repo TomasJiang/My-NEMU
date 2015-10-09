@@ -6,6 +6,7 @@
 #define decode_rm_internal concat3(decode_rm_, SUFFIX, _internal)
 #define decode_i concat(decode_i_, SUFFIX)
 #define decode_a concat(decode_a_, SUFFIX)
+#define decode_m concat(decode_m_, SUFFIX)
 #define decode_r2rm concat(decode_r2rm_, SUFFIX)
 
 /* Ib, Iv */
