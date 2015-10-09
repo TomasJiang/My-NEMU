@@ -204,7 +204,6 @@ uint32_t eval()
 				break;
 			case ID: {
 					bool success = false;
-					Log("eval %s", post[i].str);
 					val = find_identity(post[i].str, &success);
 					if(!success) {
 						printf("No such dentity!\n");

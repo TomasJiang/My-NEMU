@@ -87,10 +87,12 @@ void load_elf_tables(int argc, char *argv[]) {
 uint32_t find_identity(char *id, bool *success) {
 	int i;
 	for(i = 0; i < nr_symtab_entry; ++i) {
-		if(symtab[i].st_info == STT_OBJECT &&
-				!strcmp(strtab + symtab[i].st_name, id)) {
-			*success = true;
-			return symtab[i].st_name;
+		if(symtab[i].st_info == STT_OBJECT) {
+			printf("%s\n", strtab + symtab[i].st_name);
+			if(!strcmp(strtab + symtab[i].st_name, id)) {
+				*success = true;
+				return symtab[i].st_name;
+			}
 		}
 	}
 	*success = false;
