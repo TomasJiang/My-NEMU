@@ -80,6 +80,10 @@ void load_elf_tables(int argc, char *argv[]) {
 
 	assert(strtab != NULL && symtab != NULL);
 
+	for(i = 0; i < nr_symtab_entry; ++i) {
+		printf("st_name:\t0x%08x\n", symtab[i].st_name);
+	}
+
 	fclose(fp);
 }
 
