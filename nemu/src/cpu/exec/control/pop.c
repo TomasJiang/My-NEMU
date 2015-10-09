@@ -1,7 +1,13 @@
-#include "cpu/helper.h"
+#include "cpu/exec/helper.h"
 
-make_helper(pop) {
+#define DATA_BYTE 2
+#include "pop-template.h"
+#undef DATA_BYTE
 
-	panic("implement");
-	return 1;
-}
+#define DATA_BYTE 4
+#include "pop-template.h"
+#undef DATA_BYTE
+
+/* for instruction encoding overloading */
+
+make_helper_v(pop_r)
