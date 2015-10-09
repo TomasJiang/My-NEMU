@@ -9,7 +9,7 @@ make_helper(leave) {
 	// DEST = (SS:ESP); (* copy a dword *)
 	// ESP = ESP + 4;
 	cpu.esp = cpu.ebp;
-	cpu.ebp = cpu.esp;
+	cpu.ebp = swaddr_read(cpu.esp, 4);
 	cpu.esp += 4;
 	print_asm("leave");
 	return 1;
