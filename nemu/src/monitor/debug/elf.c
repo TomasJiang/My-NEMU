@@ -3,6 +3,8 @@
 #include <elf.h>
 
 uint32_t find_identity(char *id, bool *success);
+bool get_function_name(char *name, uint32_t addr);
+
 char *exec_file = NULL;
 
 static char *strtab = NULL;
@@ -96,4 +98,18 @@ uint32_t find_identity(char *id, bool *success) {
 	}
 	*success = false;
 	return 0;
+}
+
+bool get_function_name(char *name, uint32_t addr) {
+	int i;
+	for(i = 0; i < nr_symtab_entry; ++i) {
+		if(ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC) {
+			if(addr > symtab[i].st_value &&
+			   addr < symtab[i].st_value + symtab[i].st_size) {
+				strcpy(name, strtab + symtab[i].st_name);
+				return true;
+			}
+		}
+	}
+	return false;
 }

@@ -8,6 +8,7 @@
 #include <readline/history.h>
 
 void cpu_exec(uint32_t);
+bool get_function_name(char *name, uint32_t addr);
 
 /* We use the ``readline'' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
@@ -159,8 +160,14 @@ static int cmd_bt(char *args) {
 	swaddr_t ebp = cpu.ebp;
 	swaddr_t ret_addr = swaddr_read(ebp + 4, 4) + 1;
 	int count = 0;
-	while(ebp) {
-		printf("#%d  0x%08x\tret_addr: 0x%08x\n", count, ebp, ret_addr);
+	char func_name[128];
+	while(swaddr_read(ebp, 4)) {
+		if(!get_function_name(func_name, ret_addr)) {
+			printf("no such function.\n");
+			return 0;
+		}
+		printf("#%d  0x%08x\tret_addr: 0x%08x in %s\n",
+				count, ebp, ret_addr, func_name);
 		ebp = swaddr_read(ebp, 4);
 		ret_addr = swaddr_read(ebp + 4, 4) + 1;
 		++count;
