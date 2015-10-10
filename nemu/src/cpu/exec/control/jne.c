@@ -5,8 +5,10 @@ make_helper(jne_rel8) {
 	temp = temp << 24 >> 24;
 	if(!cpu.eflags.ZF) {
 		cpu.eip += temp;
+		print_asm("jne 0x%x", cpu.eip + 2);
 	}
-	print_asm("jne 0x%x", cpu.eip + temp + 2);
+	else
+		print_asm("jne 0x%x", cpu.eip + temp + 2);
 
 	return 2;
 }
