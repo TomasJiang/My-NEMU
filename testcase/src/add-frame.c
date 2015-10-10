@@ -6,7 +6,8 @@ int add()
 {
 	if(!b)
 		return a;
-	return 1 + add(a, b - 1);
+	b -= 1;
+	return 1 + add();
 }
 
 int main()
