@@ -5,6 +5,6 @@ make_helper(je_rel8) {
 	if(cpu.eflags.ZF) {
 		cpu.eip = temp;
 	}
-	print_asm("je 0x%x", temp);
+	print_asm("je 0x%x", temp + 2);
 	return 2;
 }
