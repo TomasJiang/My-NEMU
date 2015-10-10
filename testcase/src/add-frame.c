@@ -1,6 +1,8 @@
 #include "trap.h"
 
-int add(int a, int b)
+int a, b;
+
+int add()
 {
 	if(!b)
 		return a;
@@ -9,9 +11,8 @@ int add(int a, int b)
 
 int main()
 {
-	add(2, 3);
-	add(3, 4);
-	add(4, 5);
+	a = 4, b = 5;
+	add();
 
 	HIT_GOOD_TRAP;
 
