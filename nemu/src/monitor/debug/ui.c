@@ -170,9 +170,9 @@ static int cmd_bt(char *args) {
 			);
 
 	int count = 1;
+	ebp = swaddr_read(ebp, 4);
+	swaddr_t ret_addr = swaddr_read(ebp + 4, 4) + 1;
 	while(swaddr_read(ebp, 4)) {
-		ebp = swaddr_read(ebp, 4);
-		swaddr_t ret_addr = swaddr_read(ebp + 4, 4) + 1;
 		if(!get_function_name(func_name, ret_addr)) {
 			printf("no such function.\n");
 			return 0;
@@ -186,6 +186,8 @@ static int cmd_bt(char *args) {
 				swaddr_read(ebp + 24, 4)
 				);
 		++count;
+		ebp = swaddr_read(ebp, 4);
+		ret_addr = swaddr_read(ebp + 4, 4) + 1;
 	}
 	return 0;
 }
