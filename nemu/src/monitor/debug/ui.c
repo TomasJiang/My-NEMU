@@ -186,6 +186,7 @@ static int cmd_bt(char *args) {
 				swaddr_read(ebp + 20, 4),
 				swaddr_read(ebp + 24, 4)
 				);
+
 	}
 	return 0;
 }
