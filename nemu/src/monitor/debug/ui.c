@@ -170,7 +170,7 @@ static int cmd_bt(char *args) {
 			printf("no such function.\n");
 			return 0;
 		}
-		printf("#%-3d0x%08x in %s\n (%d, %d, %d, %d, %d...)",
+		printf("#%-3d0x%08x in %s (%d, %d, %d, %d, %d...)\n",
 				count, ret_addr, func_name,
 				swaddr_read(ebp + 8, 4),
 				swaddr_read(ebp + 12, 4),
