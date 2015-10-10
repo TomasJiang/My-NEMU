@@ -5,7 +5,11 @@
 static void do_execute () {
 	// ESP = ESP - 4;
 	// (SS:ESP) = (SOURCE); (* dword assignment *)
-	cpu.esp -= DATA_BYTE;
+#if DATA_BYTE == 2
+	cpu.esp -= 2;
+#else
+	cpu.esp -= 4;
+#endif
 	swaddr_write(cpu.esp, DATA_BYTE, op_src->val);
 
 	print_asm_template1();
