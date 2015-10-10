@@ -1,19 +1,15 @@
 #include "trap.h"
 
-int a, b;
-
-int add()
+int add(int a, int b)
 {
 	if(!b)
 		return a;
-	b -= 1;
-	return 1 + add();
+	return 1 + add(a, b - 1);
 }
 
 int main()
 {
-	a = 4, b = 5;
-	add();
+	add(4, 5);
 
 	return 0;
 }
