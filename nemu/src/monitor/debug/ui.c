@@ -161,7 +161,7 @@ static int cmd_bt(char *args) {
 	swaddr_t ret_addr = swaddr_read(ebp + 4, 4) + 1;
 	char func_name[128];
 	get_function_name(func_name, cpu.eip);
-	printf("#0\t%s\n",
+	printf("#0  %s\n",
 			func_name);
 
 	int count = 1;
@@ -170,7 +170,7 @@ static int cmd_bt(char *args) {
 			printf("no such function.\n");
 			return 0;
 		}
-		printf("#%d\tret_addr: 0x%08x in %s\n",
+		printf("#%3d0x%08x in %s\n",
 				count, ret_addr, func_name);
 		ebp = swaddr_read(ebp, 4);
 		ret_addr = swaddr_read(ebp + 4, 4) + 1;
