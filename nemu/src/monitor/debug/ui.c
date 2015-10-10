@@ -157,10 +157,12 @@ static int cmd_d(char *args) {
 
 static int cmd_bt(char *args) {
 	swaddr_t ebp = cpu.ebp;
+	swaddr_t ret_addr = swaddr_read(ebp + 4, 4);
 	int count = 0;
 	while(ebp) {
-		printf("#%d  0x%08x\n", count, ebp);
+		printf("#%d  0x%08x\tret_addr: 0x%08x", count, ebp, ret_addr);
 		ebp = swaddr_read(ebp, 4);
+		ret_addr = swaddr_read(ebp + 4, 4);
 		++count;
 	}
 	return 0;
