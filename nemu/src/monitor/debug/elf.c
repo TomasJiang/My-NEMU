@@ -104,7 +104,7 @@ bool get_function_name(char *name, uint32_t addr) {
 	int i;
 	for(i = 0; i < nr_symtab_entry; ++i) {
 		if(ELF32_ST_TYPE(symtab[i].st_info) == STT_FUNC) {
-			printf("%s: %x - %x", strtab+symtab[i].st_name,
+			printf("%s: %x - %x\n", strtab+symtab[i].st_name,
 					symtab[i].st_value, symtab[i].st_value + symtab[i].st_size);
 			if(addr > symtab[i].st_value &&
 			   addr < symtab[i].st_value + symtab[i].st_size) {
