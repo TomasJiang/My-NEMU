@@ -32,8 +32,9 @@
 #include "control/leave.h"
 #include "control/ret.h"
 #include "control/jmp.h"
-#include "control/jbe.h"
 #include "control/je.h"
+#include "control/jne.h"
+#include "control/jbe.h"
 
 #include "string/rep.h"
 
