@@ -10,11 +10,11 @@ void print_operand(Operand *op) {
 			break;
 		case OP_TYPE_MEM:
 			Log("type: OP_TYPE_MEM");
-			Log("reg = 0x%x", op->addr);
+			Log("addr = 0x%x", op->addr);
 			break;
 		case OP_TYPE_IMM:
 			Log("type: OP_TYPE_IMM");
-			Log("reg = 0x%x", op->imm);
+			Log("imm = 0x%x", op->imm);
 			break;
 	}
 	Log("size = %u", op->size);
