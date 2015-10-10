@@ -87,10 +87,9 @@ void load_elf_tables(int argc, char *argv[]) {
 uint32_t find_identity(char *id, bool *success) {
 	int i;
 	printf("STT_OBJECT = %d\n", STT_OBJECT);
-	printf("STT_LOCAL  = %d\n", STB_LOCAL);
-	printf("STT_GLOBAL = %d\n", STB_GLOBAL);
 	for(i = 0; i < nr_symtab_entry; ++i) {
-		printf("%d: info - %d\n", i, symtab[i].st_info);
+		ELF32_ST_TYPE(symtab[i].st_info);
+		printf("info %d: %d", i, symtab[i].st_info);
 		printf("%s\n", strtab + symtab[i].st_name);
 		if(symtab[i].st_info == STT_OBJECT) {
 			printf("%s\n", strtab + symtab[i].st_name);
