@@ -176,7 +176,6 @@ static int cmd_bt(char *args) {
 		ret_addr = swaddr_read(ebp + 4, 4) + 1;
 		ebp = swaddr_read(ebp, 4);
 		if(!get_function_name(func_name, ret_addr)) {
-			printf("no such function.\n");
 			return 0;
 		}
 		printf("#%-3d0x%08x in %s (0x%x, 0x%x, 0x%x, 0x%x, 0x%x...)\n",
