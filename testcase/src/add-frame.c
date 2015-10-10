@@ -9,7 +9,8 @@ int add(int a, int b)
 
 int main()
 {
-	add(4, 1000);
+	int a = 4, b = 1000;
+	add(a, b);
 
 	return 0;
 }
