@@ -2,7 +2,6 @@
 
 int add(int a, int b)
 {
-	set_bp();
 	if(!b)
 		return a;
 	return 1 + add(a, b - 1);
