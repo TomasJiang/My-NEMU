@@ -15,7 +15,5 @@ int main()
 	a = 4, b = 5;
 	add();
 
-	HIT_GOOD_TRAP;
-
 	return 0;
 }
