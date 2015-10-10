@@ -170,8 +170,14 @@ static int cmd_bt(char *args) {
 			printf("no such function.\n");
 			return 0;
 		}
-		printf("#%-3d0x%08x in %s\n",
-				count, ret_addr, func_name);
+		printf("#%-3d0x%08x in %s\n (%d, %d, %d, %d, %d...)",
+				count, ret_addr, func_name,
+				swaddr_read(ebp + 8, 4),
+				swaddr_read(ebp + 12, 4),
+				swaddr_read(ebp + 16, 4),
+				swaddr_read(ebp + 20, 4),
+				swaddr_read(ebp + 24, 4)
+				);
 		ebp = swaddr_read(ebp, 4);
 		ret_addr = swaddr_read(ebp + 4, 4) + 1;
 		++count;
