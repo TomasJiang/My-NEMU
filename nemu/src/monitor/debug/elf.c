@@ -92,7 +92,7 @@ uint32_t find_identity(char *id, bool *success) {
 			printf("%s\n", strtab + symtab[i].st_name);
 			if(!strcmp(strtab + symtab[i].st_name, id)) {
 				*success = true;
-				return symtab[i].st_name;
+				return symtab[i].st_value;
 			}
 		}
 	}
