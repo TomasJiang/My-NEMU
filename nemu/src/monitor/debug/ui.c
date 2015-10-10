@@ -155,6 +155,17 @@ static int cmd_d(char *args) {
 	return 0;
 }
 
+static int cmd_bt(char *args) {
+	swaddr_t ebp = cpu.ebp;
+	int count = 0;
+	while(ebp) {
+		printf("#%d  0x%08x\n", count, ebp);
+		ebp = swaddr_read(ebp, 4);
+		++count;
+	}
+	return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -170,7 +181,8 @@ static struct {
 	{ "p", "Print value of expression EXP", cmd_p },
 	{ "x", "Examine memory", cmd_x },
 	{ "w", "Set a watchpoint for an expression", cmd_w },
-	{ "d", "Delete a specified watchpoint", cmd_d }
+	{ "d", "Delete a specified watchpoint", cmd_d },
+	{ "bt", "Print frams", cmd_bt }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
