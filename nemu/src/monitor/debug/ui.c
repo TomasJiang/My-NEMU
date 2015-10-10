@@ -161,8 +161,14 @@ static int cmd_bt(char *args) {
 	swaddr_t ret_addr = swaddr_read(ebp + 4, 4) + 1;
 	char func_name[128];
 	get_function_name(func_name, cpu.eip);
-	printf("#0  %s\n",
-			func_name);
+	printf("#0  %s (0x%x, 0x%x, 0x%x, 0x%x, 0x%x...)\n",
+			func_name,
+			swaddr_read(ebp + 8, 4),
+			swaddr_read(ebp + 12, 4),
+			swaddr_read(ebp + 16, 4),
+			swaddr_read(ebp + 20, 4),
+			swaddr_read(ebp + 24, 4)
+			);
 
 	int count = 1;
 	while(swaddr_read(ebp, 4)) {
