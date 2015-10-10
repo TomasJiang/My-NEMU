@@ -88,10 +88,7 @@ uint32_t find_identity(char *id, bool *success) {
 	int i;
 	printf("STT_OBJECT = %d\n", STT_OBJECT);
 	for(i = 0; i < nr_symtab_entry; ++i) {
-		printf("%d - type: %d\t", i, ELF32_ST_TYPE(symtab[i].st_info));
-		printf("info: %d\t", symtab[i].st_info);
-		printf("%s\n", strtab + symtab[i].st_name);
-		if(symtab[i].st_info == STT_OBJECT) {
+		if(ELF32_ST_TYPE(symtab[i].st_info) == STT_OBJECT) {
 			printf("%s\n", strtab + symtab[i].st_name);
 			if(!strcmp(strtab + symtab[i].st_name, id)) {
 				*success = true;
