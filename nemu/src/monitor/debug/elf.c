@@ -16,7 +16,7 @@ void load_elf_tables(int argc, char *argv[]) {
 	Assert(argc == 2, "run NEMU with format 'nemu [program]'");
 	exec_file = argv[1];
 
-	printf("%s", exec_file);
+	printf("\nDEBUG: %s", exec_file);
 	FILE *fp = fopen(exec_file, "rb");
 	Assert(fp, "Can not open '%s'", exec_file);
 
