@@ -9,7 +9,8 @@ int add(int a, int b)
 
 int main()
 {
-	int a = 256, b = 256;
+    int a = 3, b = 2;
+	//int a = 256, b = 256;
 	add(a, b);
 
 	return 0;
