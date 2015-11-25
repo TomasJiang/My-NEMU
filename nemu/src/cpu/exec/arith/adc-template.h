@@ -5,7 +5,7 @@
 static void do_execute () {
 
 	DATA_TYPE result = op_dest->val + op_src->val + cpu.eflags.CF;
-	OPERAND_W(op_src, result);
+	OPERAND_W(op_dest, result);
 
 	// OF, SF, ZF, AF, CF and PF
 	unsigned df = 0x1 & (op_dest->val >> 31);
