@@ -11,7 +11,11 @@ int main()
 {
     int a = 3, b = 2;
 	//int a = 256, b = 256;
-	add(a, b);
+	int c = add(a, b);
+
+    nemu_assert(c == a+b);
+    HIT_GOOD_TRAP;
+
 
 	return 0;
 }
