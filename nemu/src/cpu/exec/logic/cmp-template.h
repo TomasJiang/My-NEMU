@@ -10,6 +10,8 @@ static void do_execute () {
 
     // cmp 0x80000000, 0
     // Wrong CF = 1, PF = 1, SF = 1
+    // cmp 0, 1
+    // Wrong OF = 1
 
 	// OF, SF, ZF, CF, and PF
 	unsigned df = 0x1 & (op_dest->val >> 31);
@@ -17,7 +19,7 @@ static void do_execute () {
     unsigned srcf = 0x1 & (op_src->val >> 31);
 	unsigned rf = 0x1 & (result >> 31);
 
-	cpu.eflags.OF = (df && sf && !rf) || (!df && !sf && rf) || !(sf ^ srcf);
+	cpu.eflags.OF = (df && sf && !rf) || (!df && !sf && rf) || (!(sf ^ srcf) && op_src->val);
 	cpu.eflags.SF = rf;
 	cpu.eflags.ZF = (result == 0);
 	cpu.eflags.CF = 0x1 & (((df && sf) || ((df || sf) && !rf)) ^ 0x1);
