@@ -20,7 +20,7 @@ make_helper(jle_rel_w) {
 		cpu.eip = temp;
 	}
 	print_asm("jle 0x%x", temp + 4);
-	return 4;
+	return 3;
 }
 
 make_helper(jle_rel_l) {
@@ -30,7 +30,7 @@ make_helper(jle_rel_l) {
 		cpu.eip = temp;
 	}
 	print_asm("jle 0x%x", temp + 6);
-	return 6;
+	return 5;
 }
 
 make_helper_v(jle_rel)
