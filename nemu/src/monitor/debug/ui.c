@@ -103,7 +103,8 @@ static int cmd_x(char *args) {
 	}
 
 
-	uint32_t n, addr;
+    int32_t n;
+	uint32_t addr;
     char exp[30];
 	bool success;
 	sscanf(args, "%u %s", &n, exp);
@@ -111,13 +112,24 @@ static int cmd_x(char *args) {
 	Assert(success, "Invalid expression\n");
 
     int32_t i, j;
-    for(i = n-1; i >= 0; --i) {
-         uint32_t addroff = addr + i*4;
-         printf("\t");
-         for(j = 3; j >= 0; --j) {
-             printf("%02x ", swaddr_read(addroff + j, 1));
-         }
-         printf("\t<= 0x%08x\n", addroff);
+    if(n > 0) {
+        for(i = n-1; i >= 0; --i) {
+            uint32_t addroff = addr + i*4;
+            printf("\t");
+            for(j = 3; j >= 0; --j) {
+                printf("%02x ", swaddr_read(addroff + j, 1));
+            }
+            printf("\t<= 0x%08x\n", addroff);
+        }
+    } else {
+        for(i = 0; i < n; ++i) {
+            uint32_t addroff = addr - i*4;
+            printf("\t");
+            for(j = 3; j >= 0; --j) {
+                printf("%02x ", swaddr_read(addroff + j, 1));
+            }
+            printf("\t<= 0x%08x\n", addroff);
+        }
     }
 
     return 0;
