@@ -3,6 +3,8 @@
 #define instr cmp
 
 static void do_execute () {
+    // cmp S2, S1 <=> S1 - S2
+    // cmp SRC, DESt <=> DEST : SRC
 	DATA_TYPE rval = -op_src->val;
 	DATA_TYPE result = op_dest->val + rval;
 
