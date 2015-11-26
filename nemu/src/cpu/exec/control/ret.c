@@ -19,5 +19,5 @@ make_helper(ret_i) {
 	cpu.eip = swaddr_read(cpu.esp, 4);
 	cpu.esp += 4 + imm;
 	print_asm("ret $0x%u", imm);
-    return 3;
+    return 1;
 }
