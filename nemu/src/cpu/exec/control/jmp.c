@@ -8,13 +8,13 @@ make_helper(jmp_rel_b) {
 
 make_helper(jmp_rel_w) {
 	cpu.eip += instr_fetch(cpu.eip + 1, 2);
-	print_asm("jmp 0x%x", cpu.eip + 2);
+	print_asm("jmp 0x%x", cpu.eip + 3);
 	return 3;
 }
 
 make_helper(jmp_rel_l) {
 	cpu.eip += instr_fetch(cpu.eip + 1, 4);
-	print_asm("jmp 0x%x", cpu.eip + 2);
+	print_asm("jmp 0x%x", cpu.eip + 5);
 	return 5;
 }
 
