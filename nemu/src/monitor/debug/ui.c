@@ -122,7 +122,7 @@ static int cmd_x(char *args) {
             printf("\t<= 0x%08x\n", addroff);
         }
     } else {
-        for(i = 0; i < n; ++i) {
+        for(i = 0; i < -n; ++i) {
             uint32_t addroff = addr - i*4;
             printf("\t");
             for(j = 3; j >= 0; --j) {
