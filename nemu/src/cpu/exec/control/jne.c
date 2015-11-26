@@ -1,10 +1,12 @@
 #include "cpu/exec/helper.h"
 
 make_helper(jne_rel_b) {
-	swaddr_t temp = cpu.eip + instr_fetch(cpu.eip + 1, 1);
+    int32_t tmp = instr_fetch(cpu.eip + 1, 1);
+    tmp = tmp << 24 >> 24;
+    uint32_t target = cpu.eip + tmp;
 	if(!cpu.eflags.ZF) {
-		cpu.eip = temp;
+		cpu.eip = target;
 	}
-	print_asm("jne 0x%x", temp + 2);
+	print_asm("jne 0x%x", target + 2);
 	return 2;
 }
