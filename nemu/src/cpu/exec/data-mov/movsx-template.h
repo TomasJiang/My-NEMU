@@ -1,6 +1,6 @@
 #include "cpu/exec/template-start.h"
 
-#define instr movs
+#define instr movsx
 
 static void do_execute() {
     int32_t tmp = op_src->val;
