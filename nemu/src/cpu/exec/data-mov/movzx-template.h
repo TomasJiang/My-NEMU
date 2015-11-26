@@ -1,29 +1,19 @@
 #include "cpu/exec/template-start.h"
 
-#define instr movz
+#define instr movzx
 
 static void do_execute() {
-    OPERAND_W(op_dest, op_src->val);
+    uint32_t tmp = op_src->val;
+#if DATA_BYTE == 1
+    if(ops_decoded.is_data_size_16)
+        reg_w(op_dest->reg) = tmp;
+    else
+        reg_l(op_dest->reg) = tmp;
+#elif DATA_BYTE == 2
+    reg_l(op_dest->reg) = tmp;
+#endif
 	print_asm_template2();
 }
-
-
-
-
-
-/*
-#if DATA_BYTE == 1
-	if(ops_decoded.is_data_size_16) {
-		REG(op_dest->reg) = REG(op_dest->reg) >> 16 << 16;
-		REG(op_dest->reg) += op_src->val;
-	} else
-		REG(op_dest->reg) = op_src->val;
-#endif
-#if DATA_BYTE == 2
-	REG(op_dest->reg) = op_src->val;
-#endif
-
-*/
 
 make_instr_helper(rm2r)
 
