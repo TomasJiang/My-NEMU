@@ -9,14 +9,14 @@ static void do_execute() {
 	OPERAND_W(op_dest, result);
 
 	// OF, SF, ZF, CF, and PF
-	unsigned df = 0x1 & (op_dest->val >> 31);
-	unsigned sf = 0x1 & (rval >> 31);
-	unsigned rf = 0x1 & (result >> 31);
+    unsigned sf = 0x1 & (op_src->val >> 31);
+    unsigned df = 0x1 & (op_dest->val >> 31);
+    unsigned rf = 0x1 & (result >> 31);
 
-	cpu.eflags.OF = (df && sf && !rf) || (!df && !sf && rf);
-	cpu.eflags.SF = rf;
-	cpu.eflags.ZF = (result == 0);
-	cpu.eflags.CF = 0x1 & (((df && sf) || ((df || sf) && !rf)) ^ 0x1);
+    cpu.eflags.OF = (!df && sf && rf) || (df && !sf && !rf);
+    cpu.eflags.SF = rf;
+    cpu.eflags.ZF = (result == 0);
+    cpu.eflags.CF = (uint32_t)(op_dest->val) < (uint32_t)(op_src->val);
 
 	result = 0xff & result;
 	unsigned count;
