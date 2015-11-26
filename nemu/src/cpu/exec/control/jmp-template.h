@@ -3,6 +3,7 @@
 #define instr jmp
 
 static void do_execute() {
+    Log("jmp_rm");
     cpu.eip = op_src->val;
 }
 
