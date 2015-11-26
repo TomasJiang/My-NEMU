@@ -14,6 +14,7 @@ make_helper(rep) {
 		while(cpu.ecx) {
             Log("rep");
 			exec(eip + 1);
+            Log("rep");
 			count ++;
 			cpu.ecx --;
 			assert(ops_decoded.opcode == 0xa4	// movsb
