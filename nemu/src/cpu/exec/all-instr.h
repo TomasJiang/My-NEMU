@@ -3,6 +3,8 @@
 #include "data-mov/mov.h"
 #include "data-mov/movzx.h"
 #include "data-mov/movsx.h"
+#include "data-mov/push.h"
+#include "data-mov/pop.h"
 #include "data-mov/xchg.h"
 #include "data-mov/cld.h"
 
@@ -17,8 +19,8 @@
 #include "arith/mul.h"
 #include "arith/idiv.h"
 #include "arith/div.h"
+#include "arith/cmp.h"
 
-#include "logic/cmp.h"
 #include "logic/and.h"
 #include "logic/or.h"
 #include "logic/not.h"
@@ -30,8 +32,6 @@
 #include "logic/test.h"
 #include "logic/setne.h"
 
-#include "control/push.h"
-#include "control/pop.h"
 #include "control/call.h"
 #include "control/leave.h"
 #include "control/ret.h"
