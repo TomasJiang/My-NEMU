@@ -107,6 +107,7 @@ static int cmd_x(char *args) {
     char exp[30];
 	bool success;
 	sscanf(args, "%u %s", &n, exp);
+    Log("Exp = %s", exp);
 	addr = expr(args, &success);
 	Assert(success, "Invalid expression\n");
 
