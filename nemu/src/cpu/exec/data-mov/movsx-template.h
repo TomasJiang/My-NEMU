@@ -6,7 +6,14 @@ static void do_execute() {
     int32_t tmp = op_src->val;
     int32_t step = 32 - 8 * DATA_BYTE;
     tmp = tmp << step >> step;
-    OPERAND_W(op_dest, tmp);
+#if DATA_BYTE == 1
+    if(ops_decoded.is_data_size_16)
+        reg_w(op_dest->reg) = tmp;
+    else
+        reg_l(op_dest->reg) = tmp;
+#elif DATA_BYTE == 2
+    reg_l(op_dest->reg) = tmp;
+#endif
 	print_asm_template2();
 }
 
