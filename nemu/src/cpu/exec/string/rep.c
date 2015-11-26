@@ -12,6 +12,7 @@ make_helper(rep) {
 	}
 	else {
 		while(cpu.ecx) {
+            Log("rep");
 			exec(eip + 1);
 			count ++;
 			cpu.ecx --;
@@ -36,7 +37,6 @@ make_helper(rep) {
 	sprintf(temp, "rep %s", assembly);
 	sprintf(assembly, "%s[cnt = %d]", temp, count);
 #endif
-    Log("rep len = %d", len);
 
 	return len + 1;
 }
