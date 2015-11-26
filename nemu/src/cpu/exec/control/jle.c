@@ -6,7 +6,7 @@ make_helper(jle_rel8) {
 
     int32_t k = instr_fetch(cpu.eip + 1, 1);
     Log("k = %x\n", k);
-	swaddr_t temp = cpu.eip + (instr_fetch(cpu.eip + 1, 1) << 24 >> 24);
+	swaddr_t temp = cpu.eip + (k << 24 >> 24);
     Log("jle addr = %x\n", temp);
 	if(cpu.eflags.ZF || cpu.eflags.SF != cpu.eflags.OF) {
 		cpu.eip = temp;
