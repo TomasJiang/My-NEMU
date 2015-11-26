@@ -18,9 +18,10 @@ static void do_execute () {
     // cmp 0x80000000, 0x80000001
 
 	// OF, SF, ZF, CF, and PF
-    unsigned sf = 0x1 & (op_src->val >> 31);
-	unsigned df = 0x1 & (op_dest->val >> 31);
-	unsigned rf = 0x1 & (result >> 31);
+    uint32_t step = DATA_BYTE * 8 - 1;
+    unsigned sf = 0x1 & (op_src->val >> step);
+	unsigned df = 0x1 & (op_dest->val >> step);
+	unsigned rf = 0x1 & (result >> step);
 
     // Set OF
     // sub: 0 1 1
