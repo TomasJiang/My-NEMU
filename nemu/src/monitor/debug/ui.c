@@ -7,6 +7,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+#define ATS_MAX_EXP 256
 void cpu_exec(uint32_t);
 bool get_function_name(char *name, uint32_t addr);
 
@@ -105,7 +106,7 @@ static int cmd_x(char *args) {
 
     int32_t n;
 	uint32_t addr;
-    char exp[30];
+    char exp[ATS_MAX_EXP];
 	bool success;
 	sscanf(args, "%u %s", &n, exp);
 	addr = expr(exp, &success);
