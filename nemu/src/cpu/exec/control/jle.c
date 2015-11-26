@@ -19,19 +19,18 @@ make_helper(jle_rel_w) {
 	if(cpu.eflags.ZF || cpu.eflags.SF != cpu.eflags.OF) {
 		cpu.eip = temp;
 	}
-	print_asm("jle 0x%x", temp + 3);
-	return 3;
+	print_asm("jle 0x%x", temp + 4);
+	return 4;
 }
 
 make_helper(jle_rel_l) {
     int32_t k = instr_fetch(cpu.eip + 2, 4);
-    Log("k = %x", k);
 	swaddr_t temp = cpu.eip + k;
 	if(cpu.eflags.ZF || cpu.eflags.SF != cpu.eflags.OF) {
 		cpu.eip = temp;
 	}
-	print_asm("jle 0x%x", temp + 5);
-	return 5;
+	print_asm("jle 0x%x", temp + 6);
+	return 6;
 }
 
 make_helper_v(jle_rel)
