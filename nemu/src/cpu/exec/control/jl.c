@@ -33,4 +33,4 @@ make_helper(jl_rel_l) {
 	return 5;
 }
 
-make_helper_v(jl_rel);
+make_helper_v(jl_rel)
