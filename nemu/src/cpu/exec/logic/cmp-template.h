@@ -17,7 +17,7 @@ static void do_execute () {
     unsigned srcf = 0x1 & (op_src->val >> 31);
 	unsigned rf = 0x1 & (result >> 31);
 
-	cpu.eflags.OF = (df && sf && !rf) || (!df && !sf && rf) || ~ (sf ^ srcf);
+	cpu.eflags.OF = (df && sf && !rf) || (!df && !sf && rf) || !(sf ^ srcf);
 	cpu.eflags.SF = rf;
 	cpu.eflags.ZF = (result == 0);
 	cpu.eflags.CF = 0x1 & (((df && sf) || ((df || sf) && !rf)) ^ 0x1);
