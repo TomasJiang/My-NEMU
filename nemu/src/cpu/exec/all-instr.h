@@ -38,6 +38,7 @@
 #include "control/je.h"
 #include "control/jne.h"
 #include "control/jl.h"
+#include "control/ja.h"
 #include "control/jbe.h"
 #include "control/jle.h"
 #include "control/jge.h"
