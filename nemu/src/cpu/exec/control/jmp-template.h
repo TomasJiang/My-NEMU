@@ -3,9 +3,7 @@
 #define instr jmp
 
 static void do_execute() {
-    Log("jmp_rm");
-    Log("target = %0x", op_src->val);
-    cpu.eip = op_src->val;
+    cpu.eip = op_src->val-2;
 }
 
 make_instr_helper(rm)
