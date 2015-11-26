@@ -103,15 +103,16 @@ static int cmd_x(char *args) {
 	}
 
 
-	uint32_t i, n, addr;
+	uint32_t n, addr;
     char exp[30];
 	bool success;
 	sscanf(args, "%u %s", &n, exp);
 	addr = expr(exp, &success);
 	Assert(success, "Invalid expression\n");
 
+    int32_t i, j;
     for(i = n-1; i >= 0; --i) {
-         uint32_t j, addroff = addr + i*4;
+         uint32_t addroff = addr + i*4;
          printf("0x%08x:\t", addroff);
          for(j = 3; j >= 0; --j) {
              printf("%02x ", swaddr_read(addroff + j, 1));
