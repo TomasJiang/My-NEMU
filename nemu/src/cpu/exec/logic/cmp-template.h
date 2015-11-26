@@ -15,15 +15,21 @@ static void do_execute () {
     // cmp 0x80000000, 0x80000001
 
 	// OF, SF, ZF, CF, and PF
+    unsigned sf = 0x1 & (op_src->val >> 31);
 	unsigned df = 0x1 & (op_dest->val >> 31);
-	unsigned sf = 0x1 & (rval >> 31);
-    unsigned srcf = 0x1 & (op_src->val >> 31);
 	unsigned rf = 0x1 & (result >> 31);
 
-	cpu.eflags.OF = (df && sf && !rf) || (!df && !sf && rf) || (!(sf ^ srcf) && op_src->val);
+    // Set OF
+    // sub: 0 1 1
+    //      1 0 0
+    // Set CF
+    // Cout ^ Sub
+    // Cout -> 0
+    // uint32_t(dest) < uint32_t(src)
+	cpu.eflags.OF = (!df && sf && rf) || (df && !sf && !rf);
 	cpu.eflags.SF = rf;
 	cpu.eflags.ZF = (result == 0);
-	cpu.eflags.CF = 0x1 & (((df && sf) || ((df || sf) && !rf)) ^ 0x1);
+	cpu.eflags.CF = (uint32_t)(op_dest->val) < (uint32_t)(op_src->val);
 
 	result = 0xff & result;
 	unsigned count;
