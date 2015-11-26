@@ -15,6 +15,7 @@ make_helper(ret) {
 
 make_helper(ret_i) {
     uint32_t imm = instr_fetch(eip + 1, 2);
+    instr_fetch(eip+3, 5);
     Log("imm = %u", imm);
 	cpu.eip = swaddr_read(cpu.esp, 4);
 	cpu.esp += 4 + imm;
