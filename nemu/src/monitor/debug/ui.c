@@ -113,11 +113,11 @@ static int cmd_x(char *args) {
     int32_t i, j;
     for(i = n-1; i >= 0; --i) {
          uint32_t addroff = addr + i*4;
-         printf("0x%08x:\t", addroff);
+         printf("\t");
          for(j = 3; j >= 0; --j) {
              printf("%02x ", swaddr_read(addroff + j, 1));
          }
-         printf("\n");
+         printf("\t0x%08x\n", addroff);
     }
 
     return 0;
