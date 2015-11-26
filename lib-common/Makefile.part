@@ -1,12 +1,17 @@
 # This file will be included by the Makefile under the project directory.
 
 FLOAT_OBJ := $(FLOAT:.a=.o)
+FLOAT_DEPS := lib-common/FLOAT.c lib-common/FLOAT.h
+
 
 $(FLOAT): $(FLOAT_OBJ)
-	ar r $(FLOAT) $(FLOAT_OBJ)
+	gcc -o $(FLOAT_OBJ) $(FLOAT_DEPS)
+	ar cr $(FLOAT) $(FLOAT_OBJ)
 
 # TODO: write a rule for generating $(FLOAT_OBJ)
 
-float_CFLAGS := -m32 -fno-builtin -I$(LIB_COMMMON_DIR)
-$(FLOAT_OBJ): FLOAT.c FLOAT.h
-	$(call make_comman, $(CC), $(float_CFLAGS), cc $$<, $$<)
+FLOAT_CFLAGS_EXTRA := -m32 -fno-builtin -I$(LIB_COMMMON_DIR)
+# $(eval $(call make_common_rules, float, $(float_CFLAGS_EXTRA)))
+
+$(FLOAT_OBJ): $(FLOAT_DEPS)
+	$(call make_common, $(CC), $(FLOAT_CFLAGS_EXTRA), cc $$<, $$<)
