@@ -117,7 +117,7 @@ static int cmd_x(char *args) {
          for(j = 3; j >= 0; --j) {
              printf("%02x ", swaddr_read(addroff + j, 1));
          }
-         printf("\t0x%08x\n", addroff);
+         printf("\t<= 0x%08x\n", addroff);
     }
 
     return 0;
