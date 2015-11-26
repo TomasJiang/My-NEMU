@@ -7,9 +7,11 @@ static void do_execute () {
     // cmp SRC, DESt <=> DEST : SRC
 	DATA_TYPE rval = -op_src->val;
 	DATA_TYPE result = op_dest->val + rval;
+    /*
     Log("dest: %0x", op_dest->val);
     Log("src: %0x", op_src->val);
     Log("result: %0x", result);
+    */
 
     // cmp 0x80000000, 0
     // Wrong CF = 1, PF = 1, SF = 1
