@@ -12,6 +12,7 @@ static void do_execute () {
     // Wrong CF = 1, PF = 1, SF = 1
     // cmp 0, 1
     // Wrong OF = 1
+    // cmp 0x80000000, 0x80000001
 
 	// OF, SF, ZF, CF, and PF
 	unsigned df = 0x1 & (op_dest->val >> 31);
