@@ -110,6 +110,17 @@ static int cmd_x(char *args) {
 	addr = expr(exp, &success);
 	Assert(success, "Invalid expression\n");
 
+    for(i = n-1; i >= 0; --i) {
+         uint32_t j, addroff = addr + i*4;
+         printf("0x%08x:\t", addroff);
+         for(j = 3; j >= 0; --j) {
+             printf("%02x ", swaddr_read(addroff + j, 1));
+         }
+         printf("\n");
+    }
+
+    return 0;
+    /*
 	for(i = 0; i < n; ++i)
 	{
 		unsigned int j, addroff = addr + i*4;
@@ -120,7 +131,7 @@ static int cmd_x(char *args) {
 		}
 		printf("\n");
 	}
-	return 0;
+    */
 }
 
 static int cmd_w(char *args) {
