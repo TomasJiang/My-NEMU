@@ -7,7 +7,7 @@ typedef struct watchpoint {
 	int NO;
 	struct watchpoint *next;
 
-	char str[32];
+	char str[256];
 	uint32_t oldvalue;
 } WP;
 
