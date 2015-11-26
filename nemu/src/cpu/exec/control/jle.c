@@ -14,7 +14,7 @@ make_helper(jle_rel_b) {
 }
 
 make_helper(jle_rel_w) {
-    int32_t k = instr_fetch(cpu.eip + 1, 2);
+    int32_t k = instr_fetch(cpu.eip + 2, 2);
 	swaddr_t temp = cpu.eip + (k << 16 >> 16);
 	if(cpu.eflags.ZF || cpu.eflags.SF != cpu.eflags.OF) {
 		cpu.eip = temp;
@@ -24,7 +24,7 @@ make_helper(jle_rel_w) {
 }
 
 make_helper(jle_rel_l) {
-    int32_t k = instr_fetch(cpu.eip + 1, 4);
+    int32_t k = instr_fetch(cpu.eip + 2, 4);
     Log("k = %x", k);
 	swaddr_t temp = cpu.eip + k;
 	if(cpu.eflags.ZF || cpu.eflags.SF != cpu.eflags.OF) {
