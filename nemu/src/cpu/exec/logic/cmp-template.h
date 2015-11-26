@@ -8,12 +8,16 @@ static void do_execute () {
 	DATA_TYPE rval = -op_src->val;
 	DATA_TYPE result = op_dest->val + rval;
 
+    // cmp 0x80000000, 0
+    // Wrong CF = 1, PF = 1, SF = 1
+
 	// OF, SF, ZF, CF, and PF
 	unsigned df = 0x1 & (op_dest->val >> 31);
 	unsigned sf = 0x1 & (rval >> 31);
+    unsigned srcf = 0x1 & (op_src->val >> 31);
 	unsigned rf = 0x1 & (result >> 31);
 
-	cpu.eflags.OF = (df && sf && !rf) || (!df && !sf && rf);
+	cpu.eflags.OF = (df && sf && !rf) || (!df && !sf && rf) || ~ (sf ^ srcf);
 	cpu.eflags.SF = rf;
 	cpu.eflags.ZF = (result == 0);
 	cpu.eflags.CF = 0x1 & (((df && sf) || ((df || sf) && !rf)) ^ 0x1);
