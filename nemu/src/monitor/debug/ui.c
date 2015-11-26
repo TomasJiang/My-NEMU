@@ -102,8 +102,14 @@ static int cmd_x(char *args) {
 		return 0;
 	}
 
-	unsigned int i, n, addr;
-	sscanf(args, "%u 0x%x", &n, &addr);
+
+	uint32_t i, n, addr;
+    char exp[30];
+	bool success;
+	sscanf(args, "%u %s", &n, exp);
+	addr = expr(args, &success);
+	Assert(success, "Invalid expression\n");
+
 	for(i = 0; i < n; ++i)
 	{
 		unsigned int j, addroff = addr + i*4;
