@@ -4,6 +4,7 @@
 
 static void do_execute() {
     Log("jmp_rm");
+    Log("target = %u", op_src->val);
     cpu.eip = op_src->val;
 }
 
