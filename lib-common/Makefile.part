@@ -2,16 +2,15 @@
 
 FLOAT_OBJ := $(FLOAT:.a=.o)
 FLOAT_DEPS := lib-common/FLOAT.c lib-common/FLOAT.h
+FLOAT_CFLAGS_EXTRA := -m32 -fno-builtin -Ilib-common
 
 
 $(FLOAT): $(FLOAT_OBJ)
-	gcc -o $(FLOAT_OBJ) $(FLOAT_DEPS)
-	ar cr $(FLOAT) $(FLOAT_OBJ)
+	mkdir -p obj/lib-common
+	$(CC) -c lib-common/FLOAT.c -o $(FLOAT_OBJ) $(FLOAT_CFLAGS_EXTRA)
+	ar cr obj/lib-common/FLOAT.a $(FLOAT_OBJ)
 
 # TODO: write a rule for generating $(FLOAT_OBJ)
-
-FLOAT_CFLAGS_EXTRA := -m32 -fno-builtin -I$(LIB_COMMMON_DIR)
-# $(eval $(call make_common_rules, float, $(float_CFLAGS_EXTRA)))
 
 $(FLOAT_OBJ): $(FLOAT_DEPS)
 	$(call make_common, $(CC), $(FLOAT_CFLAGS_EXTRA), cc $$<, $$<)

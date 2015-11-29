@@ -25,7 +25,9 @@ FLOAT f2F(float);
 FLOAT F_mul_F(FLOAT, FLOAT);
 FLOAT F_div_F(FLOAT, FLOAT);
 FLOAT Fabs(FLOAT);
+/*
 FLOAT sqrt(FLOAT);
 FLOAT pow(FLOAT, FLOAT);
+*/
 
 #endif
