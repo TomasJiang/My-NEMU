@@ -38,6 +38,7 @@ uint32_t loader() {
 
 	/* Load each program segment */
 	panic("please implement me");
+    return 0;
 	for(; true; ) {
 		/* Scan the program header table, load each segment into memory */
 		if(ph->p_type == PT_LOAD) {
