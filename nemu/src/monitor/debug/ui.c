@@ -191,6 +191,7 @@ static int cmd_bt(char *args) {
 	swaddr_t ebp = cpu.ebp;
 	char func_name[128];
 	get_function_name(func_name, cpu.eip);
+    /*
 	printf("#0  %s (0x%x, 0x%x, 0x%x, 0x%x, 0x%x...)\n",
 			func_name,
 			swaddr_read(ebp + 8, 4),
@@ -199,6 +200,25 @@ static int cmd_bt(char *args) {
 			swaddr_read(ebp + 20, 4),
 			swaddr_read(ebp + 24, 4)
 			);
+            */
+
+    printf("#0  %s (", func_name);
+    bool blankflag = false;
+    int i;
+    for(i = 0; i < 4; ++i) {
+        uint32_t addr = (ebp + 8) + 4 * i;
+        if(addr >= 0x8000000)
+            break;
+        if(!blankflag) {
+            printf("0x%x", swaddr_read(addr, 4));
+            blankflag = true;
+        } else {
+            printf(", 0x%x", swaddr_read(addr, 4));
+        }
+    }
+    printf("...)\n");
+
+
 
 	int count = 0;
 	swaddr_t ret_addr;
@@ -209,16 +229,6 @@ static int cmd_bt(char *args) {
 		if(!get_function_name(func_name, ret_addr)) {
 			return 0;
 		}
-        /*
-		printf("#%-3d0x%08x in %s (0x%x, 0x%x, 0x%x, 0x%x, 0x%x...)\n",
-				count, ret_addr, func_name,
-				swaddr_read(ebp + 8, 4),
-				swaddr_read(ebp + 12, 4),
-				swaddr_read(ebp + 16, 4),
-				swaddr_read(ebp + 20, 4),
-				swaddr_read(ebp + 24, 4)
-				);
-                */
 
         printf("#%-3d0x%08x in %s (", count, ret_addr, func_name);
         bool blankflag = false;
