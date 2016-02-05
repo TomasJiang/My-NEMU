@@ -16,7 +16,6 @@ FLOAT Fabs(FLOAT a) {
     return a & (1 << 31);
 }
 
-/*
 FLOAT sqrt(FLOAT x) {
     FLOAT dt, t = int2F(2);
 
@@ -27,7 +26,6 @@ FLOAT sqrt(FLOAT x) {
 
     return t;
 }
-*/
 
 
 

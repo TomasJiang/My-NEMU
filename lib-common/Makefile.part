@@ -6,8 +6,12 @@ FLOAT_CFLAGS_EXTRA := -m32 -fno-builtin -Ilib-common
 
 
 $(FLOAT): $(FLOAT_DEPS)
-	mkdir -p obj/lib-common
-	$(CC) -c lib-common/FLOAT.c -o $(FLOAT_OBJ) $(FLOAT_CFLAGS_EXTRA)
-	ar cr obj/lib-common/FLOAT.a $(FLOAT_OBJ)
+	$(call make_command, @ar r, , ar $<, $^)
+#	mkdir -p obj/lib-common
+#	$(CC) -c lib-common/FLOAT.c -o $(FLOAT_OBJ) $(FLOAT_CFLAGS_EXTRA)
+#	ar cr obj/lib-common/FLOAT.a $(FLOAT_OBJ)
 
 # TODO: write a rule for generating $(FLOAT_OBJ)
+$(FLOAT_OBJ): % : $(LIB_COMMON_DIR)/FLOAT.c
+	@mkdir -p obj/$(LIB_COMMON_DIR)
+	$(call make_command, $(CC), $(FLOAT_CFLAGS), cc $<, $^)
