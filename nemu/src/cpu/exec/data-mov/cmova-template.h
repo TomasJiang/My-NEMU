@@ -1,6 +1,6 @@
 #include "cpu/exec/template-start.h"
 
-#define instr cmov
+#define instr cmova
 
 static void do_execute() {
     // Move if above (CF=0 and ZF=0)
@@ -10,5 +10,7 @@ static void do_execute() {
 }
 
 make_instr_helper(r2rm)
+
+#undef instr
 
 #include "cpu/exec/template-end.h"
