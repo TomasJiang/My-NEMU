@@ -7,7 +7,21 @@ static void do_execute () {
 	OPERAND_W(op_src, result);
 
 	/* TODO: Update EFLAGS. */
-	panic("please implement me");
+    uint32_t step = DATA_BYTE * 8 - 1;
+    unsigned sf = 0x1 & (op_src->val >> step);
+    unsigned df = 0x1 & (op_dest->val >> step);
+    unsigned rf = 0x1 & (result >> step);
+
+    cpu.eflags.OF = (!df && sf && rf) || (df && !sf && !rf);
+    cpu.eflags.SF = rf;
+    cpu.eflags.ZF = (result == 0);
+    cpu.eflags.CF = (uint32_t)(op_dest->val) < (uint32_t)(op_src->val);
+
+    result = 0xff & result;
+    unsigned count;
+    for(count = 0; result; ++count)
+        result &= (result - 1);
+    cpu.eflags.PF = !(count % 2);
 
 	print_asm_template1();
 }
