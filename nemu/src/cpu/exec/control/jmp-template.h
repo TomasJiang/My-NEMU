@@ -4,7 +4,7 @@
 
 static void do_execute() {
     cpu.eip = op_src->val-2;
-    print_asm("jmp 0x%x", cpu.eip);
+    print_asm("jmp 0x%x", cpu.eip+2+DATA_BYTE);
 }
 
 make_instr_helper(rm)
