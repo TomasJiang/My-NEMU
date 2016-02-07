@@ -7,7 +7,7 @@ static void do_execute() {
     // EIP = [r/m32];
     cpu.esp -= 4;
     swaddr_write(cpu.eip, 4, cpu.eip + 4);
-    cpu.eip = op_src->val;
+    cpu.eip = op_src->val-2;
 
 }
 
