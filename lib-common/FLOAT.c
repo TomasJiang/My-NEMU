@@ -1,5 +1,8 @@
 #include "FLOAT.h"
 
+typedef unsigned int        uint32_t;
+typedef unsigned long long  uint64_t;
+
 FLOAT F_mul_F(FLOAT a, FLOAT b) {
     return ((a >> 16) * (b >> 16)) << 16;
 }
@@ -9,15 +12,20 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 }
 
 FLOAT f2F(float a) {
-    unsigned int af = *(unsigned int *)&a;
-    unsigned int sign = af >> 31;
-    int exp = (af >> 23) & 0xff;
-    unsigned int sig = af & 0x7fffff;
-    if (exp != 0) sig += 1 << 23;
+    uint32_t ui = *(uint32_t*)&a;
+    uint32_t sign = ui >> 31;
+    uint32_t exp = (ui >> 23) & 0xff;
+    int res = ui & 0x7fffff;
+    if (exp != 0)
+        res += 1 << 23;
     exp -= 150;
-    if (exp < -16) sig >>= -16 - exp;
-    if (exp > -16) sig <<= exp + 16;
-    return sign == 0 ? sig : -sig;
+    if (exp < -16)
+        res >>= -16 - exp;
+    if (exp > -16)
+        res <<= exp + 16;
+    return sign == 0 ? res : -res;
+
+
 }
 
 FLOAT Fabs(FLOAT a) {
@@ -38,7 +46,6 @@ FLOAT sqrt(FLOAT x) {
 
 
 /* we only compute x^0.333 */
-/*
 FLOAT pow(FLOAT x, FLOAT y) {
     FLOAT t2, dt, t = int2F(2);
 
@@ -50,4 +57,3 @@ FLOAT pow(FLOAT x, FLOAT y) {
 
     return t;
 }
-*/
