@@ -2,7 +2,8 @@
 
 FLOAT_OBJ := $(FLOAT:.a=.o)
 FLOAT_DEPS := lib-common/FLOAT.c
-FLOAT_CFLAGS_EXTRA := -m32 -fno-builtin -Ilib-common
+FLOAT_CFLAGS := -c -m32 -msoft-float -mno-sse -fno-builtin -fno-stack-protector
+# FLOAT_CFLAGS_EXTRA := -m32 -fno-builtin -Ilib-common
 
 
 $(FLOAT): $(FLOAT_DEPS)
