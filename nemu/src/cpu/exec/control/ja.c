@@ -25,7 +25,6 @@ make_helper(ja_rel_w) {
 
 make_helper(ja_rel_l) {
     int32_t k = instr_fetch(cpu.eip + 2, 4);
-    Log("%d\t0x%x", k, k);
 	swaddr_t temp = cpu.eip + k;
 	if(!cpu.eflags.SF && !cpu.eflags.ZF) {
 		cpu.eip = temp;
