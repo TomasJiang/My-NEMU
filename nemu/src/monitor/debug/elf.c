@@ -55,7 +55,7 @@ void load_elf_tables(int argc, char *argv[]) {
 	char *shstrtab = malloc(sh[elf->e_shstrndx].sh_size);
 	fseek(fp, sh[elf->e_shstrndx].sh_offset, SEEK_SET);
 	ret = fread(shstrtab, sh[elf->e_shstrndx].sh_size, 1, fp);
-	assert(ret == 1);
+	//assert(ret == 1);
 
 	int i;
 	for(i = 0; i < elf->e_shnum; i ++) {
