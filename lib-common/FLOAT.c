@@ -9,7 +9,15 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 }
 
 FLOAT f2F(float a) {
-    return (a * (1 << 16));
+    unsigned int af = *(unsigned int *)&a;
+    unsigned int sign = af >> 31;
+    int exp = (af >> 23) & 0xff;
+    unsigned int sig = af & 0x7fffff;
+    if (exp != 0) sig += 1 << 23;
+    exp -= 150;
+    if (exp < -16) sig >>= -16 - exp;
+    if (exp > -16) sig <<= exp + 16;
+    return sign == 0 ? sig : -sig;
 }
 
 FLOAT Fabs(FLOAT a) {
