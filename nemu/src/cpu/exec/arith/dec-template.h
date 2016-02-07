@@ -3,6 +3,7 @@
 #define instr dec
 
 static void do_execute () {
+    Log("eip = 0x%x", cpu.eip);
 	DATA_TYPE result = op_src->val - 1;
 	OPERAND_W(op_src, result);
 
