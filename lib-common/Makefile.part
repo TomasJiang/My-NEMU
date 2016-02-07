@@ -6,7 +6,7 @@ FLOAT_CFLAGS := -c -m32 -msoft-float -mno-sse -fno-builtin -fno-stack-protector
 # FLOAT_CFLAGS_EXTRA := -m32 -fno-builtin -Ilib-common
 
 
-$(FLOAT): $(FLOAT_DEPS)
+$(FLOAT): $(FLOAT_OBJ)
 	$(call make_command, @ar r, , ar $<, $^)
 #	mkdir -p obj/lib-common
 #	$(CC) -c lib-common/FLOAT.c -o $(FLOAT_OBJ) $(FLOAT_CFLAGS_EXTRA)
