@@ -23,7 +23,7 @@ void load_elf_tables(int argc, char *argv[]) {
 	/* Read the first 4096 bytes from the exec_file.
 	 * They should contain the ELF header and program headers. */
 	ret = fread(buf, 4096, 1, fp);
-	assert(ret == 1);
+	//assert(ret == 1);
 
 	/* The first several bytes contain the ELF header. */
 	Elf32_Ehdr *elf = (void *)buf;
@@ -55,7 +55,7 @@ void load_elf_tables(int argc, char *argv[]) {
 	char *shstrtab = malloc(sh[elf->e_shstrndx].sh_size);
 	fseek(fp, sh[elf->e_shstrndx].sh_offset, SEEK_SET);
 	ret = fread(shstrtab, sh[elf->e_shstrndx].sh_size, 1, fp);
-	//assert(ret == 1);
+	assert(ret == 1);
 
 	int i;
 	for(i = 0; i < elf->e_shnum; i ++) {
