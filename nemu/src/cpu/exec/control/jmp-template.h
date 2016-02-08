@@ -9,6 +9,7 @@ static void do_execute() {
     Log("op_src2->val = 0x%x", op_src2->val);
     Log("op_dest->val = 0x%x", op_dest->val);
     Log("%s", op_src->str);
+    Log("%u", op_src->size);
     print_asm("jmp 0x%x", op_src->val);
     //Log("eip = 0x%x", cpu.eip);
 }
