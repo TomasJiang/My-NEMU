@@ -50,7 +50,7 @@ uint32_t loader() {
 			 */
 #ifndef HAS_DEVICE
             // TODO: p_filesz not 4 times
-            panic("please implement me");
+            return 0;
             if(ph->p_filesz == 30)
                 panic("filessize == 30");
             if(ph->p_filesz == 28)
