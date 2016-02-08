@@ -18,7 +18,7 @@ make_helper(jne_rel_w) {
 	if(!cpu.eflags.ZF) {
 		cpu.eip = target;
 	}
-	print_asm("jne 0x%x", target + 3);
+	print_asm("jne 0x%x", target + 4);
 	return 3;
 }
 
@@ -28,7 +28,7 @@ make_helper(jne_rel_l) {
 	if(!cpu.eflags.ZF) {
 		cpu.eip = target;
 	}
-	print_asm("jne 0x%x", target + 5);
+	print_asm("jne 0x%x", target + 6);
 	return 5;
 }
 

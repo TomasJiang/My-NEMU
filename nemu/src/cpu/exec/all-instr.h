@@ -39,6 +39,7 @@
 #include "control/jmp.h"
 #include "control/je.h"
 #include "control/jne.h"
+#include "control/jae.h"
 #include "control/jl.h"
 #include "control/jg.h"
 #include "control/ja.h"
