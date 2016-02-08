@@ -21,7 +21,6 @@ static make_helper(_2byte_esc);
 make_group(group1_b,
 	add_i2rm_b, or_i2rm_b, inv, inv,
 	and_i2rm_b, sub_i2rm_b, inv, cmp_i2rm_b)
-
 /* 0x81 */
 make_group(group1_v,
 	add_i2rm_v, or_i2rm_v, inv, inv,
@@ -178,7 +177,7 @@ helper_fun _2byte_opcode_table [256] = {
 /* 0x38 */	inv, inv, inv, inv,
 /* 0x3c */	inv, inv, inv, inv,
 /* 0x40 */	inv, inv, inv, inv,
-/* 0x44 */	cmove_r2rm_v, inv, inv, inv,
+/* 0x44 */	cmove_r2rm_v, inv, inv, cmova_r2rm_v,
 /* 0x48 */	inv, cmovs_r2rm_v, inv, inv,
 /* 0x4c */	inv, cmovge_r2rm_v, inv, inv,
 /* 0x50 */	inv, inv, inv, inv,
