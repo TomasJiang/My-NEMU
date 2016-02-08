@@ -8,6 +8,7 @@ static void do_execute() {
     Log("op_src->val = 0x%x", op_src->val);
     Log("op_src2->val = 0x%x", op_src2->val);
     Log("op_dest->val = 0x%x", op_dest->val);
+    Log("instr_len = %u", ops_decoded.instr_len);
     Log("%s", op_src->str);
     Log("%u", op_src->size);
     Log("%x", ops_decoded.opcode);
