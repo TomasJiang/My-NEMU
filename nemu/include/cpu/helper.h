@@ -26,6 +26,7 @@ static inline int idex(swaddr_t eip, int (*decode)(swaddr_t), void (*execute) (v
 	execute();
     Log("len = %u", len);
     (&ops_decoded)->instr_len = len+1;
+    Log("instr_len = %u", ops_decoded.instr_len);
 	return len + 1;	// "1" for opcode
 }
 
