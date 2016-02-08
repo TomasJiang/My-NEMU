@@ -9,7 +9,8 @@ make_helper(jmp_rel_b) {
 }
 
 make_helper(jmp_rel_w) {
-	cpu.eip += instr_fetch(cpu.eip + 1, 2) << 16 >> 16;
+    int32_t tmp = instr_fetch(cpu.eip + 1, 2);
+	cpu.eip += tmp << 16 >> 16;
 	print_asm("jmp 0x%x", cpu.eip + 3);
 	return 3;
 }
