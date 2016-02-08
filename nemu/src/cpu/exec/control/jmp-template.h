@@ -3,8 +3,11 @@
 #define instr jmp
 
 static void do_execute() {
-    cpu.eip = op_src->val;
-    Log("op_src = 0x%x, DATA_BYTE = %d", op_src->val, DATA_BYTE);
+    cpu.eip = op_src->val-2;
+    Log("DATA_BYTE = %d", DATA_BYTE);
+    Log("op_src->val = 0x%x", op_src->val);
+    Log("op_src2->val = 0x%x", op_src2->val);
+    Log("op_dest->val = 0x%x", op_dest->val);
     print_asm("jmp 0x%x", op_src->val);
     //Log("eip = 0x%x", cpu.eip);
 }
