@@ -26,7 +26,6 @@ make_helper(rep) {
 				);
 
 			/* TODO: Jump out of the while loop if necessary. */
-            Log("ecx = 0x%x", cpu.ecx);
 
 		}
 		len = 1;
