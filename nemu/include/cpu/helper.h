@@ -23,10 +23,8 @@ static inline uint32_t instr_fetch(swaddr_t addr, size_t len) {
 static inline int idex(swaddr_t eip, int (*decode)(swaddr_t), void (*execute) (void)) {
 	/* eip is pointing to the opcode */
 	int len = decode(eip + 1);
+    ops_decoded.instr_len = len + 1;
 	execute();
-    Log("len = %u", len);
-    (&ops_decoded)->instr_len = len+1;
-    Log("instr_len = %u", ops_decoded.instr_len);
 	return len + 1;	// "1" for opcode
 }
 
