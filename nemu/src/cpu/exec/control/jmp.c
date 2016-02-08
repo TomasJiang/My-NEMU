@@ -1,13 +1,14 @@
 #include "cpu/exec/helper.h"
 
+
 make_helper(jmp_rel_b) {
-	cpu.eip += instr_fetch(cpu.eip + 1, 1);
+	cpu.eip += instr_fetch(cpu.eip + 1, 1) << 24 >> 24;
 	print_asm("jmp 0x%x", cpu.eip + 2);
 	return 2;
 }
 
 make_helper(jmp_rel_w) {
-	cpu.eip += instr_fetch(cpu.eip + 1, 2);
+	cpu.eip += instr_fetch(cpu.eip + 1, 2) << 16 >> 16;
 	print_asm("jmp 0x%x", cpu.eip + 3);
 	return 3;
 }
