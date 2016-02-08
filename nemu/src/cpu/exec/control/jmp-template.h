@@ -5,7 +5,7 @@
 static void do_execute() {
     cpu.eip = op_src->val-2;
     Log("0x%x", op_src->val);
-    print_asm("jmp 0x%x", cpu.eip+3+DATA_BYTE);
+    print_asm("jmp 0x%x", cpu.eip+2);
     //Log("eip = 0x%x", cpu.eip);
 }
 
