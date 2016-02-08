@@ -110,7 +110,10 @@ static int cmd_x(char *args) {
 	bool success;
 	sscanf(args, "%u %s", &n, exp);
 	addr = expr(exp, &success);
-	Assert(success, "Invalid expression\n");
+    if(!success) {
+        printf("Invalid expression\n");
+        return 0;
+    }
 
     int32_t i, j;
     if(n > 0) {
