@@ -24,7 +24,7 @@ make_helper(je_rel_w) {
 
 make_helper(je_rel_l) {
     int32_t tmp = instr_fetch(cpu.eip + 2, 4);
-    Log("tmp = 0x%x", tmp);
+    // Log("tmp = 0x%x", tmp);
     uint32_t target = cpu.eip + tmp;
 	if(cpu.eflags.ZF) {
 		cpu.eip = target;
