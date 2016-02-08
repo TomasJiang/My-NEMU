@@ -1,10 +1,10 @@
 #include "cpu/exec/template-start.h"
 
-#define instr cmovo
+#define instr cmovs
 
 static void do_execute() {
-    // Move if above (CF=0 and ZF=0)
-    if(cpu.eflags.OF == 1)
+    // Move if not sign (SF=0).
+    if(cpu.eflags.SF == 0)
         OPERAND_W(op_dest, op_src->val);
 	print_asm_template2();
 }
