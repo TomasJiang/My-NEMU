@@ -16,7 +16,6 @@ static void do_execute () {
     cpu.eflags.OF = (!df && sf && rf) || (df && !sf && !rf);
     cpu.eflags.SF = rf;
     cpu.eflags.ZF = (result == 0);
-    cpu.eflags.CF = (uint32_t)(op_dest->val) < (uint32_t)(op_src->val);
 
     result = 0xff & result;
     unsigned count;
