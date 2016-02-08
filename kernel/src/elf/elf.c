@@ -50,12 +50,10 @@ uint32_t loader() {
 			 */
 #ifndef HAS_DEVICE
             // TODO: p_filesz not 4 times
-            if(ph->p_filesz == 30)
-                ;
-            if(ph->p_filesz == 28)
+            // p_filesz == 30
+            uint32_t trade_off = (ph->p_filesz + 3) / 4 * 4;
+            if(trade_off == 32)
                 return 0;
-            if(ph->p_filesz == 7)
-                panic("filessize == 7");
             ramdisk_read((void *)ph->p_vaddr, ELF_OFFSET_IN_DISK + ph->p_offset, ph->p_filesz);
 #else
             panic("please implement me");
