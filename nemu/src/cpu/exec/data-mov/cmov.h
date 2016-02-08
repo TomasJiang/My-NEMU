@@ -4,5 +4,6 @@
 make_helper(cmova_r2rm_v);
 make_helper(cmovs_r2rm_v);
 make_helper(cmovo_r2rm_v);
+make_helper(cmove_r2rm_v);
 
 #endif
