@@ -22,6 +22,7 @@ typedef struct {
 	uint32_t opcode;
 	bool is_data_size_16;
 	Operand src, dest, src2;
+    uint32_t instr_len;
 } Operands;
 
 #endif

@@ -7,6 +7,8 @@
 /* All function defined with 'make_helper' return the length of the operation. */
 #define make_helper(name) int name(swaddr_t eip)
 
+extern Operands ops_decoded;
+
 static inline uint32_t instr_fetch(swaddr_t addr, size_t len) {
 	return swaddr_read(addr, len);
 }
@@ -16,11 +18,11 @@ static inline int idex(swaddr_t eip, int (*decode)(swaddr_t), void (*execute) (v
 	/* eip is pointing to the opcode */
 	int len = decode(eip + 1);
 	execute();
+    ops_decoded.instr_len = len+1;
 	return len + 1;	// "1" for opcode
 }
 
 /* shared by all helper function */
-extern Operands ops_decoded;
 
 #define op_src (&ops_decoded.src)
 #define op_src2 (&ops_decoded.src2)
