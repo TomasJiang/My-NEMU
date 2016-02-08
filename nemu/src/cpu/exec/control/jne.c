@@ -10,3 +10,26 @@ make_helper(jne_rel_b) {
 	print_asm("jne 0x%x", target + 2);
 	return 2;
 }
+
+make_helper(jne_rel_w) {
+    int32_t tmp = instr_fetch(cpu.eip + 1, 2);
+    tmp = tmp << 16 >> 16;
+    uint32_t target = cpu.eip + tmp;
+	if(!cpu.eflags.ZF) {
+		cpu.eip = target;
+	}
+	print_asm("jne 0x%x", target + 3);
+	return 3;
+}
+
+make_helper(jne_rel_l) {
+    int32_t tmp = instr_fetch(cpu.eip + 1, 4);
+    uint32_t target = cpu.eip + tmp;
+	if(!cpu.eflags.ZF) {
+		cpu.eip = target;
+	}
+	print_asm("jne 0x%x", target + 5);
+	return 5;
+}
+
+make_helper_v(jne_rel)
