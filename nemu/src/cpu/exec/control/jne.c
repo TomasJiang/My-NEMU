@@ -12,7 +12,7 @@ make_helper(jne_rel_b) {
 }
 
 make_helper(jne_rel_w) {
-    int32_t tmp = instr_fetch(cpu.eip + 1, 2);
+    int32_t tmp = instr_fetch(cpu.eip + 2, 2);
     tmp = tmp << 16 >> 16;
     uint32_t target = cpu.eip + tmp;
 	if(!cpu.eflags.ZF) {
@@ -23,7 +23,7 @@ make_helper(jne_rel_w) {
 }
 
 make_helper(jne_rel_l) {
-    int32_t tmp = instr_fetch(cpu.eip + 1, 4);
+    int32_t tmp = instr_fetch(cpu.eip + 2, 4);
     uint32_t target = cpu.eip + tmp;
 	if(!cpu.eflags.ZF) {
 		cpu.eip = target;
