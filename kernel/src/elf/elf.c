@@ -52,9 +52,7 @@ uint32_t loader() {
             // TODO: p_filesz not 4 times
             // p_filesz == 30
             uint32_t trade_off = (ph->p_filesz + 3) / 4 * 4;
-            if(trade_off == 32)
-                return 0;
-            ramdisk_read((void *)ph->p_vaddr, ELF_OFFSET_IN_DISK + ph->p_offset, ph->p_filesz);
+            ramdisk_read((void *)ph->p_vaddr, ELF_OFFSET_IN_DISK + ph->p_offset, trade_off);
 #else
             panic("please implement me");
 #endif
