@@ -49,6 +49,13 @@ uint32_t loader() {
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
 			 */
 #ifndef HAS_DEVICE
+            // TODO: p_filesz not 4 times
+            if(ph->p_filesz == 30)
+                panic("filessize == 30");
+            if(ph->p_filesz == 28)
+                panic("filessize == 28");
+            if(ph->p_filesz == 7)
+                panic("filessize == 7");
             ramdisk_read((void *)ph->p_vaddr, ELF_OFFSET_IN_DISK + ph->p_offset, ph->p_filesz);
 #else
             panic("please implement me");
