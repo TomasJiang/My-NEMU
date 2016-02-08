@@ -32,6 +32,7 @@
 #include "logic/shrd.h"
 #include "logic/test.h"
 #include "logic/setne.h"
+#include "logic/sete.h"
 
 #include "control/call.h"
 #include "control/leave.h"
