@@ -8,6 +8,8 @@
  * a physical one, which is necessary for a microkernel.
  */
 void ramdisk_read(uint8_t *buf, uint32_t offset, uint32_t len) {
+    if(len == 30)
+        set_bp();
 	memcpy(buf, RAMDISK_START + offset, len);
 }
 
