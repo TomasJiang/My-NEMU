@@ -54,7 +54,7 @@ static int cmd_cache(char *args) {
     } else {
         uint32_t addr = atoi(args);
         uint32_t res = cache_read(addr, 4);
-        printf("0x%x", res);
+        printf("0x%x\n", res);
     }
 
     return 0;
