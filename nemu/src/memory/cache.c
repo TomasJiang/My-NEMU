@@ -47,6 +47,7 @@ void find_row_write(uint8_t *buf, uint32_t set_num, uint32_t tag) {
         Log("i = %d", i);
         cache[set_num][row_num].block[i] = buf[i];
     }
+    Log("tag = %u", tag);
     cache[set_num][row_num].tag   = tag;
     cache[set_num][row_num].valid = true;
 }
