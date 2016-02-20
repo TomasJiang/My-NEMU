@@ -110,7 +110,7 @@ void cache_write_prime(uint32_t addr, uint8_t *buf, uint8_t *mask, uint32_t set_
 }
 
 void cache_write(uint32_t addr, size_t len, uint32_t data) {
-    Log("cache_write: addr = 0x%x, len = %d, data = 0x%x", addr, len, data);
+    // Log("cache_write: addr = 0x%x, len = %d, data = 0x%x", addr, len, data);
     uint32_t tag     = addr >> (CB_WIDTH + CC_SET_WIDTH);
     uint32_t set_num = (addr & CC_SET_MASK) >> CB_WIDTH;
     uint32_t offset  = addr & CB_BLOCK_MASK;
@@ -123,7 +123,8 @@ void cache_write(uint32_t addr, size_t len, uint32_t data) {
 
     cache_write_prime(addr, buf, mask, set_num, tag);
     if (offset + len > CB_SIZE) {
-        cache_write_prime(addr, buf + CB_SIZE, mask, (set_num + 1) % CC_SET_SIZE, tag);
+        cache_write_prime(addr + CB_SIZE,
+                buf + CB_SIZE, mask, (set_num + 1) % CC_SET_SIZE, tag);
     }
 
     dram_write(addr, len, data);
