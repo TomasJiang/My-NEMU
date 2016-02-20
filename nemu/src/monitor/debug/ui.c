@@ -37,7 +37,7 @@ static int cmd_c(char *args) {
 
 static int cmd_cache(char *args) {
     if (!args) {
-        printf("USAGE: cache all/NUM\n");
+        printf("USAGE: cache all/ADDR\n");
         return 0;
     }
     if (strcmp(args, "all") == 0) {
@@ -51,6 +51,10 @@ static int cmd_cache(char *args) {
             }
             printf("\n");
         }
+    } else {
+        uint32_t addr = atoi(args);
+        uint32_t res = cache_read(addr, 4);
+        printf("0x%x", res);
     }
 
     return 0;
