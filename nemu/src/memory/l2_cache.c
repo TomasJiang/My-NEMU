@@ -85,7 +85,7 @@ static void L2_cache_read_prime(uint32_t addr, uint8_t *buf, uint32_t set_num, u
 
 uint32_t L2_cache_read(uint32_t addr, size_t len) {
     Assert(len == 1 || len == 2 || len == 4, "L2_cache read not 1/2/4");
-    // Log("L2_cache_read: addr = 0x%x, len = %d", addr, len);
+    Log("L2_cache_read: addr = 0x%x, len = %d", addr, len);
 
     uint8_t  buf[2 * L2_CC_BLOCK_SIZE];
     uint32_t tag     = addr >> (L2_CC_BLOCK_WIDTH + L2_CC_SET_WIDTH);
@@ -125,7 +125,7 @@ static void L2_cache_write_prime(uint32_t addr, uint8_t *buf, uint8_t *mask, uin
 }
 
 void L2_cache_write(uint32_t addr, size_t len, uint32_t data) {
-    // Log("L2_cache_write: addr = 0x%x, len = %d, data = 0x%x", addr, len, data);
+    Log("L2_cache_write: addr = 0x%x, len = %d, data = 0x%x", addr, len, data);
     uint32_t tag     = addr >> (L2_CC_BLOCK_WIDTH + L2_CC_SET_WIDTH);
     uint32_t set_num = (addr & L2_CC_SET_MASK) >> L2_CC_BLOCK_WIDTH;
     uint32_t offset  = addr & L2_CC_BLOCK_MASK;
