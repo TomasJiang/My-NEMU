@@ -13,13 +13,15 @@ uint32_t  dram_read(hwaddr_t, size_t);
 uint32_t dram_write(hwaddr_t, size_t, uint32_t);
 
 void dram_read_block(uint32_t addr, uint8_t *buf) {
-    for (int i = 0; i < CB_SIZE; ++i) {
+    int i;
+    for (i = 0; i < CB_SIZE; ++i) {
         buf[i] = dram_read(addr & (~CB_BLOCK_MASK + i), 1);
     }
 }
 
 uint32_t find_row(uint32_t set_num) {
-    for (uint32_t i = 0; i < CC_ROW_SIZE; ++i) {
+    uint32_t i;
+    for (i = 0; i < CC_ROW_SIZE; ++i) {
         if (!cache[set_num][i].valid) {
             return i;
         }
@@ -32,7 +34,8 @@ uint32_t find_row(uint32_t set_num) {
 
 void find_row_write(uint8_t *buf, uint32_t set_num, uint32_t tag) {
     uint32_t row_num = find_row(set_num);
-    for (int i = 0; i < CB_SIZE; ++i) {
+    int i;
+    for (i = 0; i < CB_SIZE; ++i) {
         cache[set_num][row_num].block[i] = buf[i];
     }
     cache[set_num][row_num].tag   = tag;
@@ -44,7 +47,8 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     uint32_t tag     = addr >> (CB_WIDTH + CC_SET_WIDTH);
     uint32_t set_num = (addr & CC_SET_MASK) >> CB_WIDTH;
     uint32_t offset  = addr & CB_BLOCK_MASK;
-    for (int i = 0; i < CC_ROW_SIZE; ++i) {
+    int i;
+    for (i = 0; i < CC_ROW_SIZE; ++i) {
         if (cache[set_num][i].valid && cache[set_num][i].tag == tag) {
             return cache[set_num][i].block[offset];
         }
