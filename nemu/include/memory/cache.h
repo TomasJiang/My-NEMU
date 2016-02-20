@@ -12,7 +12,7 @@
 #define CC_ROW_SIZE   (1 << CC_ROW_WIDTH)
 #define CB_SIZE       (1 << CB_WIDTH)
 #define CC_SET_MASK   (((1 << CC_SET_WIDTH) - 1) << CB_WIDTH)
-#define CB_BLOCK_MASK  ((1 << 6) - 1)
+#define CB_BLOCK_MASK  ((1 << CB_WIDTH) - 1)
 
 typedef struct cache_block {
     bool     valid;
