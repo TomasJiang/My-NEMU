@@ -44,7 +44,7 @@ void find_row_write(uint8_t *buf, uint32_t set_num, uint32_t tag) {
 }
 
 uint32_t cache_read(uint32_t addr, size_t len) {
-    //Log("addr = 0x%x, len = %d", addr, len);
+    Log("cache_read: addr = 0x%x, len = %d", addr, len);
     uint32_t tag     = addr >> (CB_WIDTH + CC_SET_WIDTH);
     uint32_t set_num = (addr & CC_SET_MASK) >> CB_WIDTH;
     uint32_t offset  = addr & CB_BLOCK_MASK;
@@ -68,6 +68,7 @@ uint32_t cache_read(uint32_t addr, size_t len) {
 }
 
 void cache_write(uint32_t addr, size_t len, uint32_t data) {
+    Log("cache_write: addr = 0x%x, len = %d, data = %u", addr, len, data);
     uint32_t tag     = addr >> (CB_WIDTH + CC_SET_WIDTH);
     uint32_t set_num = (addr & CC_SET_MASK) >> CB_WIDTH;
     uint32_t offset  = addr & CB_BLOCK_MASK;
