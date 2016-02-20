@@ -41,6 +41,7 @@ uint32_t find_row(uint32_t set_num) {
 
 void find_row_write(uint8_t *buf, uint32_t set_num, uint32_t tag) {
     uint32_t row_num = find_row(set_num);
+    Log("row_num = %u", row_num);
     int i;
     for (i = 0; i < CB_SIZE; ++i) {
         cache[set_num][row_num].block[i] = buf[i];
