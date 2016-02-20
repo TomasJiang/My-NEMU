@@ -23,11 +23,11 @@ typedef struct cache_block {
     // void (*write) (struct cache_block *this, uint32_t addr, uint32_t data);
 } cache_block;
 
-cache_block cache[L1_CC_SET_SIZE][L1_CC_ROW_SIZE];
+cache_block L1_cache[L1_CC_SET_SIZE][L1_CC_ROW_SIZE];
 
-void init_cache();
-uint32_t cache_read(uint32_t addr, size_t len);
-void cache_write(uint32_t addr, size_t len, uint32_t data);
+void init_L1_cache();
+uint32_t L1_cache_read(uint32_t addr, size_t len);
+void L1_cache_write(uint32_t addr, size_t len, uint32_t data);
 
 
 #endif
