@@ -7,10 +7,10 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 /* Memory accessing interfaces */
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-    bool *success = (bool *)malloc(sizeof(bool));
-    uint32_t res = cache_read(addr, len, success);
-    if (*success == true)
-        return res;
+    // bool *success = (bool *)malloc(sizeof(bool));
+    // uint32_t res = cache_read(addr, len, success);
+    // if (*success == true)
+    //     return res;
 	return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 }
 
