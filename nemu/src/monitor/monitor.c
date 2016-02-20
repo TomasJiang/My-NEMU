@@ -8,6 +8,7 @@ extern char *exec_file;
 
 void load_elf_tables(int, char *[]);
 void init_L1_cache();
+void init_L2_cache();
 void init_regex();
 void init_wp_pool();
 void init_ddr3();
@@ -78,6 +79,7 @@ static void load_entry() {
 void restart() {
 	/* Perform some initialization to restart a program */
     init_L1_cache();
+    init_L2_cache();
 #ifdef USE_RAMDISK
 	/* Read the file with name `argv[1]' into ramdisk. */
 	init_ramdisk();

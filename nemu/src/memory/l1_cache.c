@@ -1,10 +1,9 @@
 #include <stdlib.h>
 #include "common.h"
 #include "misc.h"
-#include "memory/cache.h"
+#include "memory/l1_cache.h"
+#include "memory/l2_cache.h"
 
-uint32_t  dram_read(hwaddr_t, size_t);
-uint32_t dram_write(hwaddr_t, size_t, uint32_t);
 
 void init_L1_cache() {
     // Log("init_L1_cache");
@@ -20,10 +19,11 @@ void init_L1_cache() {
             L1_cache[i][j].valid = false;
 }
 
-static void dram_read_block(uint32_t addr, uint8_t *buf) {
+static void read_block(uint32_t addr, uint8_t *buf) {
     int i;
     for (i = 0; i < L1_CC_BLOCK_SIZE; ++i) {
-        buf[i] = dram_read((addr & ~L1_CC_BLOCK_MASK) + i, 1);
+        // buf[i] = dram_read((addr & ~L1_CC_BLOCK_MASK) + i, 1);
+        buf[i] = L2_cache_read((addr & ~L1_CC_BLOCK_MASK) + i, 1);
     }
 }
 
@@ -67,7 +67,7 @@ static void cache_read_prime(uint32_t addr, uint8_t *buf, uint32_t set_num, uint
     }
     if (!is_hit) {
         // Log("missed");
-        dram_read_block(addr & ~L1_CC_BLOCK_MASK, buf);
+        read_block(addr & ~L1_CC_BLOCK_MASK, buf);
         find_row_write(buf, set_num, tag);
     }
 }
@@ -119,5 +119,5 @@ void L1_cache_write(uint32_t addr, size_t len, uint32_t data) {
                 buf + L1_CC_BLOCK_SIZE, mask, (set_num + 1) % L1_CC_SET_SIZE, tag);
     }
 
-    dram_write(addr, len, data);
+    L2_cache_write(addr, len, data);
 }

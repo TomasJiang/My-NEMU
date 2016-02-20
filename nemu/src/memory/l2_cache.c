@@ -1,26 +1,28 @@
 #include <stdlib.h>
 #include "common.h"
 #include "misc.h"
-#include "memory/cache.h"
+#include "memory/l2_cache.h"
 
 uint32_t  dram_read(hwaddr_t, size_t);
 uint32_t dram_write(hwaddr_t, size_t, uint32_t);
 
 void init_L2_cache() {
-    // Log("init_L2_cache");
-    // Log("L2_CC_SIZE\t\t%u", L2_CC_SIZE);
-    // Log("L2_CC_SET_SIZE\t%u", L2_CC_SET_SIZE);
-    // Log("L2_CC_ROW_SIZE\t%u", L2_CC_ROW_SIZE);
-    // Log("L2_CC_BLOCK_SIZE\t\t%u", CB_SIZE);
-    // Log("L2_CC_SET_MASK\t%x", L2_CC_SET_MASK);
-    // Log("L2_CC_BLOCK_MASK\t%x", L2_CC_BLOCK_MASK);
+    Log("init_L2_cache");
+    Log("L2_CC_SIZE\t\t%u", L2_CC_SIZE);
+    Log("L2_CC_SET_SIZE\t%u", L2_CC_SET_SIZE);
+    Log("L2_CC_ROW_SIZE\t%u", L2_CC_ROW_SIZE);
+    Log("L2_CC_BLOCK_SIZE\t\t%u", L2_CC_BLOCK_SIZE);
+    Log("L2_CC_SET_MASK\t%x", L2_CC_SET_MASK);
+    Log("L2_CC_BLOCK_MASK\t%x", L2_CC_BLOCK_MASK);
     int i, j;
     for (i = 0; i < L2_CC_SET_SIZE; ++i)
-        for (j = 0; j < L2_CC_ROW_SIZE; ++j)
+        for (j = 0; j < L2_CC_ROW_SIZE; ++j) {
             L2_cache[i][j].valid = false;
+            L2_cache[i][j].dirty = false;
+        }
 }
 
-static void dram_read_block(uint32_t addr, uint8_t *buf) {
+static void read_block(uint32_t addr, uint8_t *buf) {
     int i;
     for (i = 0; i < L2_CC_BLOCK_SIZE; ++i) {
         buf[i] = dram_read((addr & ~L2_CC_BLOCK_MASK) + i, 1);
@@ -35,16 +37,25 @@ static uint32_t find_row(uint32_t set_num) {
         }
     }
 
-    // choose one to replace
-    // srand(time(0));
     return rand() % L2_CC_ROW_SIZE;
 }
 
 static void find_row_write(uint8_t *buf, uint32_t set_num, uint32_t tag) {
     uint32_t row_num = find_row(set_num);
+    if (L2_cache[set_num][row_num].valid
+            && L2_cache[set_num][row_num].dirty) {
+        // write back
+        uint32_t addr = ((((tag << L2_CC_SET_WIDTH)
+                        + set_num) << L2_CC_ROW_WIDTH) + row_num) << L2_CC_BLOCK_WIDTH;
+        int i;
+        for (i = 0; i < L2_CC_BLOCK_SIZE; ++i) {
+            dram_write(addr + i, 1, buf[i]);
+        }
+    }
     memcpy(L2_cache[set_num][row_num].block, buf, L2_CC_BLOCK_SIZE);
     L2_cache[set_num][row_num].tag   = tag;
     L2_cache[set_num][row_num].valid = true;
+    L2_cache[set_num][row_num].dirty = false;
 }
 
 // static void print_buf(uint8_t *buf) {
@@ -67,7 +78,7 @@ static void L2_cache_read_prime(uint32_t addr, uint8_t *buf, uint32_t set_num, u
     }
     if (!is_hit) {
         // Log("missed");
-        dram_read_block(addr & ~L2_CC_BLOCK_MASK, buf);
+        read_block(addr & ~L2_CC_BLOCK_MASK, buf);
         find_row_write(buf, set_num, tag);
     }
 }
@@ -87,17 +98,29 @@ uint32_t L2_cache_read(uint32_t addr, size_t len) {
                 buf + L2_CC_BLOCK_SIZE, (set_num + 1) % L2_CC_SET_SIZE, tag);
     }
 
-
     uint32_t res = unalign_rw(buf + offset, 4);
     return res & (~0u >> ((4 - len) << 3));
 }
 
 static void L2_cache_write_prime(uint32_t addr, uint8_t *buf, uint8_t *mask, uint32_t set_num, uint32_t tag) {
+    bool is_hit = false;
     int i;
     for (i = 0; i < L2_CC_ROW_SIZE; ++i) {
         if (L2_cache[set_num][i].valid && L2_cache[set_num][i].tag == tag) {
+            is_hit = true;
             memcpy_with_mask(L2_cache[set_num][i].block, buf, L2_CC_BLOCK_SIZE, mask);
+            L2_cache[set_num][i].dirty = true;
         }
+    }
+    if (!is_hit) { // write allocate
+        int i;
+        for (i = 0; i < L2_CC_ROW_SIZE; ++i) {
+            if (mask[i])
+                dram_write((addr & ~L2_CC_BLOCK_MASK) + i, 1, buf[i]);
+        } // write dram
+        read_block(addr, buf);
+        find_row_write(buf, set_num, tag);
+        // write cache
     }
 }
 
@@ -118,6 +141,4 @@ void L2_cache_write(uint32_t addr, size_t len, uint32_t data) {
         L2_cache_write_prime(addr + L2_CC_BLOCK_SIZE,
                 buf + L2_CC_BLOCK_SIZE, mask, (set_num + 1) % L2_CC_SET_SIZE, tag);
     }
-
-    dram_write(addr, len, data);
 }
