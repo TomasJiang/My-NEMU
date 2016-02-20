@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "common.h"
+#include "misc.h"
 #include "memory/cache.h"
 
 void init_cache() {
@@ -83,11 +84,11 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     return res & (~0u >> ((4 - len) << 3));
 }
 
-void cache_write_prime(uint32_t addr, uint8_t *buf, uint32_t set_num, uint32_t tag) {
+void cache_write_prime(uint32_t addr, uint8_t *buf, uint8_t *mask, uint32_t set_num, uint32_t tag) {
     int i;
     for (i = 0; i < CC_ROW_SIZE; ++i) {
         if (cache[set_num][i].valid && cache[set_num][i].tag == tag) {
-            memcpy(cache[set_num][i].block, buf, CB_SIZE);
+            memcpy_with_mask(cache[set_num][i].block, buf, CB_SIZE, mask);
         }
     }
 }
@@ -102,10 +103,11 @@ void cache_write(uint32_t addr, size_t len, uint32_t data) {
     uint8_t mask[2 * CB_SIZE];
     memset(mask, 0, 2 * CB_SIZE);
     *(uint32_t *)(buf + offset) = data;
+    memset(mask + offset, 1, len);
 
-    cache_write_prime(addr, buf, set_num, tag);
+    cache_write_prime(addr, buf, mask, set_num, tag);
     if (offset + len > CB_SIZE) {
-        cache_write_prime(addr, buf, (set_num + 1) % CC_SET_SIZE, tag);
+        cache_write_prime(addr, buf, mask, (set_num + 1) % CC_SET_SIZE, tag);
     }
 
     dram_write(addr, len, data);
