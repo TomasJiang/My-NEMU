@@ -3,6 +3,7 @@
 #include "memory/cache.h"
 
 void init_cache() {
+    Log("init_cache");
     int i, j;
     for (i = 0; i < CC_SET_SIZE; ++i)
         for (j = 0; j < CC_ROW_SIZE; ++j)
