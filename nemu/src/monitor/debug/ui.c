@@ -40,19 +40,6 @@ static int cmd_cache(char *args) {
         printf("USAGE: cache all/ADDR\n");
         return 0;
     }
-    if (strcmp(args, "all") == 0) {
-        int i, j, k;
-        for (j = 0; j < CC_ROW_SIZE; ++j) {
-            for (i = 0; i < CC_SET_SIZE; ++i) {
-                for (k = 0; k < CB_SIZE; ++k) {
-                    printf("%02x ", cache[i][j].block[k]);
-                }
-                printf("\t");
-            }
-            printf("\n");
-        }
-    } else {
-    }
 
     return 0;
 }
