@@ -22,7 +22,7 @@ uint32_t dram_write(hwaddr_t, size_t, uint32_t);
 void dram_read_block(uint32_t addr, uint8_t *buf) {
     int i;
     for (i = 0; i < CB_SIZE; ++i) {
-        buf[i] = dram_read(addr & (~CB_BLOCK_MASK + i), 1);
+        buf[i] = dram_read((addr & ~CB_BLOCK_MASK) + i, 1);
     }
 }
 
