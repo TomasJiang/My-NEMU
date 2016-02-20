@@ -81,6 +81,7 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     }
 
     uint32_t res = unalign_rw(buf + offset, 4);
+    Log("res = 0x%x", res & (~0u >> ((4 - len) << 3)));
     return res & (~0u >> ((4 - len) << 3));
 }
 
