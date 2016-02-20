@@ -66,6 +66,14 @@ void cache_read_prime(uint32_t addr, uint8_t *buf, uint32_t set_num, uint32_t ta
     }
 }
 
+void print_buf(uint8_t *buf) {
+    int i;
+    for (i = 0; i < CB_SIZE; ++i) {
+        printf("%02x ", buf[i]);
+    }
+    printf("\n");
+}
+
 uint32_t cache_read(uint32_t addr, size_t len) {
     Assert(len == 1 || len == 2 || len == 4, "cache read not 1/2/4");
     Log("cache_read: addr = 0x%x, len = %d", addr, len);
@@ -76,19 +84,14 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     uint32_t offset  = addr & CB_BLOCK_MASK;
 
     cache_read_prime(addr, buf, set_num, tag);
+    print_buf(buf);
+    print_buf(buf + CB_SIZE);
     if (offset + len > CB_SIZE) {
         cache_read_prime(addr/*TODO*/, buf + CB_SIZE, (set_num + 1) % CC_SET_SIZE, tag);
+        print_buf(buf);
+        print_buf(buf + CB_SIZE);
     }
 
-    int i;
-    for (i = 0; i < CB_SIZE; ++i) {
-        printf("%02x ", buf[i]);
-    }
-    printf("\n");
-    for (i = CB_SIZE; i < 2 * CB_SIZE; ++i) {
-        printf("%02x ", buf[i]);
-    }
-    printf("\n");
 
     uint32_t res = unalign_rw(buf + offset, 4);
     Log("res = 0x%x", res & (~0u >> ((4 - len) << 3)));
