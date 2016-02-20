@@ -50,6 +50,7 @@ void find_row_write(uint8_t *buf, uint32_t set_num, uint32_t tag) {
     Log("tag = %u", tag);
     cache[set_num][row_num].tag   = tag;
     cache[set_num][row_num].valid = true;
+    Log("find_row_write finished");
 }
 
 uint32_t cache_read(uint32_t addr, size_t len) {
