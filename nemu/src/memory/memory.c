@@ -1,6 +1,5 @@
 #include "common.h"
 #include "memory/l1_cache.h"
-#include "memory/l2_cache.h"
 
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
@@ -9,14 +8,14 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
     // Log("hwaddr_read: addr = 0x%x", addr);
-    return L2_cache_read(addr, len);
+    return L1_cache_read(addr, len);
 	// uint32_t res = dram_read(addr, len) & (~0u >> ((4 - len) << 3));
     // return res;
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
     // Log("addr = 0x%x, len = %d, data = 0x%x", addr, len, data);
-    L2_cache_write(addr, len, data);
+    L1_cache_write(addr, len, data);
 	// dram_write(addr, len, data);
 }
 
