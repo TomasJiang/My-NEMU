@@ -68,7 +68,7 @@ void cache_read_prime(uint32_t addr, uint8_t *buf, uint32_t set_num, uint32_t ta
 
 uint32_t cache_read(uint32_t addr, size_t len) {
     Assert(len == 1 || len == 2 || len == 4, "cache read not 1/2/4");
-    // Log("cache_read: addr = 0x%x, len = %d", addr, len);
+    Log("cache_read: addr = 0x%x, len = %d", addr, len);
 
     uint8_t  buf[2 * CB_SIZE];
     uint32_t tag     = addr >> (CB_WIDTH + CC_SET_WIDTH);
@@ -94,7 +94,7 @@ void cache_write_prime(uint32_t addr, uint8_t *buf, uint8_t *mask, uint32_t set_
 }
 
 void cache_write(uint32_t addr, size_t len, uint32_t data) {
-    // Log("cache_write: addr = 0x%x, len = %d, data = 0x%x", addr, len, data);
+    Log("cache_write: addr = 0x%x, len = %d, data = 0x%x", addr, len, data);
     uint32_t tag     = addr >> (CB_WIDTH + CC_SET_WIDTH);
     uint32_t set_num = (addr & CC_SET_MASK) >> CB_WIDTH;
     uint32_t offset  = addr & CB_BLOCK_MASK;
