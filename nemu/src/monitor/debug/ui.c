@@ -45,7 +45,7 @@ static int cmd_cache(char *args) {
         for (j = 0; j < CC_ROW_SIZE; ++j) {
             for (i = 0; i < CC_SET_SIZE; ++i) {
                 for (k = 0; k < CB_SIZE; ++k) {
-                    printf("%x ", cache[i][j].block[k]);
+                    printf("%2x ", cache[i][j].block[k]);
                 }
                 printf("\t");
             }
