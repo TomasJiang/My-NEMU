@@ -88,7 +88,7 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     print_buf(buf);
     print_buf(buf + CB_SIZE);
     if (offset + len > CB_SIZE) {
-        cache_read_prime(addr/*TODO*/, buf + CB_SIZE, (set_num + 1) % CC_SET_SIZE, tag);
+        cache_read_prime(addr + CB_SIZE, buf + CB_SIZE, (set_num + 1) % CC_SET_SIZE, tag);
         print_buf(buf);
         print_buf(buf + CB_SIZE);
     }
