@@ -66,6 +66,7 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     for (i = 0; i < CC_ROW_SIZE; ++i) {
         if (cache[set_num][i].valid && cache[set_num][i].tag == tag) {
             Log("hit");
+            Log("res = 0x%02x", cache[set_num][i].block[offset]);
             return cache[set_num][i].block[offset];
         }
     }
@@ -94,7 +95,7 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     }
 
     uint32_t res = unalign_rw(buf + offset, 4) & (~0u >> ((4 - len) << 3));
-    Log("res = 1x%x", res);
+    Log("res = 0x%02x", res);
     return res;
 }
 
