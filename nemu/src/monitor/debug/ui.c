@@ -52,9 +52,13 @@ static int cmd_cache(char *args) {
             printf("\n");
         }
     } else {
+        bool *success = (bool *)malloc(sizeof(bool));
         uint32_t addr = atoi(args);
-        uint32_t res = cache_read(addr, 4);
-        printf("0x%x\n", res);
+        uint32_t res = cache_read(addr, 4, success);
+        if (*success)
+            printf("0x%x\n", res);
+        else
+            printf("cache is unvalid.\n");
     }
 
     return 0;
