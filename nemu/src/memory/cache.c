@@ -77,8 +77,11 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     find_row_write(buf, set_num, tag);
     Log("find_row_write finished");
 
-    for(i = 0; i < CC_ROW_SIZE; ++i)
+    for(i = 0; i < CB_SIZE; ++i)
         printf("%02x ", buf[i]);
+    printf("\n");
+    for(i = 1; i < CB_SIZE; ++i)
+        printf("%02x ", cache[0][0].block[i]);
     printf("\n");
 
     if (offset + len > CB_SIZE) {
