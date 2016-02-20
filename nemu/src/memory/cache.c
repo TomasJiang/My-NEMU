@@ -65,6 +65,7 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     int i;
     for (i = 0; i < CC_ROW_SIZE; ++i) {
         if (cache[set_num][i].valid && cache[set_num][i].tag == tag) {
+            Log("hit");
             return cache[set_num][i].block[offset];
         }
     }
