@@ -108,7 +108,7 @@ void cache_write(uint32_t addr, size_t len, uint32_t data) {
 
     cache_write_prime(addr, buf, mask, set_num, tag);
     if (offset + len > CB_SIZE) {
-        cache_write_prime(addr, buf, mask, (set_num + 1) % CC_SET_SIZE, tag);
+        cache_write_prime(addr, buf + CB_SIZE, mask, (set_num + 1) % CC_SET_SIZE, tag);
     }
 
     dram_write(addr, len, data);
