@@ -58,13 +58,13 @@ static void find_row_write(uint8_t *buf, uint32_t set_num, uint32_t tag) {
     L2_cache[set_num][row_num].dirty = false;
 }
 
-static void print_buf(uint8_t *buf) {
-    int i;
-    for (i = 0; i < L2_CC_BLOCK_SIZE; ++i) {
-        printf("%02x ", buf[i]);
-    }
-    printf("\n");
-}
+// static void print_buf(uint8_t *buf) {
+//     int i;
+//     for (i = 0; i < L2_CC_BLOCK_SIZE; ++i) {
+//         printf("%02x ", buf[i]);
+//     }
+//     printf("\n");
+// }
 
 static void L2_cache_read_prime(uint32_t addr, uint8_t *buf, uint32_t set_num, uint32_t tag) {
     bool is_hit = false;
@@ -116,7 +116,7 @@ static void L2_cache_write_prime(uint32_t addr, uint8_t *buf, uint8_t *mask, uin
     }
     if (!is_hit) { // write allocate
         // Log("missed");
-        print_buf(mask);
+        // print_buf(mask);
         int i;
         for (i = 0; i < L2_CC_BLOCK_SIZE; ++i) {
             if (mask[i]) {
@@ -143,8 +143,8 @@ void L2_cache_write(uint32_t addr, size_t len, uint32_t data) {
     *(uint32_t *)(buf + offset) = data;
     memset(mask + offset, 1, len);
 
-    print_buf(buf);
-    print_buf(mask);
+    // print_buf(buf);
+    // print_buf(mask);
 
     L2_cache_write_prime(addr, buf, mask, set_num, tag);
     if (offset + len > L2_CC_BLOCK_SIZE) {
