@@ -23,5 +23,6 @@ uint32_t cache_read(uint32_t addr, size_t len, bool *success) {
             return cache[set_num][i].block[offset];
         }
     }
-    return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
+    return 0;
+    // return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 }
