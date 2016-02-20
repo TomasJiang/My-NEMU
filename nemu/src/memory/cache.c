@@ -77,7 +77,7 @@ uint32_t cache_read(uint32_t addr, size_t len) {
 
     cache_read_prime(addr, buf, set_num, tag);
     if (offset + len > CB_SIZE) {
-        cache_read_prime(addr, buf, (set_num + 1) % CC_SET_SIZE, tag);
+        cache_read_prime(addr/*TODO*/, buf + CC_SET_SIZE, (set_num + 1) % CC_SET_SIZE, tag);
     }
 
     uint32_t res = unalign_rw(buf + offset, 4);
