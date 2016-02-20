@@ -7,15 +7,17 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 /* Memory accessing interfaces */
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-    return cache_read(addr, len);
-	// uint32_t res = dram_read(addr, len) & (~0u >> ((4 - len) << 3));
-    // Log("res = 1x%x", res);
-    // return res;
+    // return cache_read(addr, len);
+    Log("addr = 0x%x", addr);
+	uint32_t res = dram_read(addr, len) & (~0u >> ((4 - len) << 3));
+    Log("res = 0x%02x", res);
+    return res;
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
-    cache_write(addr, len, data);
-	//dram_write(addr, len, data);
+    // cache_write(addr, len, data);
+    Log("addr = 0x%x", addr);
+	dram_write(addr, len, data);
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
