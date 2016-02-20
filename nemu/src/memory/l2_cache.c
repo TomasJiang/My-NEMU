@@ -7,13 +7,13 @@ uint32_t  dram_read(hwaddr_t, size_t);
 uint32_t dram_write(hwaddr_t, size_t, uint32_t);
 
 void init_L2_cache() {
-    Log("init_L2_cache");
-    Log("L2_CC_SIZE\t%u", L2_CC_SIZE);
-    Log("L2_CC_SET_SIZE\t%u", L2_CC_SET_SIZE);
-    Log("L2_CC_ROW_SIZE\t%u", L2_CC_ROW_SIZE);
-    Log("L2_CC_BLOCK_SIZE\t%u", L2_CC_BLOCK_SIZE);
-    Log("L2_CC_SET_MASK\t%x", L2_CC_SET_MASK);
-    Log("L2_CC_BLOCK_MASK\t%x", L2_CC_BLOCK_MASK);
+    // Log("init_L2_cache");
+    // Log("L2_CC_SIZE\t%u", L2_CC_SIZE);
+    // Log("L2_CC_SET_SIZE\t%u", L2_CC_SET_SIZE);
+    // Log("L2_CC_ROW_SIZE\t%u", L2_CC_ROW_SIZE);
+    // Log("L2_CC_BLOCK_SIZE\t%u", L2_CC_BLOCK_SIZE);
+    // Log("L2_CC_SET_MASK\t%x", L2_CC_SET_MASK);
+    // Log("L2_CC_BLOCK_MASK\t%x", L2_CC_BLOCK_MASK);
     int i, j;
     for (i = 0; i < L2_CC_SET_SIZE; ++i)
         for (j = 0; j < L2_CC_ROW_SIZE; ++j) {
@@ -85,7 +85,7 @@ static void L2_cache_read_prime(uint32_t addr, uint8_t *buf, uint32_t set_num, u
 
 uint32_t L2_cache_read(uint32_t addr, size_t len) {
     Assert(len == 1 || len == 2 || len == 4, "L2_cache read not 1/2/4");
-    Log("L2_cache_read: addr = 0x%x, len = %d", addr, len);
+    // Log("L2_cache_read: addr = 0x%x, len = %d", addr, len);
 
     uint8_t  buf[2 * L2_CC_BLOCK_SIZE];
     uint32_t tag     = addr >> (L2_CC_BLOCK_WIDTH + L2_CC_SET_WIDTH);
@@ -103,25 +103,25 @@ uint32_t L2_cache_read(uint32_t addr, size_t len) {
 }
 
 static void L2_cache_write_prime(uint32_t addr, uint8_t *buf, uint8_t *mask, uint32_t set_num, uint32_t tag) {
-    Log("addr = 0x%x", addr);
+    // Log("addr = 0x%x", addr);
     bool is_hit = false;
     int i;
     for (i = 0; i < L2_CC_ROW_SIZE; ++i) {
         if (L2_cache[set_num][i].valid && L2_cache[set_num][i].tag == tag) {
-            Log("hit");
+            // Log("hit");
             is_hit = true;
             memcpy_with_mask(L2_cache[set_num][i].block, buf, L2_CC_BLOCK_SIZE, mask);
             L2_cache[set_num][i].dirty = true;
         }
     }
     if (!is_hit) { // write allocate
-        Log("missed");
+        // Log("missed");
         print_buf(mask);
         int i;
         for (i = 0; i < L2_CC_BLOCK_SIZE; ++i) {
             if (mask[i]) {
-                uint32_t temp = (addr & ~L2_CC_BLOCK_MASK) + i;
-                Log("addr = 0x%x, buf[%d] = %02x", temp, i, buf[i]);
+                // uint32_t temp = (addr & ~L2_CC_BLOCK_MASK) + i;
+                // Log("addr = 0x%x, buf[%d] = %02x", temp, i, buf[i]);
                 dram_write((addr & ~L2_CC_BLOCK_MASK) + i, 1, buf[i]);
             }
         } // write dram
@@ -132,7 +132,7 @@ static void L2_cache_write_prime(uint32_t addr, uint8_t *buf, uint8_t *mask, uin
 }
 
 void L2_cache_write(uint32_t addr, size_t len, uint32_t data) {
-    Log("L2_cache_write: addr = 0x%x, len = %d, data = 0x%x", addr, len, data);
+    // Log("L2_cache_write: addr = 0x%x, len = %d, data = 0x%x", addr, len, data);
     uint32_t tag     = addr >> (L2_CC_BLOCK_WIDTH + L2_CC_SET_WIDTH);
     uint32_t set_num = (addr & L2_CC_SET_MASK) >> L2_CC_BLOCK_WIDTH;
     uint32_t offset  = addr & L2_CC_BLOCK_MASK;
