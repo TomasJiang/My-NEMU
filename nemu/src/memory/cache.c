@@ -81,8 +81,12 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     }
 
     int i;
-    for (i = 0; i < 2 * CB_SIZE; ++i) {
-        printf("%02X ", buf[i]);
+    for (i = 0; i < CB_SIZE; ++i) {
+        printf("%02x ", buf[i]);
+    }
+    printf("\n");
+    for (i = CB_SIZE; i < 2 * CB_SIZE; ++i) {
+        printf("%02x ", buf[i]);
     }
     printf("\n");
 
