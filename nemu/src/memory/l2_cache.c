@@ -118,7 +118,7 @@ static void L2_cache_write_prime(uint32_t addr, uint8_t *buf, uint8_t *mask, uin
         Log("missed");
         print_buf(mask);
         int i;
-        for (i = 0; i < L2_CC_ROW_SIZE; ++i) {
+        for (i = 0; i < L2_CC_BLOCK_SIZE; ++i) {
             if (mask[i]) {
                 uint32_t temp = (addr & ~L2_CC_BLOCK_MASK) + i;
                 Log("addr = 0x%x, buf[%d] = %02x", temp, i, buf[i]);
