@@ -91,7 +91,8 @@ uint32_t cache_read(uint32_t addr, size_t len) {
         find_row_write(buf + CB_SIZE, set_num, tag);
     }
 
-    return unalign_rw(buf + offset, 4);
+    uint32_t res = unalign_rw(buf + offset, 4);
+    return res;
 }
 
 void cache_write(uint32_t addr, size_t len, uint32_t data) {
