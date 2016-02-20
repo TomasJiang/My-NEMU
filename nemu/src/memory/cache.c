@@ -65,16 +65,16 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     int i;
     for (i = 0; i < CC_ROW_SIZE; ++i) {
         if (cache[set_num][i].valid && cache[set_num][i].tag == tag) {
-            // Log("hit");
+            Log("hit");
             // TODO
             uint32_t res = (*(uint32_t *)(cache[set_num][i].block + offset));
-            // Log("res = 0x%02x", res & (~0u >> ((4 - len) << 3)));
+            Log("res = 0x%02x", res & (~0u >> ((4 - len) << 3)));
             return res & (~0u >> ((4 - len) << 3));
         }
     }
 
     // missed
-    // Log("missed");
+    Log("missed");
     uint8_t buf[2 * CB_SIZE];
     // Log("dram_read_block");
     dram_read_block(addr & ~CB_BLOCK_MASK, buf);
@@ -91,7 +91,7 @@ uint32_t cache_read(uint32_t addr, size_t len) {
 
     // uint32_t res = unalign_rw(buf + offset, 4) & (~0u >> ((4 - len) << 3));
     uint32_t res = unalign_rw(buf + offset, 4);
-    // Log("res = 0x%x", res);
+    Log("res = 0x%x", res);
     return res & (~0u >> ((4 - len) << 3));
 }
 
