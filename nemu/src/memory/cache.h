@@ -25,6 +25,7 @@ typedef struct cache_block {
 
 cache_block cache[CC_SET_SIZE][CC_ROW_SIZE];
 
+void init_cache();
 uint32_t cache_read(uint32_t addr, size_t len);
 
 

@@ -1,6 +1,13 @@
 #include "common.h"
 #include "cache.h"
 
+void init_cache() {
+    int i, j;
+    for (i = 0; i < CC_SET_SIZE; ++i)
+        for (j = 0; j < CC_ROW_SIZE; ++j)
+            cache[i][j].valid = false;
+}
+
 uint32_t dram_read(hwaddr_t, size_t);
 
 uint32_t cache_read(uint32_t addr, size_t len) {
