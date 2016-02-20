@@ -1,5 +1,5 @@
 #include "common.h"
-#include "cache.h"
+#include "memory/cache.h"
 
 void init_cache() {
     int i, j;

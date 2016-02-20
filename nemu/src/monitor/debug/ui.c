@@ -2,6 +2,7 @@
 #include "monitor/expr.h"
 #include "monitor/watchpoint.h"
 #include "nemu.h"
+#include "memory/cache.h"
 
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -32,6 +33,23 @@ char* rl_gets() {
 static int cmd_c(char *args) {
 	cpu_exec(-1);
 	return 0;
+}
+
+static int cmd_cache(char *args) {
+    if (!args) {
+        printf("USAGE: cache all/NUM\n");
+        return 0;
+    }
+    if (strcmp(args, "all") == 0) {
+        int i, j, k;
+        for (i = 0; i < CC_SET_SIZE; ++i)
+            for (j = 0; j < CC_ROW_SIZE; ++j)
+                for (k = 0; k < CB_SIZE; ++k) {
+                    printf("%x ", cache[i][j].block[k]);
+                }
+    }
+
+    return 0;
 }
 
 static int cmd_q(char *args) {
@@ -252,6 +270,7 @@ static struct {
 } cmd_table [] = {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
+	{ "cache", "print cache", cmd_cache },
 	{ "q", "Exit NEMU", cmd_q },
 	{ "si", "Step NUM instructions", cmd_si },
 	{ "info", "r-List of all registers and their contents\n\t  w-Print status of all watchpoints", cmd_info },
