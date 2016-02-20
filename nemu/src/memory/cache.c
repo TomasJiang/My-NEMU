@@ -76,18 +76,15 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     uint32_t offset  = addr & CB_BLOCK_MASK;
 
     cache_read_prime(addr, buf, set_num, tag);
+    if (offset + len > CB_SIZE) {
+        cache_read_prime(addr/*TODO*/, buf + CB_SIZE, (set_num + 1) % CC_SET_SIZE, tag);
+    }
+
     int i;
     for (i = 0; i < 2 * CB_SIZE; ++i) {
         printf("%d ", buf[i]);
     }
     printf("\n");
-    if (offset + len > CB_SIZE) {
-        cache_read_prime(addr/*TODO*/, buf + CC_SET_SIZE, (set_num + 1) % CC_SET_SIZE, tag);
-        for (i = 0; i < 2 * CB_SIZE; ++i) {
-            printf("%d ", buf[i]);
-        }
-        printf("\n");
-    }
 
     uint32_t res = unalign_rw(buf + offset, 4);
     Log("res = 0x%x", res & (~0u >> ((4 - len) << 3)));
