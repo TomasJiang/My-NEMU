@@ -7,7 +7,7 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 /* Memory accessing interfaces */
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-    return cache_read(addr, len) & (~0u >> ((4 - len) << 3));
+    return cache_read(addr, len);
 	// uint32_t res = dram_read(addr, len) & (~0u >> ((4 - len) << 3));
     // Log("res = 1x%x", res);
     // return res;
