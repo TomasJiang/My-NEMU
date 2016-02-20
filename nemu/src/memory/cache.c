@@ -42,31 +42,14 @@ uint32_t find_row(uint32_t set_num) {
 void find_row_write(uint8_t *buf, uint32_t set_num, uint32_t tag) {
     uint32_t row_num = find_row(set_num);
     // Log("row_num = %u", row_num);
-    int i;
-    for (i = 0; i < CB_SIZE; ++i) {
-        //Log("i = %d", i);
-        cache[set_num][row_num].block[i] = buf[i];
-    }
+    memcpy(cache[set_num][row_num].block, buf, CB_SIZE);
     // Log("tag = %u", tag);
     cache[set_num][row_num].tag   = tag;
     cache[set_num][row_num].valid = true;
 }
 
-uint32_t cache_read(uint32_t addr, size_t len) {
-    Assert(len == 1 || len == 2 || len == 4, "cache read not 1/2/4");
-    // Log("cache_read: addr = 0x%x, len = %d", addr, len);
-
+void cache_read_prime(uint32_t addr, uint8_t *buf, uint32_t set_num, uint32_t tag) {
     bool is_hit = false;
-    uint8_t  buf[2 * CB_SIZE];
-    uint32_t tag     = addr >> (CB_WIDTH + CC_SET_WIDTH);
-    // Log("tag = 0x%x", tag);
-    uint32_t set_num = (addr & CC_SET_MASK) >> CB_WIDTH;
-    // Log("set_num = 0x%x", set_num);
-    uint32_t offset  = addr & CB_BLOCK_MASK;
-    // Log("addr = 0x%x, CB_BLOCK_MASK = 0x%x", addr, CB_BLOCK_MASK);
-    // Log("offset  = 0x%x", offset);
-
-
     int i;
     for (i = 0; i < CC_ROW_SIZE; ++i) {
         if (cache[set_num][i].valid && cache[set_num][i].tag == tag) {
@@ -80,27 +63,26 @@ uint32_t cache_read(uint32_t addr, size_t len) {
         dram_read_block(addr & ~CB_BLOCK_MASK, buf);
         find_row_write(buf, set_num, tag);
     }
+}
 
+uint32_t cache_read(uint32_t addr, size_t len) {
+    Assert(len == 1 || len == 2 || len == 4, "cache read not 1/2/4");
+    // Log("cache_read: addr = 0x%x, len = %d", addr, len);
 
+    uint8_t  buf[2 * CB_SIZE];
+    uint32_t tag     = addr >> (CB_WIDTH + CC_SET_WIDTH);
+    uint32_t set_num = (addr & CC_SET_MASK) >> CB_WIDTH;
+    uint32_t offset  = addr & CB_BLOCK_MASK;
+    // Log("tag = 0x%x", tag);
+    // Log("set_num = 0x%x", set_num);
+    // Log("addr = 0x%x, CB_BLOCK_MASK = 0x%x", addr, CB_BLOCK_MASK);
+    // Log("offset  = 0x%x", offset);
+
+    cache_read_prime(addr, buf, set_num, tag);
     if (offset + len > CB_SIZE) {
-        set_num = (set_num + 1) % CC_SET_SIZE;
-        is_hit = false;
-        for (i = 0; i < CC_ROW_SIZE; ++i) {
-            if (cache[set_num][i].valid && cache[set_num][i].tag == tag) {
-                // Log("hit");
-                is_hit = true;
-                memcpy(buf + CB_SIZE, cache[set_num][i].block, CB_SIZE);
-            }
-        }
-
-        if (!is_hit) {
-            // Log("missed");
-            dram_read_block((addr & ~CB_BLOCK_MASK) + CB_SIZE, buf + CB_SIZE);
-            find_row_write(buf + CB_SIZE, set_num, tag);
-        }
+        cache_read_prime(addr, buf, (set_num + 1) % CC_SET_SIZE, tag);
     }
 
-    // uint32_t res = unalign_rw(buf + offset, 4) & (~0u >> ((4 - len) << 3));
     uint32_t res = unalign_rw(buf + offset, 4);
     // Log("res = 0x%x", res);
     return res & (~0u >> ((4 - len) << 3));
