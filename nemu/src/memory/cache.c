@@ -8,8 +8,8 @@ void init_cache() {
     Log("CC_SET_SIZE\t%u", CC_SET_SIZE);
     Log("CC_ROW_SIZE\t%u", CC_ROW_SIZE);
     Log("CB_SIZE\t\t%u", CB_SIZE);
-    Log("CC_SET_MASK\t%u", CC_SET_MASK);
-    Log("CB_BLOCK_MASK\t%u", CB_BLOCK_MASK);
+    Log("CC_SET_MASK\t%x", CC_SET_MASK);
+    Log("CB_BLOCK_MASK\t%x", CB_BLOCK_MASK);
     int i, j;
     for (i = 0; i < CC_SET_SIZE; ++i)
         for (j = 0; j < CC_ROW_SIZE; ++j)
