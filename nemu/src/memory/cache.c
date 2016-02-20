@@ -80,7 +80,7 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     for(i = 0; i < CB_SIZE; ++i)
         printf("%02x ", buf[i]);
     printf("\n");
-    for(i = 1; i < CB_SIZE; ++i)
+    for(i = 0; i < CB_SIZE; ++i)
         printf("%02x ", cache[0][0].block[i]);
     printf("\n");
 
