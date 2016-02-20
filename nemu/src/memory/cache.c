@@ -71,7 +71,9 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     find_row_write(buf, set_num, tag);
 
     if (offset + len > CB_SIZE) {
+        Log("dram_read_block");
         dram_read_block((addr & ~CB_BLOCK_MASK) + CB_SIZE, buf + CB_SIZE);
+        Log("find_row_write");
         find_row_write(buf + CB_SIZE, set_num, tag);
     }
 
