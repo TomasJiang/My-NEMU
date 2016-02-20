@@ -85,13 +85,13 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     uint32_t offset  = addr & CB_BLOCK_MASK;
 
     cache_read_prime(addr, buf, set_num, tag);
-    print_buf(buf);
-    print_buf(buf + CB_SIZE);
+    // print_buf(buf);
+    // print_buf(buf + CB_SIZE);
     if (offset + len > CB_SIZE) {
         cache_read_prime(addr + CB_SIZE, // next block in memory
                 buf + CB_SIZE, (set_num + 1) % CC_SET_SIZE, tag);
-        print_buf(buf);
-        print_buf(buf + CB_SIZE);
+        // print_buf(buf);
+        // print_buf(buf + CB_SIZE);
     }
 
 
