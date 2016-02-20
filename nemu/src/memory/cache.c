@@ -42,9 +42,7 @@ uint32_t find_row(uint32_t set_num) {
 
 void find_row_write(uint8_t *buf, uint32_t set_num, uint32_t tag) {
     uint32_t row_num = find_row(set_num);
-    // Log("row_num = %u", row_num);
     memcpy(cache[set_num][row_num].block, buf, CB_SIZE);
-    // Log("tag = %u", tag);
     cache[set_num][row_num].tag   = tag;
     cache[set_num][row_num].valid = true;
 }
@@ -61,7 +59,6 @@ void cache_read_prime(uint32_t addr, uint8_t *buf, uint32_t set_num, uint32_t ta
     }
     if (!is_hit) {
         // Log("missed");
-        // Log("addr = 0x%x", addr);
         dram_read_block(addr & ~CB_BLOCK_MASK, buf);
         find_row_write(buf, set_num, tag);
     }
@@ -85,18 +82,13 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     uint32_t offset  = addr & CB_BLOCK_MASK;
 
     cache_read_prime(addr, buf, set_num, tag);
-    // print_buf(buf);
-    // print_buf(buf + CB_SIZE);
     if (offset + len > CB_SIZE) {
         cache_read_prime(addr + CB_SIZE, // next block in memory
                 buf + CB_SIZE, (set_num + 1) % CC_SET_SIZE, tag);
-        // print_buf(buf);
-        // print_buf(buf + CB_SIZE);
     }
 
 
     uint32_t res = unalign_rw(buf + offset, 4);
-    // Log("res = 0x%x", res & (~0u >> ((4 - len) << 3)));
     return res & (~0u >> ((4 - len) << 3));
 }
 
