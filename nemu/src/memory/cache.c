@@ -54,7 +54,7 @@ void find_row_write(uint8_t *buf, uint32_t set_num, uint32_t tag) {
 
 uint32_t cache_read(uint32_t addr, size_t len) {
     Assert(len == 1 || len == 2 || len == 4, "cache read not 1/2/4");
-    Log("cache_read: addr = 0x%x, len = %d", addr, len);
+    // Log("cache_read: addr = 0x%x, len = %d", addr, len);
 
     bool is_hit = false;
     uint8_t  buf[2 * CB_SIZE];
@@ -102,7 +102,7 @@ uint32_t cache_read(uint32_t addr, size_t len) {
 
     // uint32_t res = unalign_rw(buf + offset, 4) & (~0u >> ((4 - len) << 3));
     uint32_t res = unalign_rw(buf + offset, 4);
-    Log("res = 0x%x", res);
+    // Log("res = 0x%x", res);
     return res & (~0u >> ((4 - len) << 3));
 }
 
