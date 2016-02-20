@@ -137,6 +137,7 @@ void L2_cache_write(uint32_t addr, size_t len, uint32_t data) {
     memset(mask + offset, 1, len);
 
     print_buf(buf);
+    print_buf(mask);
 
     L2_cache_write_prime(addr, buf, mask, set_num, tag);
     if (offset + len > L2_CC_BLOCK_SIZE) {
