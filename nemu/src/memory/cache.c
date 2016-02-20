@@ -61,6 +61,7 @@ void cache_read_prime(uint32_t addr, uint8_t *buf, uint32_t set_num, uint32_t ta
     }
     if (!is_hit) {
         Log("missed");
+        Log("addr = 0x%x", addr);
         dram_read_block(addr & ~CB_BLOCK_MASK, buf);
         find_row_write(buf, set_num, tag);
     }
