@@ -59,6 +59,7 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     uint32_t set_num = (addr & CC_SET_MASK) >> CB_WIDTH;
     Log("set_num = 0x%x", set_num);
     uint32_t offset  = addr & CB_BLOCK_MASK;
+    Log("addr = 0x%x, CB_BLOCK_MASK = 0x%x", addr, CB_BLOCK_MASK);
     Log("offset  = 0x%x", offset);
     int i;
     for (i = 0; i < CC_ROW_SIZE; ++i) {
