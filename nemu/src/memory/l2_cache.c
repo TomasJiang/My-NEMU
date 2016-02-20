@@ -116,10 +116,12 @@ static void L2_cache_write_prime(uint32_t addr, uint8_t *buf, uint8_t *mask, uin
     }
     if (!is_hit) { // write allocate
         Log("missed");
+        print_buf(mask);
         int i;
         for (i = 0; i < L2_CC_ROW_SIZE; ++i) {
-            if (mask[i])
+            if (mask[i]) {
                 dram_write((addr & ~L2_CC_BLOCK_MASK) + i, 1, buf[i]);
+            }
         } // write dram
         read_block(addr, buf);
         find_row_write(buf, set_num, tag);
