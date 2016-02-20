@@ -94,13 +94,14 @@ uint32_t cache_read(uint32_t addr, size_t len) {
         find_row_write(buf + CB_SIZE, set_num, tag);
     }
 
-    uint32_t res = unalign_rw(buf + offset, 4) & (~0u >> ((4 - len) << 3));
+    // uint32_t res = unalign_rw(buf + offset, 4) & (~0u >> ((4 - len) << 3));
+    uint32_t res = unalign_rw(buf + offset, 4);
     Log("res = 0x%02x", res);
-    return res;
+    return res & (~0u >> ((4 - len) << 3));
 }
 
 void cache_write(uint32_t addr, size_t len, uint32_t data) {
-    Log("cache_write: addr = 0x%x, len = %d, data = %u", addr, len, data);
+    Log("cache_write: addr = 0x%x, len = %d, data = 0x%x", addr, len, data);
     uint32_t tag     = addr >> (CB_WIDTH + CC_SET_WIDTH);
     uint32_t set_num = (addr & CC_SET_MASK) >> CB_WIDTH;
     uint32_t offset  = addr & CB_BLOCK_MASK;
