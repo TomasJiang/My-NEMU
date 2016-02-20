@@ -70,13 +70,13 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     int i;
     for (i = 0; i < CC_ROW_SIZE; ++i) {
         if (cache[set_num][i].valid && cache[set_num][i].tag == tag) {
-            Log("hit");
+            // Log("hit");
             is_hit = true;
             memcpy(buf, cache[set_num][i].block, CB_SIZE);
         }
     }
     if (!is_hit) {
-        Log("missed");
+        // Log("missed");
         dram_read_block(addr & ~CB_BLOCK_MASK, buf);
         find_row_write(buf, set_num, tag);
     }
@@ -87,14 +87,14 @@ uint32_t cache_read(uint32_t addr, size_t len) {
         is_hit = false;
         for (i = 0; i < CC_ROW_SIZE; ++i) {
             if (cache[set_num][i].valid && cache[set_num][i].tag == tag) {
-                Log("hit");
+                // Log("hit");
                 is_hit = true;
                 memcpy(buf + CB_SIZE, cache[set_num][i].block, CB_SIZE);
             }
         }
 
         if (!is_hit) {
-            Log("missed");
+            // Log("missed");
             dram_read_block((addr & ~CB_BLOCK_MASK) + CB_SIZE, buf + CB_SIZE);
             find_row_write(buf + CB_SIZE, set_num, tag);
         }
