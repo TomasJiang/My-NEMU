@@ -8,10 +8,10 @@ uint32_t dram_write(hwaddr_t, size_t, uint32_t);
 
 void init_L2_cache() {
     Log("init_L2_cache");
-    Log("L2_CC_SIZE\t\t%u", L2_CC_SIZE);
+    Log("L2_CC_SIZE\t%u", L2_CC_SIZE);
     Log("L2_CC_SET_SIZE\t%u", L2_CC_SET_SIZE);
     Log("L2_CC_ROW_SIZE\t%u", L2_CC_ROW_SIZE);
-    Log("L2_CC_BLOCK_SIZE\t\t%u", L2_CC_BLOCK_SIZE);
+    Log("L2_CC_BLOCK_SIZE\t%u", L2_CC_BLOCK_SIZE);
     Log("L2_CC_SET_MASK\t%x", L2_CC_SET_MASK);
     Log("L2_CC_BLOCK_MASK\t%x", L2_CC_BLOCK_MASK);
     int i, j;
