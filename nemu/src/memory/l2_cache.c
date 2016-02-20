@@ -103,16 +103,19 @@ uint32_t L2_cache_read(uint32_t addr, size_t len) {
 }
 
 static void L2_cache_write_prime(uint32_t addr, uint8_t *buf, uint8_t *mask, uint32_t set_num, uint32_t tag) {
+    Log("addr = 0x%x", addr);
     bool is_hit = false;
     int i;
     for (i = 0; i < L2_CC_ROW_SIZE; ++i) {
         if (L2_cache[set_num][i].valid && L2_cache[set_num][i].tag == tag) {
+            Log("hit");
             is_hit = true;
             memcpy_with_mask(L2_cache[set_num][i].block, buf, L2_CC_BLOCK_SIZE, mask);
             L2_cache[set_num][i].dirty = true;
         }
     }
     if (!is_hit) { // write allocate
+        Log("missed");
         int i;
         for (i = 0; i < L2_CC_ROW_SIZE; ++i) {
             if (mask[i])
