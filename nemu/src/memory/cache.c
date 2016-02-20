@@ -54,7 +54,7 @@ void find_row_write(uint8_t *buf, uint32_t set_num, uint32_t tag) {
 
 uint32_t cache_read(uint32_t addr, size_t len) {
     Assert(len == 1 || len == 2 || len == 4, "cache read not 1/2/4");
-    // Log("cache_read: addr = 0x%x, len = %d", addr, len);
+    Log("cache_read: addr = 0x%x, len = %d", addr, len);
     uint32_t tag     = addr >> (CB_WIDTH + CC_SET_WIDTH);
     // Log("tag = 0x%x", tag);
     uint32_t set_num = (addr & CC_SET_MASK) >> CB_WIDTH;
