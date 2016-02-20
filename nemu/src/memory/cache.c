@@ -54,13 +54,13 @@ void cache_read_prime(uint32_t addr, uint8_t *buf, uint32_t set_num, uint32_t ta
     int i;
     for (i = 0; i < CC_ROW_SIZE; ++i) {
         if (cache[set_num][i].valid && cache[set_num][i].tag == tag) {
-            // Log("hit");
+            Log("hit");
             is_hit = true;
             memcpy(buf, cache[set_num][i].block, CB_SIZE);
         }
     }
     if (!is_hit) {
-        // Log("missed");
+        Log("missed");
         dram_read_block(addr & ~CB_BLOCK_MASK, buf);
         find_row_write(buf, set_num, tag);
     }
