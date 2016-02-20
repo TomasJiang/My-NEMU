@@ -73,10 +73,6 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     uint32_t tag     = addr >> (CB_WIDTH + CC_SET_WIDTH);
     uint32_t set_num = (addr & CC_SET_MASK) >> CB_WIDTH;
     uint32_t offset  = addr & CB_BLOCK_MASK;
-    // Log("tag = 0x%x", tag);
-    // Log("set_num = 0x%x", set_num);
-    // Log("addr = 0x%x, CB_BLOCK_MASK = 0x%x", addr, CB_BLOCK_MASK);
-    // Log("offset  = 0x%x", offset);
 
     cache_read_prime(addr, buf, set_num, tag);
     if (offset + len > CB_SIZE) {
@@ -84,8 +80,16 @@ uint32_t cache_read(uint32_t addr, size_t len) {
     }
 
     uint32_t res = unalign_rw(buf + offset, 4);
-    // Log("res = 0x%x", res);
     return res & (~0u >> ((4 - len) << 3));
+}
+
+void cache_write_prime(uint32_t addr, uint8_t *buf, uint32_t set_num, uint32_t tag) {
+    int i;
+    for (i = 0; i < CC_ROW_SIZE; ++i) {
+        if (cache[set_num][i].valid && cache[set_num][i].tag == tag) {
+            memcpy(cache[set_num][i].block, buf, CB_SIZE);
+        }
+    }
 }
 
 void cache_write(uint32_t addr, size_t len, uint32_t data) {
@@ -93,12 +97,16 @@ void cache_write(uint32_t addr, size_t len, uint32_t data) {
     uint32_t tag     = addr >> (CB_WIDTH + CC_SET_WIDTH);
     uint32_t set_num = (addr & CC_SET_MASK) >> CB_WIDTH;
     uint32_t offset  = addr & CB_BLOCK_MASK;
-    int i;
-    for (i = 0; i < CC_ROW_SIZE; ++i) {
-        if (cache[set_num][i].valid && cache[set_num][i].tag == tag) {
-            cache[set_num][i].block[offset] = data;
-            break;
-        }
+
+    uint8_t  buf[2 * CB_SIZE];
+    uint8_t mask[2 * CB_SIZE];
+    memset(mask, 0, 2 * CB_SIZE);
+    *(uint32_t *)(buf + offset) = data;
+
+    cache_write_prime(addr, buf, set_num, tag);
+    if (offset + len > CB_SIZE) {
+        cache_write_prime(addr, buf, (set_num + 1) % CC_SET_SIZE, tag);
     }
+
     dram_write(addr, len, data);
 }
