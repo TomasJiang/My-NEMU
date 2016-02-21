@@ -2,7 +2,7 @@
 
 make_helper(lgdt) {
     Log("eip = 0x%x", eip);
-    uint16_t gdtdesc = instr_fetch(cpu.eip + 1, 4);
+    uint16_t gdtdesc = instr_fetch(cpu.eip + 2, 4);
     Log("gdtdesc = 0x%x", gdtdesc);
     // uint32_t base  = instr_fetch(cpu.eip + 4, 4);
     // cpu.gdtr.base  = base;
