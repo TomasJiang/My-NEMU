@@ -16,7 +16,8 @@
 int read_ModR_M(swaddr_t eip, Operand *rm, Operand *reg);
 
 make_helper(mov_cr02r) {
-    int len = read_ModR_M(cpu.eip, op_dest, op_src);
+    Log("eip = 0x%x", eip);
+    int len = read_ModR_M(cpu.eip+1, op_dest, op_src);
     Log("len = %d", len);
     Log("eax = 0x%x", cpu.eax);
     Log("op_dest = %x", op_dest->reg);
