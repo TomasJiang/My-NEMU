@@ -21,6 +21,7 @@ make_helper(mov_cr02r) {
     return 2;
 }
 make_helper(mov_r2cr0) {
+    // TODO
     cpu.cr0.val = cpu.eax;
     return 2;
 }

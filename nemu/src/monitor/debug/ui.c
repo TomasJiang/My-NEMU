@@ -90,6 +90,7 @@ static int cmd_info(char *args) {
 		printf("  eflags\tCF-%u PF-%u ZF-%u SF-%u IF-%u DF-%u OF-%u\n",
 				cpu.eflags.CF, cpu.eflags.PF, cpu.eflags.ZF,
 				cpu.eflags.SF, cpu.eflags.IF, cpu.eflags.DF, cpu.eflags.OF);
+		printf("  cr0\t\t0x%08x\t\t%10d\n", cpu.cr0.val, cpu.cr0.val);
 	}
 	else if(strcmp(args, "w") == 0)
 	{
