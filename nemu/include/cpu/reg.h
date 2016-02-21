@@ -47,7 +47,7 @@ typedef struct {
 
 	swaddr_t eip;
 
-    union cr0{
+    union {
         struct {
             uint32_t PE:  1;
             uint32_t MP:  1;
