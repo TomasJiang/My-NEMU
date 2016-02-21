@@ -68,11 +68,14 @@ typedef struct {
     } gdtr;
 
     struct {
-        struct {
-            unsigned index: 13;
-            unsigned ti   : 1;
-            unsigned rpl  : 2;
-        } selector;
+        union {
+            struct {
+                unsigned index: 13;
+                unsigned ti   : 1;
+                unsigned rpl  : 2;
+            };
+            uint16_t selector;
+        };
         unsigned hidden_selector : 32;
     } cs, ds, fs, ss;
 
