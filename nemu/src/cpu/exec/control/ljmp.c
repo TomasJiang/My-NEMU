@@ -5,6 +5,6 @@ make_helper(ljmp) {
     uint16_t word  = instr_fetch(eip + 5, 2);
     cpu.cs.selector  = word;
     cpu.eip = lword;
-    Log("lword = 0x%x, word = 0x%x", lword, word);
+	print_asm("ljmp $0x%x, $0x%x", word, lword);
     return 6;
 }
