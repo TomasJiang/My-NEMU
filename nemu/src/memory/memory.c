@@ -32,15 +32,19 @@ void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 static lnaddr_t seg_translate(swaddr_t swaddr, size_t len, uint8_t sreg) {
     if (!cpu.cr0.PE)
         return swaddr;
-    Log("GDTR.BASE = 0x%x", cpu.gdtr.base);
-    Log("CS.INDEX  = 0x%x", cpu.cs.index);
-    uint32_t addr = cpu.gdtr.base + cpu.cs.index;
-    Log("addr = 0x%x", addr);
-    SegDesc *seg_desc = (SegDesc *)malloc(sizeof(SegDesc));
-    seg_desc->val[0] = lnaddr_read(addr, 4);
-    seg_desc->val[1] = lnaddr_read(addr + 4, 4);
+    uint32_t segdesc_addr = cpu.gdtr.base + cpu.cs.index;
+    Log("addr = 0x%x", segdesc_addr);
 
-    return seg_desc->BASE_15_0;
+    SegDesc *segdesc = (SegDesc *)malloc(sizeof(SegDesc));
+    segdesc->val[0] = lnaddr_read(segdesc_addr, 4);
+    segdesc->val[1] = lnaddr_read(segdesc_addr + 4, 4);
+    int i;
+    for(i = 0; i < 2; ++i)
+        Log("0x%x", segdesc->val[i]);
+
+    uint32_t lnaddr = (segdesc->BASE_31_24 << 24) + (segdesc->BASE_23_16 << 16) + segdesc->BASE_15_0;
+    Log("lnaddr = 0x%x", lnaddr);
+    return lnaddr;
 }
 
 uint32_t swaddr_read(swaddr_t addr, size_t len, uint8_t sreg) {
