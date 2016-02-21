@@ -18,10 +18,11 @@ int read_ModR_M(swaddr_t eip, Operand *rm, Operand *reg);
 make_helper(mov_cr02r) {
     // TODO
     cpu.eax = cpu.cr0.val;
-    return 1;
+    return 2;
 }
 make_helper(mov_r2cr0) {
-    return 1;
+    cpu.cr0.val = cpu.eax;
+    return 2;
 }
 
 make_helper_v(mov_i2r)
