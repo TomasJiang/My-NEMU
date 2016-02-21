@@ -17,6 +17,4 @@ typedef struct SegmentDescriptor {
     uint32_t BASE_31_24     : 8;
 } SegDesc;
 
-uint32_t segment_translation(uint32_t addr, size_t len);
-
 #endif
