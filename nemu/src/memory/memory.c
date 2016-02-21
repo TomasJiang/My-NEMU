@@ -11,7 +11,7 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 static lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg) {
     if (!cpu.cr0.PE)
         return addr;
-    Log("");
+    Log("GDTR.BASE = 0x%x", cpu.gdtr.base);
     SegDesc *segdesc = (SegDesc *)(cpu.gdtr.base + cpu.cs.index);
     Log("0x%x", segdesc->LIMIT_15_0);
     return segdesc->BASE_15_0;
