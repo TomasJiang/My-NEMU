@@ -2,6 +2,8 @@
 #define __REG_H__
 
 #include "common.h"
+#include "x86-inc/cpu.h"
+#include "x86-inc/mmu.h"
 
 enum { R_EAX, R_ECX, R_EDX, R_EBX, R_ESP, R_EBP, R_ESI, R_EDI };
 enum { R_AX, R_CX, R_DX, R_BX, R_SP, R_BP, R_SI, R_DI };
@@ -47,6 +49,21 @@ typedef struct {
 	} eflags;
 
 	swaddr_t eip;
+
+    struct {
+        unsigned addr:  32;
+        unsigned limit: 16;
+    } gdtr;
+
+
+    struct {
+        struct {
+            unsigned index: 13;
+            unsigned ti   : 1;
+            unsigned rpl  : 2;
+        } selector;
+        unsigned hidden_selector : 32;
+    } cs, ds, fs, ss;
 
 } CPU_state;
 
