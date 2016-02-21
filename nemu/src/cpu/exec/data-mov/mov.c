@@ -23,11 +23,8 @@ make_helper(mov_cr02r) {
 }
 make_helper(mov_r2cr0) {
     // TODO
-    Log("");
     cpu.cr0.val = cpu.eax;
-    Log("");
     print_asm("mov %%eax,%%cr0");
-    Log("");
     return 2;
 }
 
