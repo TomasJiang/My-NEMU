@@ -20,5 +20,6 @@ typedef union {
     uint32_t val[2];
 } SegDesc;
 
+lnaddr_t seg_translate(swaddr_t swaddr, size_t len, uint8_t sreg);
 
 #endif
