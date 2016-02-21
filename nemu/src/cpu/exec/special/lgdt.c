@@ -9,6 +9,6 @@ make_helper(lgdt) {
     cpu.gdtr.base  = base;
     cpu.gdtr.limit = limit;
     Log("limit = 0x%x, base = 0x%x", limit, base);
-    print_asm("lgdt %x", gdtdesc);
+    print_asm("lgdt 0x%x", gdtdesc);
     return 6;
 }
