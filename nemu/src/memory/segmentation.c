@@ -18,8 +18,9 @@ lnaddr_t seg_translate(swaddr_t swaddr, size_t len, uint8_t sreg) {
     // for(i = 0; i < 2; ++i)
     //     Log("segdesc: 0x%08x", segdesc->val[i]);
 
-    uint32_t lnaddr = (segdesc->BASE_31_24 << 24) + (segdesc->BASE_23_16 << 16) + segdesc->BASE_15_0;
-    // Log("lnaddr = 0x%x", lnaddr);
+    uint32_t lnaddr = swaddr + (segdesc->BASE_31_24 << 24) +
+        (segdesc->BASE_23_16 << 16) + segdesc->BASE_15_0;
+    Log("lnaddr = 0x%x", lnaddr);
     return lnaddr;
 }
 
