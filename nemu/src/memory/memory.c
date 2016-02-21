@@ -1,10 +1,20 @@
 #include "common.h"
+#include "cpu/reg.h"
 #include "memory/l1_cache.h"
+#include "memory/segmentation.h"
 
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
 
 /* Memory accessing interfaces */
+
+static lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg) {
+    if (!cpu.cr0.PE)
+        return addr;
+    SegDesc *segdesc = (SegDesc *)(cpu.gdtr.base + cpu.cs.index);
+    Log("0x%x", segdesc->LIMIT_15_0);
+    return segdesc->BASE_15_0;
+}
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
     // Log("hwaddr_read: addr = 0x%x", addr);
@@ -27,11 +37,12 @@ void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 	hwaddr_write(addr, len, data);
 }
 
-uint32_t swaddr_read(swaddr_t addr, size_t len) {
+uint32_t swaddr_read(swaddr_t addr, size_t len, uint8_t sreg) {
 #ifdef DEBUG
-	// assert(len == 1 || len == 2 || len == 4);
+	assert(len == 1 || len == 2 || len == 4);
 #endif
-	return lnaddr_read(addr, len);
+    lnaddr_t lnaddr = seg_translate(addr, len, sreg);
+	return lnaddr_read(lnaddr, len);
 }
 
 void swaddr_write(swaddr_t addr, size_t len, uint32_t data) {
