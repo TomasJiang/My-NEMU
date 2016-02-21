@@ -49,6 +49,7 @@
 #include "control/jbe.h"
 #include "control/jle.h"
 #include "control/jge.h"
+#include "control/ljmp.h"
 
 #include "string/rep.h"
 #include "string/movs.h"
