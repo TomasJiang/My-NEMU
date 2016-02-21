@@ -33,8 +33,7 @@ typedef struct {
 		};
 	};
 
-	struct
-	{
+	struct {
 		unsigned CF: 1;
 		unsigned PAD1: 1;
 		unsigned PF: 1;
@@ -51,7 +50,7 @@ typedef struct {
 	swaddr_t eip;
 
     struct {
-        unsigned addr:  32;
+        unsigned base:  32;
         unsigned limit: 16;
     } gdtr;
 
