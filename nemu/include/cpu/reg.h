@@ -49,11 +49,23 @@ typedef struct {
 
 	swaddr_t eip;
 
+    union cr0{
+        struct {
+            uint32_t PE:  1;
+            uint32_t MP:  1;
+            uint32_t EM:  1;
+            uint32_t TS:  1;
+            uint32_t ET:  1;
+            uint32_t PAD: 26;
+            uint32_t PG:  1;
+        };
+        uint32_t val;
+    } cr0;
+
     struct {
         unsigned base:  32;
         unsigned limit: 16;
     } gdtr;
-
 
     struct {
         struct {
@@ -67,6 +79,8 @@ typedef struct {
 } CPU_state;
 
 extern CPU_state cpu;
+
+void init_cr0();
 
 static inline int check_reg_index(int index) {
 	assert(index >= 0 && index < 8);
