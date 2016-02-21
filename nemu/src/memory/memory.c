@@ -15,7 +15,7 @@ static lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg) {
     Log("CS.INDEX  = 0x%x", cpu.cs.index);
     uint32_t temp = cpu.gdtr.base + cpu.cs.index;
     Log("addr = 0x%x", temp);
-    Log("0x%x", *(uint32_t*)temp);
+    Log("0x%x", *(uint32_t*)0x100039);
     SegDesc *segdesc = (SegDesc *)(cpu.gdtr.base + cpu.cs.index);
     Log("0x%x", segdesc->LIMIT_15_0);
     return segdesc->BASE_15_0;
