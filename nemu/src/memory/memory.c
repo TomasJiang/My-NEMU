@@ -8,18 +8,6 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 
 /* Memory accessing interfaces */
 
-static lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg) {
-    if (!cpu.cr0.PE)
-        return addr;
-    Log("GDTR.BASE = 0x%x", cpu.gdtr.base);
-    Log("CS.INDEX  = 0x%x", cpu.cs.index);
-    uint32_t temp = cpu.gdtr.base + cpu.cs.index;
-    Log("addr = 0x%x", temp);
-    SegDesc *segdesc = (SegDesc *)(cpu.gdtr.base + cpu.cs.index);
-    Log("0x%x", segdesc->LIMIT_15_0);
-    return segdesc->BASE_15_0;
-}
-
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
     // Log("hwaddr_read: addr = 0x%x", addr);
     return L1_cache_read(addr, len);
@@ -39,6 +27,20 @@ uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 
 void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 	hwaddr_write(addr, len, data);
+}
+
+static lnaddr_t seg_translate(swaddr_t swaddr, size_t len, uint8_t sreg) {
+    if (!cpu.cr0.PE)
+        return swaddr;
+    Log("GDTR.BASE = 0x%x", cpu.gdtr.base);
+    Log("CS.INDEX  = 0x%x", cpu.cs.index);
+    uint32_t addr = cpu.gdtr.base + cpu.cs.index;
+    Log("addr = 0x%x", addr);
+    SegDesc *seg_desc = (SegDesc *)malloc(sizeof(SegDesc));
+    seg_desc->val[0] = lnaddr_read(addr, 4);
+    seg_desc->val[1] = lnaddr_read(addr + 4, 4);
+
+    return seg_desc->BASE_15_0;
 }
 
 uint32_t swaddr_read(swaddr_t addr, size_t len, uint8_t sreg) {
