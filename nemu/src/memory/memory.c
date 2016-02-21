@@ -30,6 +30,7 @@ void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 }
 
 static lnaddr_t seg_translate(swaddr_t swaddr, size_t len, uint8_t sreg) {
+    Log("swaddr = 0x%x", swaddr);
     if (!cpu.cr0.PE)
         return swaddr;
     uint32_t segdesc_addr = cpu.gdtr.base + cpu.cs.index;
