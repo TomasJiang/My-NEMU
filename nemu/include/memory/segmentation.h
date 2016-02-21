@@ -1,8 +1,7 @@
 #ifndef __SEGMENTATION_H__
 #define __SEGMENTATION_H__
 
-typedef struct {
-    union {
+    typedef union {
         struct {
             uint32_t LIMIT_15_0     : 16;
             uint32_t BASE_15_0      : 16;
@@ -19,8 +18,7 @@ typedef struct {
             uint32_t BASE_31_24     : 8;
         };
         uint32_t val[2];
-    };
-} SegDesc;
+    } SegDesc;
 
 
 #endif
