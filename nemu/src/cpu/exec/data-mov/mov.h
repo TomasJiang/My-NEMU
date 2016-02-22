@@ -3,6 +3,8 @@
 
 make_helper(mov_cr02r);
 make_helper(mov_r2cr0);
+make_helper(mov_r2sreg);
+
 make_helper(mov_i2r_b);
 make_helper(mov_i2rm_b);
 make_helper(mov_r2rm_b);

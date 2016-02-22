@@ -21,11 +21,21 @@ make_helper(mov_cr02r) {
     print_asm("mov %%cr0,%%eax");
     return 2;
 }
+
 make_helper(mov_r2cr0) {
     // TODO
     cpu.cr0.val = cpu.eax;
     print_asm("mov %%eax,%%cr0");
     return 2;
+}
+
+make_helper(mov_r2sreg) {
+    decode_r2rm_l(cpu.eip + 1);
+    Log("op_dest->val = 0x%x", op_dest->val);
+    Log(" op_src->val = 0x%x",  op_src->val);
+    asm volatile ("int3");
+
+    return 1;
 }
 
 make_helper_v(mov_i2r)
