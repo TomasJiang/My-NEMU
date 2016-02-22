@@ -78,6 +78,14 @@ typedef struct {
         uint32_t val;
     } cr0;
 
+    union {
+        struct {
+            uint32_t PDBR     : 20;
+            uint32_t RESERVED : 12;
+        };
+        uint32_t val;
+    } cr3;
+
     struct {
         unsigned base:  32;
         unsigned limit: 16;
