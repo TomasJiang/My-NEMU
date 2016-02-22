@@ -227,6 +227,7 @@ helper_fun _2byte_opcode_table [256] = {
 };
 
 make_helper(exec) {
+    Log("opcode = 0x%02x", ops_decoded.opcode);
 	ops_decoded.opcode = instr_fetch(eip, 1);
 	return opcode_table[ ops_decoded.opcode ](eip);
 }
