@@ -12,10 +12,10 @@ static void do_execute () {
 	//  (SS:ESP) <- (SOURCE); (* dword assignment *)
 #if DATA_BYTE == 2
 	cpu.esp -= 2;
-	swaddr_write(cpu.esp, 2, op_src->val);
+	swaddr_write(cpu.esp, 2, op_src->val, R_SS);
 #else
 	cpu.esp -= 4;
-	swaddr_write(cpu.esp, 4, op_src->val);
+	swaddr_write(cpu.esp, 4, op_src->val, R_SS);
 #endif
 	print_asm_template1();
 }

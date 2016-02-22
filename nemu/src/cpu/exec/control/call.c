@@ -8,7 +8,7 @@ make_helper(call_rel32) {
 	// Push(EIP);
 	// EIP = EIP + rel32;
 	cpu.esp -= 4;
-	swaddr_write(cpu.esp, 4, cpu.eip + 4);
+	swaddr_write(cpu.esp, 4, cpu.eip + 4, R_SS);
 	cpu.eip += instr_fetch(cpu.eip + 1, 4);
 	print_asm("call 0x%x", cpu.eip + 5);
 	return 5;
