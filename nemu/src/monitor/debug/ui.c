@@ -92,6 +92,7 @@ static int cmd_info(char *args) {
 				cpu.eflags.SF, cpu.eflags.IF, cpu.eflags.DF, cpu.eflags.OF);
         printf("  \n");
 		printf("  cr0\t\t0x%08x\t\t%10d\n", cpu.cr0.val, cpu.cr0.val);
+		printf("  cr3\t\t0x%08x\t\t%10d\n", cpu.cr3.val, cpu.cr3.val);
 		printf("  es\t\t0x%08x\t\t%10d\n", cpu.es.selector, cpu.es.selector);
 		printf("  cs\t\t0x%08x\t\t%10d\n", cpu.cs.selector, cpu.cs.selector);
 		printf("  ss\t\t0x%08x\t\t%10d\n", cpu.ss.selector, cpu.ss.selector);

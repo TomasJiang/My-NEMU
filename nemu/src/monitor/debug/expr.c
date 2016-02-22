@@ -247,7 +247,7 @@ uint32_t eval()
 uint32_t regval(char *reg)
 {
 	int i;
-    Log("%s", reg);
+    // Log("%s", reg);
 	if(!strcmp(reg, "eip"))
 		return cpu.eip;
 	if(!strcmp(reg, "cr0"))
