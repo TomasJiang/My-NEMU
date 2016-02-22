@@ -38,6 +38,7 @@ uint32_t swaddr_read(swaddr_t addr, size_t len, uint8_t sreg) {
 }
 
 void swaddr_write(swaddr_t addr, size_t len, uint32_t data, uint8_t sreg) {
+    Log("");
 #ifdef DEBUG
 	assert(len == 1 || len == 2 || len == 4);
 #endif
