@@ -112,7 +112,7 @@ static inline int check_sreg_index(int index) {
 #define reg_w(index) (cpu.gpr[check_reg_index(index)]._16)
 #define reg_b(index) (cpu.gpr[check_reg_index(index) & 0x3]._8[index >> 2])
 
-//#define  SREG(index) (cpu.sregs[check_sreg_index(index)])
+#define  SREG(index) (cpu.sregs[check_sreg_index(index)])
 #define  SREG_VAL(index) (cpu.sregs[check_sreg_index(index)].selector)
 #define  SREG_NAME(index) (sregs_name[check_sreg_index(index)])
 
