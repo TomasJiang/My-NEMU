@@ -64,7 +64,7 @@ static int cmd_si(char *args) {
 		printf("USAGE: si NUM\n");
 		return 0;
 	}
-	int n = atoi(args);
+	uint32_t n = atoi(args);
 	cpu_exec(n);
 	return 0;
 }
