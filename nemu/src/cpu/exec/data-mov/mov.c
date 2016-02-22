@@ -17,7 +17,7 @@ int read_ModR_M(swaddr_t eip, Operand *rm, Operand *reg);
 
 make_helper(mov_cr2r) {
     // TODO
-    decode_r2rm_l(cpu.eip + 1);
+    decode_r2rm_l(cpu.eip + 2);
     Log(" op_src->reg = 0x%x",  op_src->reg);
     Log("op_src2->reg = 0x%x", op_src2->reg);
     Log("op_dest->reg = 0x%x", op_dest->reg);
@@ -40,7 +40,7 @@ make_helper(mov_cr2r) {
 
 make_helper(mov_r2cr) {
     // TODO
-    decode_r2rm_l(cpu.eip + 1);
+    decode_r2rm_l(cpu.eip + 2);
     Log(" op_src->reg = 0x%x",  op_src->reg);
     Log(" op_src->val = 0x%x",  op_src->val);
     Log("op_src2->reg = 0x%x", op_src2->reg);
