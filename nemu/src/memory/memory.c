@@ -38,7 +38,7 @@ hwaddr_t page_translate(lnaddr_t addr, size_t len) {
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 #ifdef IA32_PAGE
-    if (cpu.cr0.PE && cpu.cr0.PG)
+    if (cpu.cr0.protect_enable && cpu.cr0.paging)
         addr = page_translate(addr);
 #endif
 	return hwaddr_read(addr, len);
@@ -46,7 +46,7 @@ uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 
 void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 #ifdef IA32_PAGE
-    if (cpu.cr0.PE && cpu.cr0.PG)
+    if (cpu.cr0.protect_enable && cpu.cr0.paging)
         addr = page_translate(addr);
 #endif
 	hwaddr_write(addr, len, data);
@@ -78,7 +78,7 @@ uint32_t swaddr_read(swaddr_t addr, size_t len, uint8_t sreg) {
 	assert(len == 1 || len == 2 || len == 4);
 #endif
 #ifdef IA32_SEG
-    if (cpu.cr0.PE)
+    if (cpu.cr0.protect_enable)
         addr = seg_translate(addr, sreg);
 #endif
 	return lnaddr_read(addr, len);
@@ -89,7 +89,7 @@ void swaddr_write(swaddr_t addr, size_t len, uint32_t data, uint8_t sreg) {
 	assert(len == 1 || len == 2 || len == 4);
 #endif
 #ifdef IA32_SEG
-    if (cpu.cr0.PE)
+    if (cpu.cr0.protect_enable)
         addr = seg_translate(addr, sreg);
 #endif
 	lnaddr_write(addr, len, data);
