@@ -17,7 +17,7 @@ uint32_t lnaddr_read(lnaddr_t addr, size_t len);
  */
 
 lnaddr_t seg_translate(swaddr_t swaddr, uint8_t sreg) {
-    Log("swaddr = 0x%x", swaddr);
+    // Log("swaddr = 0x%x", swaddr);
     if (!cpu.cr0.PE)
         return swaddr;
     // Log("segment");
@@ -33,7 +33,7 @@ lnaddr_t seg_translate(swaddr_t swaddr, uint8_t sreg) {
 
     uint32_t lnaddr = swaddr + (segdesc->BASE_31_24 << 24) +
         (segdesc->BASE_23_16 << 16) + segdesc->BASE_15_0;
-    Log("lnaddr = 0x%x", lnaddr);
+    // Log("lnaddr = 0x%x", lnaddr);
     Assert(swaddr == lnaddr, "swaddr == lnaddr");
     return lnaddr;
 }
