@@ -6,7 +6,11 @@
 enum { R_EAX, R_ECX, R_EDX, R_EBX, R_ESP, R_EBP, R_ESI, R_EDI };
 enum { R_AX, R_CX, R_DX, R_BX, R_SP, R_BP, R_SI, R_DI };
 enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
-enum { R_CS, R_SS, R_DS, R_ES, R_FS, R_GS };
+
+// Sreg: a segment register. The segment register bit assignments are
+// ES=0, CS=1, SS=2, DS=3, FS=4, and GS=5. (i386 manual p248)
+enum { R_ES, R_CS, R_SS, R_DS, R_FS, R_GS };
+
 
 /* TODO: Re-organize the `CPU_state' structure to match the register
  * encoding scheme in i386 instruction format. For example, if we

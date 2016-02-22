@@ -4,6 +4,18 @@
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len);
 
+/* If the destination operand is a segment register (DS, ES, FS,
+ * GS, or SS), the source operand must be a valid segment selector.
+ * In protected mode, moving a segment selector into a segment
+ * register automatically causes the segment descriptor information
+ * associated with that segment selector to be loaded into the
+ * hidden (shadow) part of the segment register. While loading this
+ * information, the segment selector and segment descriptor
+ * information is validated (see the "Operation" algorithm below).
+ * The segment descriptor data is obtained from the GDT or LDT entry
+ * for the specified segment selector.
+ */
+
 lnaddr_t seg_translate(swaddr_t swaddr, size_t len, uint8_t sreg) {
     Log("swaddr = 0x%x", swaddr);
     if (!cpu.cr0.PE)
