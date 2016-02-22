@@ -114,7 +114,7 @@ static inline int check_sreg_index(int index) {
 #define reg_w(index) (cpu.gpr[check_reg_index(index)]._16)
 #define reg_b(index) (cpu.gpr[check_reg_index(index) & 0x3]._8[index >> 2])
 
-#define SREG(index)  (cpu.sreg[check_sreg_index(index)].word)
+#define  SREG(index) (cpu.sreg[check_sreg_index(index)].word)
 
 extern const char* regsl[];
 extern const char* regsw[];
