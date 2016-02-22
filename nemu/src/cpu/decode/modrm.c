@@ -86,7 +86,7 @@ int load_addr(swaddr_t eip, ModR_M *m, Operand *rm) {
 int read_ModR_M(swaddr_t eip, Operand *rm, Operand *reg) {
 	ModR_M m;
 	m.val = instr_fetch(eip, 1);
-    Log("m.val = %02x", m.val);
+    // Log("m.val = %02x", m.val);
 	reg->type = OP_TYPE_REG;
 	reg->reg = m.reg;
 
