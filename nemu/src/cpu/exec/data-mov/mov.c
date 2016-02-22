@@ -41,10 +41,10 @@ make_helper(mov_cr2r) {
 make_helper(mov_r2cr) {
     // TODO
     decode_r2rm_l(cpu.eip + 1);
+    Log(" op_src->reg = 0x%x",  op_src->reg);
+    Log("op_src2->reg = 0x%x", op_src2->reg);
     Log("op_dest->reg = 0x%x", op_dest->reg);
     Log("op_dest->val = 0x%x", op_dest->val);
-    Log(" op_src->reg = 0x%x",  op_src->reg);
-    Log(" op_src2->reg = 0x%x",  op_src->reg);
     switch (op_src->reg) {
         case 0:
             cpu.cr0.val = op_dest->val;
