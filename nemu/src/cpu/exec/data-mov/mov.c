@@ -15,15 +15,23 @@
 /* for instruction encoding overloading */
 int read_ModR_M(swaddr_t eip, Operand *rm, Operand *reg);
 
-make_helper(mov_cr02r) {
+make_helper(mov_cr2r) {
     // TODO
+    decode_r2rm_l(cpu.eip + 1);
+    Log("op_dest->reg = 0x%x", op_dest->reg);
+    Log("op_dest->val = 0x%x", op_dest->val);
+    Log(" op_src->reg = 0x%x",  op_src->reg);
     cpu.eax = cpu.cr0.val;
     print_asm("mov %%cr0,%%eax");
     return 2;
 }
 
-make_helper(mov_r2cr0) {
+make_helper(mov_r2cr) {
     // TODO
+    decode_r2rm_l(cpu.eip + 1);
+    Log("op_dest->reg = 0x%x", op_dest->reg);
+    Log("op_dest->val = 0x%x", op_dest->val);
+    Log(" op_src->reg = 0x%x",  op_src->reg);
     cpu.cr0.val = cpu.eax;
     print_asm("mov %%eax,%%cr0");
     return 2;

@@ -1,8 +1,8 @@
 #ifndef __MOV_H__
 #define __MOV_H__
 
-make_helper(mov_cr02r);
-make_helper(mov_r2cr0);
+make_helper(mov_cr2r);
+make_helper(mov_r2cr);
 make_helper(mov_r2sreg);
 
 make_helper(mov_i2r_b);
