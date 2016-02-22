@@ -247,6 +247,10 @@ uint32_t regval(char *reg)
 	int i;
 	if(!strcmp(reg, "eip"))
 		return cpu.eip;
+	if(!strcmp(reg, "cr0"))
+		return cpu.cr0.val;
+	if(!strcmp(reg, "cr3"))
+		return cpu.cr3.val;
 	for(i = 0; i < 8; ++i) {
 		if(!strcmp(reg, regsl[i]))
 			return reg_l(i);
