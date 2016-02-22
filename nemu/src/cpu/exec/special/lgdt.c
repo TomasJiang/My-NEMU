@@ -1,7 +1,6 @@
 #include "cpu/exec/helper.h"
 
 make_helper(lgdt) {
-    Log("");
     uint32_t gdtdesc = instr_fetch(cpu.eip + 3, 4);
     uint32_t limit = instr_fetch(gdtdesc, 2);
     uint32_t base  = instr_fetch(gdtdesc + 2, 4);
