@@ -23,6 +23,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 #ifdef IA32_PAGE
+    Log("cr0 = 0x%x", read_cr0());
     if (cpu.cr0.PG)
         addr = page_translate(addr);
 #endif
