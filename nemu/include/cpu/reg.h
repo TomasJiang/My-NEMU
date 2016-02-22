@@ -31,8 +31,7 @@ typedef struct {
     unsigned hidden_selector : 32;
 } sreg;
 
-// char sregs_name[6][3] = {"es", "cs", "ss", "ds", "fs", "gs" };
-char asdftemp[1];
+const char *sregs_name[6];
 
 typedef struct {
 	union
