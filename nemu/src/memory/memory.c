@@ -1,7 +1,5 @@
 #include "common.h"
 #include "memory/l1_cache.h"
-//#include "memory/segmentation.h"
-//#include "memory/page.h"
 #include "cpu/reg.h"
 #include "x86-inc/mmu.h"
 
