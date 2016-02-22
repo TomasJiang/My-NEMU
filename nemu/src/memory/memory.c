@@ -53,7 +53,7 @@ void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 }
 
 lnaddr_t seg_translate(swaddr_t swaddr, uint8_t sreg) {
-    Log("swaddr = 0x%x", swaddr);
+    // Log("swaddr = 0x%x", swaddr);
     Assert(cpu.cr0.protect_enable, "CR0 protect enable bit is not set!");
     // Log("segment");
     uint32_t segdesc_addr = cpu.gdtr.base + SREG(sreg).index;
@@ -69,7 +69,7 @@ lnaddr_t seg_translate(swaddr_t swaddr, uint8_t sreg) {
     uint32_t lnaddr = swaddr + (segdesc->base_31_24 << 24) +
         (segdesc->base_23_16 << 16) + segdesc->base_15_0;
     // Log("lnaddr = 0x%x", lnaddr);
-    Assert(swaddr == lnaddr, "swaddr == lnaddr");
+    // Assert(swaddr == lnaddr, "swaddr == lnaddr");
     return lnaddr;
 }
 
