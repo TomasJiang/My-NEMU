@@ -41,6 +41,8 @@ static struct rule {
 } rules[] = {
 	{" +",	NOTYPE},				// spaces
 	{"\\$[a-z]{3}", REG}, 			// register
+	{"cr0", REG},       			// register
+	{"cr3", REG},       			// register
 	{"0x[a-fA-F0-9]+", HEX},		// hexadecimal
 	{"[0-9]+", INT},				// integer
 	{"\\+", '+'},					// plus
