@@ -18,10 +18,8 @@ uint32_t lnaddr_read(lnaddr_t addr, size_t len);
 
 lnaddr_t seg_translate(swaddr_t swaddr, size_t len, uint8_t sreg) {
     Log("swaddr = 0x%x", swaddr);
-    if (!cpu.cr0.PE) {
-        Log("res = 0x%02x", lnaddr_read(swaddr, len));
-        return lnaddr_read(swaddr, len);
-    }
+    if (!cpu.cr0.PE)
+        return swaddr;
     Log("segment");
     uint32_t segdesc_addr = cpu.gdtr.base + cpu.cs.index;
     // Log("addr = 0x%x", segdesc_addr);
