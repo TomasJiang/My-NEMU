@@ -21,7 +21,7 @@ lnaddr_t seg_translate(swaddr_t swaddr, uint8_t sreg) {
     if (!cpu.cr0.PE)
         return swaddr;
     // Log("segment");
-    uint32_t segdesc_addr = cpu.gdtr.base + cpu.cs.index;
+    uint32_t segdesc_addr = cpu.gdtr.base;// + SREG(sreg) >> 3;
     // Log("addr = 0x%x", segdesc_addr);
 
     SegDesc *segdesc = (SegDesc *)malloc(sizeof(SegDesc));
