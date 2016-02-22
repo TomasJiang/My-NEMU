@@ -37,7 +37,7 @@ make_helper(mov_r2sreg) {
     SREG(op_src->reg) = op_dest->val;
     // asm volatile ("int3");
 
-    return 1;
+    return 2;
 }
 
 make_helper_v(mov_i2r)
