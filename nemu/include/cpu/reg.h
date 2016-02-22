@@ -66,18 +66,18 @@ typedef struct {
 
 	swaddr_t eip;
 
-    union {
-        struct {
-            uint32_t PE:  1;
-            uint32_t MP:  1;
-            uint32_t EM:  1;
-            uint32_t TS:  1;
-            uint32_t ET:  1;
-            uint32_t PAD: 26;
-            uint32_t PG:  1;
-        };
-        uint32_t val;
-    } cr0;
+    // union {
+    //     struct {
+    //         uint32_t PE:  1;
+    //         uint32_t MP:  1;
+    //         uint32_t EM:  1;
+    //         uint32_t TS:  1;
+    //         uint32_t ET:  1;
+    //         uint32_t PAD: 26;
+    //         uint32_t PG:  1;
+    //     };
+    //     uint32_t val;
+    // } cr0;
 
     // union {
     //     struct {
@@ -86,6 +86,8 @@ typedef struct {
     //     };
     //     uint32_t val;
     // } cr3;
+
+    CR0 cr0;
     CR3 cr3;
 
     struct {

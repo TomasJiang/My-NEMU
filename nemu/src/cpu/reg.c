@@ -44,10 +44,5 @@ void reg_test() {
 }
 
 void init_cr0() {
-    cpu.cr0.PE = 0;
-    cpu.cr0.MP = 0;
-    cpu.cr0.EM = 0;
-    cpu.cr0.TS = 0;
-    cpu.cr0.ET = 0;
-    cpu.cr0.PG = 0;
+    cpu.cr0.val = 0;
 }

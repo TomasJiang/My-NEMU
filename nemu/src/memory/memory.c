@@ -52,6 +52,27 @@ void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 	hwaddr_write(addr, len, data);
 }
 
+lnaddr_t seg_translate(swaddr_t swaddr, uint8_t sreg) {
+    Log("swaddr = 0x%x", swaddr);
+    Assert(cpu.cr0.protect_enable, "CR0 protect enable bit is not set!");
+    // Log("segment");
+    uint32_t segdesc_addr = cpu.gdtr.base + SREG(sreg).index;
+    // Log("addr = 0x%x", segdesc_addr);
+
+    SegDesc *segdesc = (SegDesc *)malloc(sizeof(SegDesc));
+    segdesc->val[0] = lnaddr_read(segdesc_addr, 4);
+    segdesc->val[1] = lnaddr_read(segdesc_addr + 4, 4);
+    // int i;
+    // for(i = 0; i < 2; ++i)
+    //     Log("segdesc: 0x%08x", segdesc->val[i]);
+
+    uint32_t lnaddr = swaddr + (segdesc->base_31_24 << 24) +
+        (segdesc->base_23_16 << 16) + segdesc->base_15_0;
+    // Log("lnaddr = 0x%x", lnaddr);
+    Assert(swaddr == lnaddr, "swaddr == lnaddr");
+    return lnaddr;
+}
+
 uint32_t swaddr_read(swaddr_t addr, size_t len, uint8_t sreg) {
 #ifdef DEBUG
 	assert(len == 1 || len == 2 || len == 4);
