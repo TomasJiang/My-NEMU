@@ -33,6 +33,7 @@ make_helper(mov_r2sreg) {
     decode_r2rm_l(cpu.eip + 1);
     Log("op_dest->reg = 0x%x", op_dest->reg);
     Log(" op_src->reg = 0x%x",  op_src->reg);
+    Log("op_src2->reg = 0x%x", op_src2->reg);
     asm volatile ("int3");
 
     return 1;
