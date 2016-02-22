@@ -93,6 +93,10 @@ static int cmd_info(char *args) {
         printf("  \n");
 		printf("  cr0\t\t0x%08x\t\t%10d\n", cpu.cr0.val, cpu.cr0.val);
 		printf("  cs\t\t0x%08x\t\t%10d\n", cpu.cs.selector, cpu.cs.selector);
+		printf("  ds\t\t0x%08x\t\t%10d\n", cpu.ds.selector, cpu.ds.selector);
+		printf("  fs\t\t0x%08x\t\t%10d\n", cpu.fs.selector, cpu.fs.selector);
+		printf("  ss\t\t0x%08x\t\t%10d\n", cpu.ss.selector, cpu.ss.selector);
+        printf("  \n");
         printf("  gdtr\t\tBASE:0x%08x\t\tLIMIT: 0x%04x\n", cpu.gdtr.base, cpu.gdtr.limit);
 	}
 	else if(strcmp(args, "w") == 0)

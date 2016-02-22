@@ -80,7 +80,7 @@ typedef struct {
             uint16_t selector;
         };
         unsigned hidden_selector : 32;
-    } cs, ds, fs, ss;
+    } cs, ss, ds, fs;
 
 } CPU_state;
 
