@@ -18,8 +18,7 @@ uint32_t lnaddr_read(lnaddr_t addr, size_t len);
 
 lnaddr_t seg_translate(swaddr_t swaddr, uint8_t sreg) {
     Log("swaddr = 0x%x", swaddr);
-    if (!cpu.cr0.PE)
-        return swaddr;
+    Assert(cpu.cr0.PE, "CR0 CE is not set!");
     // Log("segment");
     uint32_t segdesc_addr = cpu.gdtr.base + SREG(sreg).index;
     // Log("addr = 0x%x", segdesc_addr);
