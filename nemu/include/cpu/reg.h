@@ -70,17 +70,29 @@ typedef struct {
         unsigned limit: 16;
     } gdtr;
 
-    struct {
-        union {
-            struct {
-                unsigned index: 13;
-                unsigned ti   : 1;
-                unsigned rpl  : 2;
+    union {
+
+        struct {
+            union {
+                struct {
+                    unsigned index: 13;
+                    unsigned ti   : 1;
+                    unsigned rpl  : 2;
+                };
+                uint16_t selector;
             };
-            uint16_t selector;
-        };
-        unsigned hidden_selector : 32;
-    } cs, ss, ds, fs;
+            unsigned hidden_selector : 32;
+
+        } es, cs, ss, ds, fs, gs;
+
+        struct {
+            uint16_t word;
+            uint32_t lword;
+        } sreg[6];
+    };
+
+
+
 
 } CPU_state;
 
@@ -93,9 +105,16 @@ static inline int check_reg_index(int index) {
 	return index;
 }
 
+static inline int check_sreg_index(int index) {
+    assert(index >= 0 && index < 6);
+    return index;
+}
+
 #define reg_l(index) (cpu.gpr[check_reg_index(index)]._32)
 #define reg_w(index) (cpu.gpr[check_reg_index(index)]._16)
 #define reg_b(index) (cpu.gpr[check_reg_index(index) & 0x3]._8[index >> 2])
+
+#define SREG(index)  (cpu.sreg[check_sreg_index(index)].word)
 
 extern const char* regsl[];
 extern const char* regsw[];
