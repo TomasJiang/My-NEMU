@@ -33,6 +33,7 @@
 #include "logic/test.h"
 #include "logic/setne.h"
 #include "logic/sete.h"
+#include "logic/std.h"
 
 #include "control/call.h"
 #include "control/leave.h"
