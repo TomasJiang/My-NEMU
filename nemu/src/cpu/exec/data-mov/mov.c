@@ -18,11 +18,23 @@ int read_ModR_M(swaddr_t eip, Operand *rm, Operand *reg);
 make_helper(mov_cr2r) {
     // TODO
     decode_r2rm_l(cpu.eip + 1);
+    Log(" op_src->reg = 0x%x",  op_src->reg);
+    Log("op_src2->reg = 0x%x", op_src2->reg);
     Log("op_dest->reg = 0x%x", op_dest->reg);
     Log("op_dest->val = 0x%x", op_dest->val);
-    Log(" op_src->reg = 0x%x",  op_src->reg);
-    cpu.eax = cpu.cr0.val;
-    print_asm("mov %%cr0,%%eax");
+    switch (op_dest->reg) {
+        case 0:
+            reg_l(op_src->reg) = cpu.cr0.val;
+            print_asm("mov %%cr0, %s", op_src->str);
+            break;
+        case 3:
+            reg_l(op_src->reg) = cpu.cr3.val;
+            print_asm("mov %%cr3, %s", op_src->str);
+            break;
+        default:
+            panic("error");
+    }
+
     return 2;
 }
 
@@ -32,8 +44,19 @@ make_helper(mov_r2cr) {
     Log("op_dest->reg = 0x%x", op_dest->reg);
     Log("op_dest->val = 0x%x", op_dest->val);
     Log(" op_src->reg = 0x%x",  op_src->reg);
-    cpu.cr0.val = cpu.eax;
-    print_asm("mov %%eax,%%cr0");
+    Log(" op_src2->reg = 0x%x",  op_src->reg);
+    switch (op_src->reg) {
+        case 0:
+            cpu.cr0.val = op_dest->val;
+            print_asm("mov %s, %%cr0", op_dest->str);
+            break;
+        case 3:
+            cpu.cr3.val = op_dest->val;
+            print_asm("mov %s, %%cr3", op_dest->str);
+            break;
+        default:
+            panic("error");
+    }
     return 2;
 }
 
