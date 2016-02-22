@@ -77,7 +77,7 @@ uint32_t swaddr_read(swaddr_t addr, size_t len, uint8_t sreg) {
 #ifdef DEBUG
 	assert(len == 1 || len == 2 || len == 4);
 #endif
-#ifdef IA32_SEG
+#ifdef SEGMENTATION
     if (cpu.cr0.protect_enable)
         addr = seg_translate(addr, sreg);
 #endif
@@ -88,7 +88,7 @@ void swaddr_write(swaddr_t addr, size_t len, uint32_t data, uint8_t sreg) {
 #ifdef DEBUG
 	assert(len == 1 || len == 2 || len == 4);
 #endif
-#ifdef IA32_SEG
+#ifdef SEGMENTATION
     if (cpu.cr0.protect_enable)
         addr = seg_translate(addr, sreg);
 #endif
