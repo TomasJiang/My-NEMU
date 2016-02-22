@@ -32,6 +32,7 @@ typedef struct {
 } sreg;
 
 // char sregs_name[6][3] = {"es", "cs", "ss", "ds", "fs", "gs" };
+char asdftemp[1];
 
 typedef struct {
 	union
