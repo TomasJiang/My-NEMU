@@ -16,7 +16,7 @@ uint32_t lnaddr_read(lnaddr_t addr, size_t len);
  * for the specified segment selector.
  */
 
-lnaddr_t seg_translate(swaddr_t swaddr, size_t len, uint8_t sreg) {
+lnaddr_t seg_translate(swaddr_t swaddr, uint8_t sreg) {
     // Log("swaddr = 0x%x", swaddr);
     if (!cpu.cr0.PE)
         return swaddr;
