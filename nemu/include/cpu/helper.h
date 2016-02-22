@@ -16,6 +16,7 @@ extern Operands ops_decoded;
 
 
 static inline uint32_t instr_fetch(swaddr_t addr, size_t len) {
+    Log("addr = 0x%x", addr);
 	return swaddr_read(addr, len, R_CS);
 }
 
