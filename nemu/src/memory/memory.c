@@ -21,7 +21,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	// dram_write(addr, len, data);
 }
 
-hwaddr_t page_translate(lnaddr_t addr, size_t len) {
+hwaddr_t page_translate(lnaddr_t addr) {
     LinearAddress lnaddr;
     lnaddr.val = addr;
     Log("addr = 0x%x", addr);
@@ -37,7 +37,7 @@ hwaddr_t page_translate(lnaddr_t addr, size_t len) {
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
-#ifdef IA32_PAGE
+#ifdef PAGING
     if (cpu.cr0.protect_enable && cpu.cr0.paging)
         addr = page_translate(addr);
 #endif
@@ -45,7 +45,7 @@ uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 }
 
 void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
-#ifdef IA32_PAGE
+#ifdef PAGING
     if (cpu.cr0.protect_enable && cpu.cr0.paging)
         addr = page_translate(addr);
 #endif
