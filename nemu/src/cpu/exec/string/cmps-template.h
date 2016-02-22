@@ -8,8 +8,8 @@ make_helper(concat3(instr, _, SUFFIX)) {
     //
     // cmp edi, esi
 
-    DATA_TYPE lval = MEM_R(REG(R_ESI));
-	DATA_TYPE rval = MEM_R(REG(R_EDI));
+    DATA_TYPE lval = MEM_R(REG(R_ESI), R_DS);
+	DATA_TYPE rval = MEM_R(REG(R_EDI), R_ES);
 	DATA_TYPE result = lval - rval;
 
 	// OF, SF, ZF, CF, and PF

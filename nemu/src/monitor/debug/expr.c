@@ -85,7 +85,7 @@ static bool make_token(char *e) {
 	int position = 0;
 	int i;
 	regmatch_t pmatch;
-	
+
 	nr_token = 0;
 
 	while(e[position] != '\0') {
@@ -147,7 +147,7 @@ static bool make_token(char *e) {
 		}
 	}
 
-	return true; 
+	return true;
 }
 
 uint32_t expr(char *e, bool *success) {
@@ -181,7 +181,7 @@ uint32_t eval()
 {
     Token post[100];
 	int len = in2post(post);
-	
+
 	IStack *pistack = (IStack *)malloc(sizeof(IStack));
 	pistack->topStack = 0;
 	uint32_t val = 0;
@@ -213,7 +213,7 @@ uint32_t eval()
 					break;
 				}
 			case DEREF:
-				val = swaddr_read(popi(pistack), 4);
+				val = swaddr_read(popi(pistack), 4, R_DS);
 				pushi(pistack, val);
 				break;
 			case '+':
@@ -230,7 +230,7 @@ uint32_t eval()
 				val = popi(pistack);
 				pushi(pistack, !val);
 				break;
-		}	
+		}
 	}
 	uint32_t result = popi(pistack);
 	if(pistack->topStack)
@@ -295,7 +295,7 @@ void eval_biop(IStack *pistack, int op)
 	}
 	return;
 }
-			
+
 void pusht(TStack *ptstack, Token t)
 {
 	ptstack->tokens[ptstack->topStack++] = t;
@@ -319,22 +319,22 @@ int in2post(Token *postTokens)
 	int k = 0, i = 0;
 	while(i < nr_token)
 	{
-		if(tokens[i].type == REG ||	tokens[i].type == HEX || 
+		if(tokens[i].type == REG ||	tokens[i].type == HEX ||
 				tokens[i].type == INT || tokens[i].type == ID)
 		{
 			postTokens[k++] = tokens[i++];
 		}
-		else 
+		else
 		{
 			if(!ptstack->topStack)
 				pusht(ptstack, tokens[i++]);
-			else if(tokens[i].type == '(') 
+			else if(tokens[i].type == '(')
 				pusht(ptstack, tokens[i++]);
 			else if(topt(ptstack).type == '(' && tokens[i].type == ')') {
 				popt(ptstack);
 				i++;
 			}
-			else if(prec(tokens[i]) > prec(topt(ptstack))) 
+			else if(prec(tokens[i]) > prec(topt(ptstack)))
 				pusht(ptstack, tokens[i++]);
 			else
 				postTokens[k++] = popt(ptstack);

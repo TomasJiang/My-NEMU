@@ -7,7 +7,7 @@ make_helper(ret) {
 	// DEST = (SS:ESP); (* copy a dword *)
 	// ESP = ESP + 4;
 
-	cpu.eip = swaddr_read(cpu.esp, 4);
+	cpu.eip = swaddr_read(cpu.esp, 4, R_SS);
 	cpu.esp += 4;
 	print_asm("ret");
 	return 1;
@@ -15,7 +15,7 @@ make_helper(ret) {
 
 make_helper(ret_i) {
     uint32_t imm = instr_fetch(eip + 1, 2);
-	cpu.eip = swaddr_read(cpu.esp, 4);
+	cpu.eip = swaddr_read(cpu.esp, 4, R_SS);
 	cpu.esp += 4 + imm;
 	print_asm("ret $0x%u", imm);
     return 1;

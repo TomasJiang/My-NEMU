@@ -132,7 +132,7 @@ static int cmd_x(char *args) {
             uint32_t addroff = addr + i*4;
             printf("\t");
             for(j = 3; j >= 0; --j) {
-                printf("%02x ", swaddr_read(addroff + j, 1));
+                printf("%02x ", swaddr_read(addroff + j, 1, R_DS));
             }
             printf("\t<= 0x%08x\n", addroff);
         }
@@ -141,7 +141,7 @@ static int cmd_x(char *args) {
             uint32_t addroff = addr - i*4;
             printf("\t");
             for(j = 3; j >= 0; --j) {
-                printf("%02x ", swaddr_read(addroff + j, 1));
+                printf("%02x ", swaddr_read(addroff + j, 1, R_DS));
             }
             printf("\t<= 0x%08x\n", addroff);
         }
@@ -214,22 +214,21 @@ static int cmd_bt(char *args) {
         if(addr >= 0x8000000)
             break;
         if(!blankflag) {
-            printf("0x%x", swaddr_read(addr, 4));
+            printf("0x%x", swaddr_read(addr, 4, R_SS));
             blankflag = true;
         } else {
-            printf(", 0x%x", swaddr_read(addr, 4));
+            printf(", 0x%x", swaddr_read(addr, 4, R_SS));
         }
     }
     printf("...)\n");
-
 
 
 	int count = 0;
 	swaddr_t ret_addr;
 	while(ebp) {
 		++count;
-		ret_addr = swaddr_read(ebp + 4, 4) + 1;
-		ebp = swaddr_read(ebp, 4);
+		ret_addr = swaddr_read(ebp + 4, 4, R_SS) + 1;
+		ebp = swaddr_read(ebp, 4, R_SS);
 		if(!get_function_name(func_name, ret_addr)) {
 			return 0;
 		}
@@ -242,10 +241,10 @@ static int cmd_bt(char *args) {
             if(addr >= 0x8000000)
                 break;
             if(!blankflag) {
-                printf("0x%x", swaddr_read(addr, 4));
+                printf("0x%x", swaddr_read(addr, 4, R_SS));
                 blankflag = true;
             } else {
-                printf(", 0x%x", swaddr_read(addr, 4));
+                printf(", 0x%x", swaddr_read(addr, 4, R_SS));
             }
         }
         printf("...)\n");

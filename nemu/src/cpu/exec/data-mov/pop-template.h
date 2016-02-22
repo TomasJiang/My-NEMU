@@ -13,7 +13,7 @@ static void do_execute () {
 	//    FI;
 	// FI;
 
-    uint32_t tmp = swaddr_read(cpu.esp, DATA_BYTE);
+    uint32_t tmp = swaddr_read(cpu.esp, DATA_BYTE, R_SS);
 	OPERAND_W(op_src, tmp);
 	cpu.esp += DATA_BYTE;
 	print_asm_template1();
