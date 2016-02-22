@@ -33,7 +33,7 @@ lnaddr_t seg_translate(swaddr_t swaddr, uint8_t sreg) {
 
     uint32_t lnaddr = swaddr + (segdesc->BASE_31_24 << 24) +
         (segdesc->BASE_23_16 << 16) + segdesc->BASE_15_0;
-    Log("lnaddr = 0x%x", lnaddr);
+    // Log("lnaddr = 0x%x", lnaddr);
     return lnaddr;
 }
 
