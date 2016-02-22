@@ -20,6 +20,18 @@ enum { R_ES, R_CS, R_SS, R_DS, R_FS, R_GS };
  */
 
 typedef struct {
+    union {
+        struct {
+            unsigned index: 13;
+            unsigned ti   : 1;
+            unsigned rpl  : 2;
+        };
+        uint16_t selector;
+    };
+    unsigned hidden_selector : 32;
+} sreg;
+
+typedef struct {
 	union
 	{
 		union {
@@ -73,22 +85,13 @@ typedef struct {
     union {
 
         struct {
-            union {
-                struct {
-                    unsigned index: 13;
-                    unsigned ti   : 1;
-                    unsigned rpl  : 2;
-                };
-                uint16_t selector;
-            };
-            unsigned hidden_selector : 32;
-
-        } es, cs, ss, ds, fs, gs;
+            sreg es, cs, ss, ds, fs, gs;
+        };
 
         struct {
             uint16_t word;
             uint32_t lword;
-        } sreg[6];
+        } sregs[6];
     };
 
 
@@ -114,7 +117,7 @@ static inline int check_sreg_index(int index) {
 #define reg_w(index) (cpu.gpr[check_reg_index(index)]._16)
 #define reg_b(index) (cpu.gpr[check_reg_index(index) & 0x3]._8[index >> 2])
 
-#define  SREG(index) (cpu.sreg[check_sreg_index(index)].word)
+#define  SREG(index) (cpu.sregs[check_sreg_index(index)].word)
 
 extern const char* regsl[];
 extern const char* regsw[];
