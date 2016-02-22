@@ -31,6 +31,8 @@ typedef struct {
     unsigned hidden_selector : 32;
 } sreg;
 
+// char sregs_name[6][3] = {"es", "cs", "ss", "ds", "fs", "gs" };
+
 typedef struct {
 	union
 	{
@@ -94,9 +96,6 @@ typedef struct {
         } sregs[6];
     };
 
-
-
-
 } CPU_state;
 
 extern CPU_state cpu;
@@ -118,6 +117,7 @@ static inline int check_sreg_index(int index) {
 #define reg_b(index) (cpu.gpr[check_reg_index(index) & 0x3]._8[index >> 2])
 
 #define  SREG(index) (cpu.sregs[check_sreg_index(index)].word)
+// #define  SREG_NAME(index) (sregs_name[check_sreg_index(index)])
 
 extern const char* regsl[];
 extern const char* regsw[];

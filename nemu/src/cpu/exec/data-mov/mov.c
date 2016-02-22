@@ -35,7 +35,7 @@ make_helper(mov_r2sreg) {
     // Log("op_dest->val = 0x%x", op_dest->val);
     // Log(" op_src->reg = 0x%x",  op_src->reg);
     SREG(op_src->reg) = op_dest->val;
-    print_asm("mov %s, %s", op_dest->str, op_src->str);
+    print_asm("mov %s, %s", op_dest->str, "ds");//SREG_NAME(op_src->reg));
     return 2;
 }
 
