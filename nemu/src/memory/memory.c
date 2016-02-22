@@ -32,15 +32,19 @@ uint32_t swaddr_read(swaddr_t addr, size_t len, uint8_t sreg) {
 #ifdef DEBUG
 	assert(len == 1 || len == 2 || len == 4);
 #endif
-    lnaddr_t lnaddr = seg_translate(addr, sreg);
-	return lnaddr_read(lnaddr, len);
+#ifdef IA32_SEG
+    addr = seg_translate(addr, sreg);
+#endif
+	return lnaddr_read(addr, len);
 }
 
 void swaddr_write(swaddr_t addr, size_t len, uint32_t data, uint8_t sreg) {
 #ifdef DEBUG
 	assert(len == 1 || len == 2 || len == 4);
 #endif
-    lnaddr_t lnaddr = seg_translate(addr, sreg);
-	lnaddr_write(lnaddr, len, data);
+#ifdef IA32_SEG
+    addr = seg_translate(addr, sreg);
+#endif
+	lnaddr_write(addr, len, data);
 }
 
