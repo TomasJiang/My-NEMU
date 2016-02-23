@@ -33,16 +33,16 @@ hwaddr_t page_translate(lnaddr_t addr) {
     uint32_t pdir_entry_addr   = (cpu.cr3.page_directory_base << 12) + (lnaddr.dir << 2);
     Log("pdir_entry_addr = 0x%x", pdir_entry_addr);
     PDE pdir_entry;
-    Log("pdir_entry = 0x%x", pdir_entry.val);
     pdir_entry.val = hwaddr_read(pdir_entry_addr, 4);
+    Log("pdir_entry = 0x%x", pdir_entry.val);
     Assert(pdir_entry.present, "Page directory entry's present bit is 0.");
 
 
     uint32_t ptable_entry_addr = (pdir_entry.page_frame << 12) + (lnaddr.page << 2);
     Log("ptable_entry_addr = 0x%x", ptable_entry_addr);
     PTE ptable_entry;
-    Log("ptable_entry = 0x%x", ptable_entry.val);
     ptable_entry.val = hwaddr_read(ptable_entry_addr, 4);
+    Log("ptable_entry = 0x%x", ptable_entry.val);
     Assert(ptable_entry.present, "Page table entry's present bit is 0.");
 
     addr = (ptable_entry.page_frame << 12) + lnaddr.offset;
