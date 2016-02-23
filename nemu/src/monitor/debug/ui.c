@@ -101,6 +101,48 @@ static int cmd_p(char *args) {
 	return 0;
 }
 
+static int cmd_page(char *args) {
+	if(!args) {
+		printf("USAGE: x EXP\n");
+		return 0;
+	}
+
+
+    int32_t n;
+	uint32_t addr;
+    char exp[ATS_MAX_EXP];
+	bool success;
+	sscanf(args, "%u %s", &n, exp);
+	addr = expr(exp, &success);
+    if(!success) {
+        printf("Invalid expression\n");
+        return 0;
+    }
+
+    int32_t i, j;
+    if(n > 0) {
+        for(i = n-1; i >= 0; --i) {
+            uint32_t addroff = addr + i*4;
+            printf("\t");
+            for(j = 3; j >= 0; --j) {
+                printf("%02x ", swaddr_read(addroff + j, 1, R_DS));
+            }
+            printf("\t<= 0x%08x\n", addroff);
+        }
+    } else {
+        for(i = 0; i < -n; ++i) {
+            uint32_t addroff = addr - i*4;
+            printf("\t");
+            for(j = 3; j >= 0; --j) {
+                printf("%02x ", swaddr_read(addroff + j, 1, R_DS));
+            }
+            printf("\t<= 0x%08x\n", addroff);
+        }
+    }
+
+    return 0;
+}
+
 static int cmd_si(char *args) {
 	if(!args) {
 		printf("USAGE: si NUM\n");
@@ -307,6 +349,7 @@ static struct {
 	{ "si", "Step NUM instructions", cmd_si },
 	{ "info", "r-List of all registers and their contents\n\t  w-Print status of all watchpoints", cmd_info },
 	{ "p", "Print value of expression EXP", cmd_p },
+	{ "page", "Examine page memory", cmd_page },
 	{ "x", "Examine memory", cmd_x },
 	{ "w", "Set a watchpoint for an expression", cmd_w },
 	{ "d", "Delete a specified watchpoint", cmd_d },
