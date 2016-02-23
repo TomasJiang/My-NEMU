@@ -37,6 +37,8 @@ uint32_t loader() {
 	uint32_t *p_magic = (void *)buf;
 	nemu_assert(*p_magic == elf_magic);
 
+    mm_malloc(0x08048000, 0x100);
+
 	/* Load each program segment */
 	//panic("please implement me");
     int ind;
