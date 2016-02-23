@@ -7,7 +7,7 @@
 //#define HAS_DEVICE
 
 // #define SEGMENTATION
-#define PAGING
+// #define PAGING
 #define DEBUG
 #define LOG_FILE
 
