@@ -29,6 +29,48 @@ char* rl_gets() {
 	return line_read;
 }
 
+static int cmd_addr(char *args) {
+	if(!args) {
+		printf("USAGE: x EXP\n");
+		return 0;
+	}
+
+
+    int32_t n;
+	uint32_t addr;
+    char exp[ATS_MAX_EXP];
+	bool success;
+	sscanf(args, "%u %s", &n, exp);
+	addr = expr(exp, &success);
+    if(!success) {
+        printf("Invalid expression\n");
+        return 0;
+    }
+
+    int32_t i, j;
+    if(n > 0) {
+        for(i = n-1; i >= 0; --i) {
+            uint32_t addroff = addr + i*4;
+            printf("\t");
+            for(j = 3; j >= 0; --j) {
+                printf("%02x ", hwaddr_read(addroff + j, 1));
+            }
+            printf("\t<= 0x%08x\n", addroff);
+        }
+    } else {
+        for(i = 0; i < -n; ++i) {
+            uint32_t addroff = addr - i*4;
+            printf("\t");
+            for(j = 3; j >= 0; --j) {
+                printf("%02x ", hwaddr_read(addroff + j, 1));
+            }
+            printf("\t<= 0x%08x\n", addroff);
+        }
+    }
+
+    return 0;
+}
+
 static int cmd_c(char *args) {
 	cpu_exec(-1);
 	return 0;
@@ -157,18 +199,6 @@ static int cmd_x(char *args) {
     }
 
     return 0;
-    /*
-	for(i = 0; i < n; ++i)
-	{
-		unsigned int j, addroff = addr + i*4;
-		printf("0x%08x:\t", addroff);
-		for(j = 0; j < 4; ++j)
-		{
-			printf("%02x ", swaddr_read(addroff + j, 1));
-		}
-		printf("\n");
-	}
-    */
 }
 
 static int cmd_w(char *args) {
@@ -270,6 +300,7 @@ static struct {
 	int (*handler) (char *);
 } cmd_table [] = {
 	{ "help", "Display informations about all supported commands", cmd_help },
+	{ "addr", "Examine hardware memory", cmd_addr },
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "cache", "print cache", cmd_cache },
 	{ "q", "Exit NEMU", cmd_q },
