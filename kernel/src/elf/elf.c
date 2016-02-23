@@ -50,13 +50,15 @@ uint32_t loader() {
 			 */
 #ifndef HAS_DEVICE
 
-            mm_malloc(ph->p_vaddr, ph->p_memsz);
+            uint32_t phaddr = mm_malloc(ph->p_vaddr, ph->p_memsz);
+            // p_vaddr == 0x800000
 
             // TODO: p_filesz not 4 times
             // p_filesz == 30
             // uint32_t trade_off = (ph->p_filesz + 3) / 4 * 4;
             // ramdisk_read((void *)ph->p_vaddr, ELF_OFFSET_IN_DISK + ph->p_offset, trade_off);
-            ramdisk_read((void *)ph->p_vaddr, ELF_OFFSET_IN_DISK + ph->p_offset, ph->p_filesz);
+            // ramdisk_read((void *)ph->p_vaddr, ELF_OFFSET_IN_DISK + ph->p_offset, ph->p_filesz);
+            ramdisk_read((void *)phaddr, ELF_OFFSET_IN_DISK + ph->p_offset, ph->p_filesz);
 #else
             panic("please implement me");
 #endif
