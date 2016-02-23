@@ -49,11 +49,14 @@ uint32_t loader() {
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
 			 */
 #ifndef HAS_DEVICE
+
+            mm_malloc(ph->p_vaddr, ph->p_memsz);
+
             // TODO: p_filesz not 4 times
             // p_filesz == 30
-            uint32_t trade_off = (ph->p_filesz + 3) / 4 * 4;
-            ramdisk_read((void *)ph->p_vaddr, ELF_OFFSET_IN_DISK + ph->p_offset, trade_off);
-            // ramdisk_read((void *)ph->p_vaddr, ELF_OFFSET_IN_DISK + ph->p_offset, ph->p_filesz);
+            // uint32_t trade_off = (ph->p_filesz + 3) / 4 * 4;
+            // ramdisk_read((void *)ph->p_vaddr, ELF_OFFSET_IN_DISK + ph->p_offset, trade_off);
+            ramdisk_read((void *)ph->p_vaddr, ELF_OFFSET_IN_DISK + ph->p_offset, ph->p_filesz);
 #else
             panic("please implement me");
 #endif
