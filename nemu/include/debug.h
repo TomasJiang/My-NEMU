@@ -28,10 +28,11 @@ extern FILE* log_fp;
 			fprintf(stderr, "\33[1;31m"); \
 			fprintf(stderr, __VA_ARGS__); \
 			fprintf(stderr, "\33[0m\n"); \
-			assert(cond); \
+            asm volatile ("int3"); \
 		} \
 	} while(0)
 
+// assert(cond);
 #define panic(format, ...) \
 	Assert(0, format, ## __VA_ARGS__)
 

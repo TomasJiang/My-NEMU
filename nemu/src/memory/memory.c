@@ -35,7 +35,10 @@ hwaddr_t page_translate(lnaddr_t addr) {
     PDE pdir_entry;
     pdir_entry.val = hwaddr_read(pdir_entry_addr, 4);
     Log("pdir_entry = 0x%x", pdir_entry.val);
-    Assert(pdir_entry.present, "Page directory entry's present bit is 0.");
+    if (pdir_entry.present == 0) {
+        Log("Page directory entry's present bit is 0.");
+        asm volatile("int3");
+    }
 
 
     uint32_t ptable_entry_addr = (pdir_entry.page_frame << 12) + (lnaddr.page << 2);
