@@ -29,13 +29,23 @@ hwaddr_t page_translate(lnaddr_t addr) {
     Log("lnaddr.page   = 0x%x", lnaddr.page);
     Log("lnaddr.dir    = 0x%x", lnaddr.dir);
     Log("CR3 = 0x%x", cpu.cr3.val);
-    PDE *pdir_entry_addr   = (PDE *)((cpu.cr3.page_directory_base << 12) + (lnaddr.dir << 2));
-    Log("pdir_entry_addr = 0x%x", (uint32_t)pdir_entry_addr);
-    Assert(pdir_entry_addr->present, "Page directory entry's present bit is 0.");
-    PTE *ptable_entry_addr = (PTE *)((pdir_entry_addr->page_frame << 12) + (lnaddr.page << 2));
-    Log("ptable_entry_addr = 0x%x", (uint32_t)ptable_entry_addr);
-    Assert(ptable_entry_addr->present, "Page table entry's present bit is 0.");
-    addr = (ptable_entry_addr->page_frame << 12) + lnaddr.offset;
+
+    uint32_t pdir_entry_addr   = (cpu.cr3.page_directory_base << 12) + (lnaddr.dir << 2);
+    Log("pdir_entry_addr = 0x%x", pdir_entry_addr);
+    PDE pdir_entry;
+    Log("pdir_entry = 0x%x", pdir_entry.val);
+    pdir_entry.val = hwaddr_read(pdir_entry_addr, 4);
+    Assert(pdir_entry.present, "Page directory entry's present bit is 0.");
+
+
+    uint32_t ptable_entry_addr = (pdir_entry.page_frame << 12) + (lnaddr.page << 2);
+    Log("ptable_entry_addr = 0x%x", ptable_entry_addr);
+    PTE ptable_entry;
+    Log("ptable_entry = 0x%x", ptable_entry.val);
+    ptable_entry.val = hwaddr_read(ptable_entry_addr, 4);
+    Assert(ptable_entry.present, "Page table entry's present bit is 0.");
+
+    addr = (ptable_entry.page_frame << 12) + lnaddr.offset;
     return addr;
 }
 
