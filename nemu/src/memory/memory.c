@@ -24,7 +24,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 hwaddr_t page_translate(lnaddr_t addr) {
     LinearAddress lnaddr;
     lnaddr.val = addr;
-    // Log("lnaddr = 0x%x", addr);
+    Log("lnaddr = 0x%x", addr);
     // Log("lnaddr.offset = 0x%x", lnaddr.offset);
     // Log("lnaddr.page   = 0x%x", lnaddr.page);
     // Log("lnaddr.dir    = 0x%x", lnaddr.dir);
