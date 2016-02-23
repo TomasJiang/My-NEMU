@@ -52,7 +52,9 @@ uint32_t loader() {
 			 */
 #ifndef HAS_DEVICE
 
-            /* uint32_t phaddr =*/ mm_malloc(ph->p_vaddr, ph->p_memsz);
+#ifdef IA32_PAGE
+            mm_malloc(ph->p_vaddr, ph->p_memsz);
+#endif
             // p_vaddr == 0x800000
 
             // TODO: p_filesz not 4 times
