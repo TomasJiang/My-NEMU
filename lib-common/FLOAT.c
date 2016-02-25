@@ -27,10 +27,10 @@ FLOAT f2F(float a) {
 }
 
 FLOAT Fabs(FLOAT a) {
-    //uint32_t sign = (a >> 31) & 0x1;
-    //if (sign) {
-    //    a = -a;
-    //}
+    uint32_t sign = (a >> 31) & 0x1;
+    if (sign) {
+        a = -a;
+    }
     return a & (1 << 31);
 }
 
