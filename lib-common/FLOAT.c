@@ -31,7 +31,7 @@ FLOAT Fabs(FLOAT a) {
     //if (sign) {
     //    a = -a;
     //}
-    return a & (1 << 31);
+    return a ^ (1 << 31);
 }
 
 FLOAT sqrt(FLOAT x) {
