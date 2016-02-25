@@ -32,6 +32,7 @@ FLOAT Fabs(FLOAT a) {
         a = -a;
     }
     return a;
+    // return a & (1 << 31);
 }
 
 FLOAT sqrt(FLOAT x) {
