@@ -24,8 +24,6 @@ FLOAT f2F(float a) {
     if (exp > -16)
         res <<= exp + 16;
     return sign == 0 ? res : -res;
-
-
 }
 
 FLOAT Fabs(FLOAT a) {
