@@ -27,7 +27,11 @@ FLOAT f2F(float a) {
 }
 
 FLOAT Fabs(FLOAT a) {
-    return a & (1 << 31);
+    uint32_t sign = (a >> 31) & 0x1;
+    if (sign) {
+        a = -a;
+    }
+    return a;
 }
 
 FLOAT sqrt(FLOAT x) {
