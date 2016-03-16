@@ -26,10 +26,10 @@ FLOAT f2F(float a) {
     return sign == 0 ? res : -res;
 }
 
-float F2f(FLOAT a) {
-    float f = (float)(a);
-    return f / (1 << 16);
-}
+// float F2f(FLOAT a) {
+//     float f = (float)(a);
+//     return f / (1 << 16);
+// }
 
 FLOAT Fabs(FLOAT a) {
     uint32_t sign = (a >> 31) & 0x1;
