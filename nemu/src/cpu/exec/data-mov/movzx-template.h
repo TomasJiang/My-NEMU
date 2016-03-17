@@ -3,16 +3,19 @@
 #define instr movzx
 
 static void do_execute() {
-    uint32_t tmp = op_src->val;
-#if DATA_BYTE == 1
-    if(ops_decoded.is_data_size_16)
-        reg_w(op_dest->reg) = tmp;
-    else
-        reg_l(op_dest->reg) = tmp;
-#elif DATA_BYTE == 2
+//     uint32_t tmp = op_src->val;
+// #if DATA_BYTE == 1
+//     if(ops_decoded.is_data_size_16)
+//         reg_w(op_dest->reg) = tmp;
+//     else
+//         reg_l(op_dest->reg) = tmp;
+// #elif DATA_BYTE == 2
+//     reg_l(op_dest->reg) = tmp;
+// #endif
+// 	print_asm_template2();
+    DATA_TYPE tmp = op_src->val & 0xffff;
     reg_l(op_dest->reg) = tmp;
-#endif
-	print_asm_template2();
+    print_asm_template2();
 }
 
 make_instr_helper(rm2r)
