@@ -60,10 +60,8 @@ int isatty(int fd) {
 }
 
 int main() {
-    /* TODO:
 	printf("%s", "Hello world!\n");
 	printf("%d + %d = %d\n", 1, 1, 2);
-    */
 
 	HIT_GOOD_TRAP;
 	return 0;

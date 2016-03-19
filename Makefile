@@ -52,7 +52,7 @@ clean: clean-cpp
 
 ##### some convinient rules #####
 
-USERPROG := obj/testcase/hello-str
+USERPROG := obj/testcase/quick-sort
 ENTRY := $(kernel_BIN)
 #ENTRY := $(USERPROG)
 
@@ -60,8 +60,9 @@ entry: $(ENTRY)
 	objcopy -S -O binary $(ENTRY) entry
 
 run: $(nemu_BIN) $(USERPROG) entry
-	#$(call git_commit, "run")
 	$(nemu_BIN) $(USERPROG)
+
+#$(call git_commit, "run")
 
 gdb: $(nemu_BIN) $(USERPROG) entry
 	gdb -s $(nemu_BIN) --args $(nemu_BIN) $(USERPROG)
