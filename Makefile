@@ -52,9 +52,9 @@ clean: clean-cpp
 
 ##### some convinient rules #####
 
-USERPROG := obj/testcase/hello-str
-ENTRY := $(kernel_BIN)
-#ENTRY := $(USERPROG)
+USERPROG := obj/testcase/eflags_byte_add_cmovcc
+#ENTRY := $(kernel_BIN)
+ENTRY := $(USERPROG)
 
 entry: $(ENTRY)
 	objcopy -S -O binary $(ENTRY) entry
