@@ -7,5 +7,6 @@ make_helper(cmovns_r2rm_v);
 make_helper(cmovo_r2rm_v);
 make_helper(cmove_r2rm_v);
 make_helper(cmovge_r2rm_v);
+make_helper(cmovp_r2rm_v);
 
 #endif
