@@ -134,27 +134,27 @@ int main()
         nemu_assert(dest[size + 1] == CANARY2);
     }
 
-    // for (i = 0; i < fill_data_size; i++) {
-    //     naive_memset(dest + 1, 0xcc, size * 4);
-    //     test_stosw(dest + 1, fill_data[i], size * 2, 0);
-    //     nemu_assert(dest[0] == CANARY1);
-    //     nemu_assert(dest[size + 1] == CANARY2);
-    //     naive_memset(dest + 1, 0xcc, size * 4);
-    //     test_stosw((char *)dest + size * 4 + 4 - 2, fill_data[i], size * 2, 1);
-    //     nemu_assert(dest[0] == CANARY1);
-    //     nemu_assert(dest[size + 1] == CANARY2);
-    // }
-    //
-    // for (i = 0; i < fill_data_size; i++) {
-    //     naive_memset(dest + 1, 0xcc, size * 4);
-    //     test_stosb(dest + 1, fill_data[i], size * 4, 0);
-    //     nemu_assert(dest[0] == CANARY1);
-    //     nemu_assert(dest[size + 1] == CANARY2);
-    //     naive_memset(dest + 1, 0xcc, size * 4);
-    //     test_stosb((char *)dest + size * 4 + 4 - 1, fill_data[i], size * 4, 1);
-    //     nemu_assert(dest[0] == CANARY1);
-    //     nemu_assert(dest[size + 1] == CANARY2);
-    // }
+    for (i = 0; i < fill_data_size; i++) {
+        naive_memset(dest + 1, 0xcc, size * 4);
+        test_stosw(dest + 1, fill_data[i], size * 2, 0);
+        nemu_assert(dest[0] == CANARY1);
+        nemu_assert(dest[size + 1] == CANARY2);
+        naive_memset(dest + 1, 0xcc, size * 4);
+        test_stosw((char *)dest + size * 4 + 4 - 2, fill_data[i], size * 2, 1);
+        nemu_assert(dest[0] == CANARY1);
+        nemu_assert(dest[size + 1] == CANARY2);
+    }
+
+    for (i = 0; i < fill_data_size; i++) {
+        naive_memset(dest + 1, 0xcc, size * 4);
+        test_stosb(dest + 1, fill_data[i], size * 4, 0);
+        nemu_assert(dest[0] == CANARY1);
+        nemu_assert(dest[size + 1] == CANARY2);
+        naive_memset(dest + 1, 0xcc, size * 4);
+        test_stosb((char *)dest + size * 4 + 4 - 1, fill_data[i], size * 4, 1);
+        nemu_assert(dest[0] == CANARY1);
+        nemu_assert(dest[size + 1] == CANARY2);
+    }
 
     HIT_GOOD_TRAP;
 
