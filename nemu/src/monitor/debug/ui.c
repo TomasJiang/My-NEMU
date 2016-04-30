@@ -10,6 +10,9 @@
 #define ATS_MAX_EXP 256
 void cpu_exec(uint32_t);
 bool get_function_name(char *name, uint32_t addr);
+static int cmd_si(char *args);
+static int cmd_info(char *args);
+static int cmd_help(char *args);
 
 /* We use the ``readline'' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
@@ -71,86 +74,116 @@ static int cmd_addr(char *args) {
     return 0;
 }
 
+static int cmd_b(char *args) {
+	if(!args) {
+		printf("USAGE: b HEX\n");
+		return 0;
+	}
+
+    // uint32_t addr = (uint32_t)strtol(args, NULL, 0);
+
+	WP *wp = new_wp();
+    sprintf(wp->str, "$eip==%s", args);
+	wp->oldvalue = false;
+	printf("Add a breakpoint %d: %s\n", wp->NO, args);
+	return 0;
+}
+
+static int cmd_bt(char *args) {
+	swaddr_t ebp = cpu.ebp;
+	char func_name[128];
+	get_function_name(func_name, cpu.eip);
+
+    printf("#0  %s (", func_name);
+    bool blankflag = false;
+    int i;
+    for(i = 0; i < 4; ++i) {
+        uint32_t addr = (ebp + 8) + 4 * i;
+        if(addr >= 0x8000000)
+            break;
+        if(!blankflag) {
+            printf("0x%x", swaddr_read(addr, 4));
+            blankflag = true;
+        } else {
+            printf(", 0x%x", swaddr_read(addr, 4));
+        }
+    }
+    printf("...)\n");
+
+
+	int count = 0;
+	swaddr_t ret_addr;
+	while(ebp) {
+		++count;
+		ret_addr = swaddr_read(ebp + 4, 4) + 1;
+		ebp = swaddr_read(ebp, 4);
+		if(!get_function_name(func_name, ret_addr)) {
+			return 0;
+		}
+
+        printf("#%-3d0x%08x in %s (", count, ret_addr, func_name);
+        bool blankflag = false;
+        int i;
+        for(i = 0; i < 4; ++i) {
+            uint32_t addr = (ebp + 8) + 4 * i;
+            if(addr >= 0x8000000)
+                break;
+            if(!blankflag) {
+                printf("0x%x", swaddr_read(addr, 4));
+                blankflag = true;
+            } else {
+                printf(", 0x%x", swaddr_read(addr, 4));
+            }
+        }
+        printf("...)\n");
+
+	}
+	return 0;
+}
+
 static int cmd_c(char *args) {
 	cpu_exec(-1);
 	return 0;
 }
 
-static int cmd_cache(char *args) {
-    if (!args) {
-        printf("USAGE: cache all/ADDR\n");
-        return 0;
-    }
-
-    return 0;
-}
-
-static int cmd_q(char *args) {
-	return -1;
-}
-
-static int cmd_p(char *args) {
+static int cmd_d(char *args) {
 	if(!args) {
-		printf("USAGE: p EXP\n");
+		printf("USAGE: d NUM\n");
 		return 0;
 	}
-	bool success;
-	uint32_t result = expr(args, &success);
-	Assert(success, "Invalid expression\n");
-	printf("0x%08x\n", result);
+
+	int n = atoi(args);
+	WP *wp = head_wp();
+	while(wp) {
+		if(wp->NO == n) {
+			printf("Delete watchpoint %d: %s\n", wp->NO, wp->str);
+			free_wp(wp);
+			return 0;
+		}
+		wp = wp->next;
+	}
+	printf("No watchpoint %d", n);
 	return 0;
 }
 
-static int cmd_page(char *args) {
+static int cmd_fuck(char *args) {
+    int i;
+    uint32_t n;
 	if(!args) {
-		printf("USAGE: x EXP\n");
-		return 0;
-	}
-
-
-    int32_t n;
-	uint32_t addr;
-    char exp[ATS_MAX_EXP];
-	bool success;
-	sscanf(args, "%u %s", &n, exp);
-	addr = expr(exp, &success);
-    if(!success) {
-        printf("Invalid expression\n");
-        return 0;
-    }
-
-    int32_t i, j;
-    if(n > 0) {
-        for(i = n-1; i >= 0; --i) {
-            uint32_t addroff = addr + i*4;
-            printf("\t");
-            for(j = 3; j >= 0; --j) {
-                printf("%02x ", swaddr_read(addroff + j, 1, R_DS));
-            }
-            printf("\t<= 0x%08x\n", addroff);
-        }
+        n = 1;
     } else {
-        for(i = 0; i < -n; ++i) {
-            uint32_t addroff = addr - i*4;
-            printf("\t");
-            for(j = 3; j >= 0; --j) {
-                printf("%02x ", swaddr_read(addroff + j, 1, R_DS));
-            }
-            printf("\t<= 0x%08x\n", addroff);
-        }
+        n = atoi(args);
+        Log("%u", n);
     }
-
+    for(i = 0; i < n; ++i) {
+        cmd_si("1");
+        cmd_info("r");
+        if (i != n-1)
+            printf("\n");
+        if(nemu_state == END)
+            break;
+    }
     return 0;
-}
-
-static int cmd_si(char *args) {
-	if(!args) {
-		printf("USAGE: si NUM\n");
-		return 0;
-	}
-	uint32_t n = atoi(args);
-	cpu_exec(n);
-	return 0;
 }
 
 static int cmd_info(char *args) {
@@ -201,12 +234,23 @@ static int cmd_info(char *args) {
 	return 0;
 }
 
-static int cmd_x(char *args) {
+static int cmd_p(char *args) {
+	if(!args) {
+		printf("USAGE: p EXP\n");
+		return 0;
+	}
+	bool success;
+	uint32_t result = expr(args, &success);
+	Assert(success, "Invalid expression\n");
+	printf("0x%08x\n", result);
+	return 0;
+}
+
+static int cmd_page(char *args) {
 	if(!args) {
 		printf("USAGE: x EXP\n");
 		return 0;
 	}
-
 
     int32_t n;
 	uint32_t addr;
@@ -243,6 +287,20 @@ static int cmd_x(char *args) {
     return 0;
 }
 
+static int cmd_q(char *args) {
+	return -1;
+}
+
+static int cmd_si(char *args) {
+	if(!args) {
+		printf("USAGE: si NUM\n");
+		return 0;
+	}
+	int n = atoi(args);
+	cpu_exec(n);
+	return 0;
+}
+
 static int cmd_w(char *args) {
 	if(!args) {
 		printf("USAGE: w EXP\n");
@@ -262,79 +320,45 @@ static int cmd_w(char *args) {
 	return 0;
 }
 
-static int cmd_d(char *args) {
+static int cmd_x(char *args) {
 	if(!args) {
-		printf("USAGE: d NUM\n");
+		printf("USAGE: x EXP\n");
 		return 0;
 	}
 
-	int n = atoi(args);
-	WP *wp = head_wp();
-	while(wp) {
-		if(wp->NO == n) {
-			printf("Delete watchpoint %d: %s\n", wp->NO, wp->str);
-			free_wp(wp);
-			return 0;
-		}
-		wp = wp->next;
-	}
-	printf("No watchpoint %d", n);
-	return 0;
-}
 
-static int cmd_bt(char *args) {
-	swaddr_t ebp = cpu.ebp;
-	char func_name[128];
-	get_function_name(func_name, cpu.eip);
+    int32_t n;
+	uint32_t addr;
+    char exp[ATS_MAX_EXP];
+	bool success;
+	sscanf(args, "%u %s", &n, exp);
+	addr = expr(exp, &success);
+	Assert(success, "Invalid expression\n");
 
-    printf("#0  %s (", func_name);
-    bool blankflag = false;
-    int i;
-    for(i = 0; i < 4; ++i) {
-        uint32_t addr = (ebp + 8) + 4 * i;
-        if(addr >= 0x8000000)
-            break;
-        if(!blankflag) {
-            printf("0x%x", swaddr_read(addr, 4, R_SS));
-            blankflag = true;
-        } else {
-            printf(", 0x%x", swaddr_read(addr, 4, R_SS));
+    int32_t i, j;
+    if(n > 0) {
+        for(i = n-1; i >= 0; --i) {
+            uint32_t addroff = addr + i*4;
+            printf("\t");
+            for(j = 3; j >= 0; --j) {
+                printf("%02x ", swaddr_read(addroff + j, 1));
+            }
+            printf("\t<= 0x%08x\n", addroff);
+        }
+    } else {
+        for(i = 0; i < -n; ++i) {
+            uint32_t addroff = addr - i*4;
+            printf("\t");
+            for(j = 3; j >= 0; --j) {
+                printf("%02x ", swaddr_read(addroff + j, 1));
+            }
+            printf("\t<= 0x%08x\n", addroff);
         }
     }
-    printf("...)\n");
 
-
-	int count = 0;
-	swaddr_t ret_addr;
-	while(ebp) {
-		++count;
-		ret_addr = swaddr_read(ebp + 4, 4, R_SS) + 1;
-		ebp = swaddr_read(ebp, 4, R_SS);
-		if(!get_function_name(func_name, ret_addr)) {
-			return 0;
-		}
-
-        printf("#%-3d0x%08x in %s (", count, ret_addr, func_name);
-        bool blankflag = false;
-        int i;
-        for(i = 0; i < 4; ++i) {
-            uint32_t addr = (ebp + 8) + 4 * i;
-            if(addr >= 0x8000000)
-                break;
-            if(!blankflag) {
-                printf("0x%x", swaddr_read(addr, 4, R_SS));
-                blankflag = true;
-            } else {
-                printf(", 0x%x", swaddr_read(addr, 4, R_SS));
-            }
-        }
-        printf("...)\n");
-
-	}
-	return 0;
+    return 0;
 }
 
-static int cmd_help(char *args);
 
 static struct {
 	char *name;
@@ -343,17 +367,18 @@ static struct {
 } cmd_table [] = {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "addr", "Examine hardware memory", cmd_addr },
+	{ "b",  "Add breakpoint frams", cmd_b },
+	{ "bt", "Print frams", cmd_bt },
 	{ "c", "Continue the execution of the program", cmd_c },
-	{ "cache", "print cache", cmd_cache },
-	{ "q", "Exit NEMU", cmd_q },
-	{ "si", "Step NUM instructions", cmd_si },
+	{ "d", "Delete a specified watchpoint", cmd_d },
+	{ "fuck", "excute one command & print info", cmd_fuck },
 	{ "info", "r-List of all registers and their contents\n\t  w-Print status of all watchpoints", cmd_info },
 	{ "p", "Print value of expression EXP", cmd_p },
 	{ "page", "Examine page memory", cmd_page },
-	{ "x", "Examine memory", cmd_x },
+	{ "q", "Exit NEMU", cmd_q },
+	{ "si", "Step NUM instructions", cmd_si },
 	{ "w", "Set a watchpoint for an expression", cmd_w },
-	{ "d", "Delete a specified watchpoint", cmd_d },
-	{ "bt", "Print frams", cmd_bt }
+	{ "x", "Examine memory", cmd_x }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))

@@ -38,6 +38,18 @@ make_helper_v(cmovo_r2rm)
 make_helper_v(cmovs_r2rm)
 
 #define DATA_BYTE 2
+#include "cmovns-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "cmovns-template.h"
+#undef DATA_BYTE
+
+/* for instruction encoding overloading */
+
+make_helper_v(cmovns_r2rm)
+
+#define DATA_BYTE 2
 #include "cmove-template.h"
 #undef DATA_BYTE
 
@@ -60,3 +72,27 @@ make_helper_v(cmove_r2rm)
 /* for instruction encoding overloading */
 
 make_helper_v(cmovge_r2rm)
+
+#define DATA_BYTE 2
+#include "cmovp-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "cmovp-template.h"
+#undef DATA_BYTE
+
+/* for instruction encoding overloading */
+
+make_helper_v(cmovp_r2rm)
+
+#define DATA_BYTE 2
+#include "cmovb-template.h"
+#undef DATA_BYTE
+
+#define DATA_BYTE 4
+#include "cmovb-template.h"
+#undef DATA_BYTE
+
+/* for instruction encoding overloading */
+
+make_helper_v(cmovb_r2rm)

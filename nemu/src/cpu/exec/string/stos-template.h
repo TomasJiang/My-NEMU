@@ -3,8 +3,7 @@
 #define instr stos
 
 make_helper(concat3(instr, _, SUFFIX)) {
-    // Log("$edi = 0x%x, $es = 0x%x", REG(R_EDI), cpu.es.selector);
-    MEM_W(REG(R_EDI), REG(R_EAX), R_ES);
+    MEM_W(reg_l(R_EDI), reg_l(R_EAX));
     int flag = cpu.eflags.DF;
     cpu.edi += (-2 * flag + 1) * DATA_BYTE;
     print_asm(str(instr));

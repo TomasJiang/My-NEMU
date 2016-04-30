@@ -121,17 +121,17 @@ helper_fun opcode_table [256] = {
 /* 0x64 */	inv, inv, data_size, inv,
 /* 0x68 */	push_i_v, imul_i_rm2r_v, push_i_b, imul_si_rm2r_v,
 /* 0x6c */	inv, inv, inv, inv,
-/* 0x70 */	inv, inv, jb_rel_b, jae_rel_b,
-/* 0x74 */	je_rel_b, jne_rel_b, jbe_rel8, ja_rel_b,
-/* 0x78 */	js_rel_b, jns_rel_b, inv, inv,
-/* 0x7c */	jl_rel_b, jge_rel_b, jle_rel_b, jg_rel_b,
+/* 0x70 */	inv, jno_b, inv, jnc_b,
+/* 0x74 */	je_b, jne_b, jbe_b, ja_b,
+/* 0x78 */	inv, jns_b, inv, jnp_b,
+/* 0x7c */	jl_b, jge_b, jle_b, jg_b,
 /* 0x80 */	group1_b, group1_v, inv, group1_sx_v,
 /* 0x84 */	test_r2rm_b, test_r2rm_v, inv, inv,
 /* 0x88 */	mov_r2rm_b, mov_r2rm_v, mov_rm2r_b, mov_rm2r_v,
 /* 0x8c */	inv, lea, mov_r2sreg, inv,
 /* 0x90 */	nop, inv, inv, inv,
 /* 0x94 */	inv, inv, inv, inv,
-/* 0x98 */	inv, cdq, inv, inv,
+/* 0x98 */	cwtl, cdq, inv, inv,
 /* 0x9c */	inv, inv, inv, inv,
 /* 0xa0 */	mov_moffs2a_b, mov_moffs2a_v, mov_a2moffs_b, mov_a2moffs_v,
 /* 0xa4 */	movs_b, movs_v, cmps_b, cmps_v,
@@ -155,7 +155,7 @@ helper_fun opcode_table [256] = {
 /* 0xec */	inv, inv, inv, inv,
 /* 0xf0 */	inv, inv, inv, rep,
 /* 0xf4 */	inv, inv, group3_b, group3_v,
-/* 0xf8 */	inv, inv, inv, inv,
+/* 0xf8 */	clc, stc, inv, inv,
 /* 0xfc */	cld, std, group4, group5
 };
 
@@ -176,9 +176,9 @@ helper_fun _2byte_opcode_table [256] = {
 /* 0x34 */	inv, inv, inv, inv,
 /* 0x38 */	inv, inv, inv, inv,
 /* 0x3c */	inv, inv, inv, inv,
-/* 0x40 */	inv, inv, inv, inv,
+/* 0x40 */	cmovo_r2rm_v, inv, cmovb_r2rm_v, inv,
 /* 0x44 */	cmove_r2rm_v, inv, inv, cmova_r2rm_v,
-/* 0x48 */	inv, cmovs_r2rm_v, inv, inv,
+/* 0x48 */	cmovs_r2rm_v, cmovns_r2rm_v, cmovp_r2rm_v, inv,
 /* 0x4c */	inv, cmovge_r2rm_v, inv, inv,
 /* 0x50 */	inv, inv, inv, inv,
 /* 0x54 */	inv, inv, inv, inv,
@@ -192,16 +192,16 @@ helper_fun _2byte_opcode_table [256] = {
 /* 0x74 */	inv, inv, inv, inv,
 /* 0x78 */	inv, inv, inv, inv,
 /* 0x7c */	inv, inv, inv, inv,
-/* 0x80 */	inv, inv, inv, jae_rel_v,
-/* 0x84 */	je_rel_v, jne_rel_v, inv, ja_rel_v,
-/* 0x88 */	js_rel_v, inv, inv, inv,
-/* 0x8c */	jl_rel_v, inv, jle_rel_v, jg_rel_v,
-/* 0x90 */	inv, inv, inv, inv,
+/* 0x80 */	inv, inv, inv, jnc_v,
+/* 0x84 */	je_v, jne_v, inv, ja_v,
+/* 0x88 */	js_v, jns_v, inv, inv,
+/* 0x8c */	jl_v, inv, jle_v, jg_v,
+/* 0x90 */	seto_rm_b, inv, setb_rm_b, inv,
 /* 0x94 */	sete_rm_b, setne_rm_b, inv, inv,
-/* 0x98 */	inv, inv, inv, inv,
+/* 0x98 */	sets_rm_b, inv, setp_rm_b, inv,
 /* 0x9c */	inv, inv, inv, inv,
 /* 0xa0 */	inv, inv, inv, inv,
-/* 0xa4 */	inv, inv, inv, inv,
+/* 0xa4 */	shldi_v, shld_v, inv, inv,
 /* 0xa8 */	inv, inv, inv, inv,
 /* 0xac */	shrdi_v, inv, inv, imul_rm2r_v,
 /* 0xb0 */	inv, inv, inv, inv,
@@ -237,4 +237,25 @@ static make_helper(_2byte_esc) {
 	uint32_t opcode = instr_fetch(eip, 1);
 	ops_decoded.opcode = opcode | 0x100;
 	return _2byte_opcode_table[opcode](eip) + 1;
+}
+
+void set_flags(uint32_t src, uint32_t dest, uint32_t res, uint32_t data_byte) {
+    uint32_t step = 0x8 * data_byte;
+    // Log("step = %u", step);
+
+	unsigned sf = 0x1 & (src >> (step - 1));
+	unsigned df = 0x1 & (dest >> (step - 1));
+	unsigned rf = 0x1 & (res >> (step - 1));
+
+	cpu.eflags.OF = (df && sf && !rf) || (!df && !sf && rf);
+	cpu.eflags.SF = rf;
+	cpu.eflags.ZF = (res == 0);
+	cpu.eflags.CF = (df && sf) || ((df || sf) && !rf);
+	// cpu.eflags.CF = (uint32_t) dest < (uint32_t) src; for sub
+
+	res = 0xff & res;
+	unsigned count;
+	for(count = 0; res; ++count)
+		res &= (res - 1);
+	cpu.eflags.PF = !(count % 2);
 }
