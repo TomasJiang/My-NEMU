@@ -5,7 +5,7 @@ make_helper(concat3(instr, _, SUFFIX)) {
     int32_t k = instr_fetch(cpu.eip + prefix_len, DATA_BYTE);
     uint32_t step = 32 - (8 * DATA_BYTE);
     swaddr_t temp = cpu.eip + (k << step >> step);
-    Log("DATA_BYTE = %u, k = 0x%x, step = %u, temp = 0x%x", DATA_BYTE, k, step, temp);
+    // Log("DATA_BYTE = %u, k = 0x%x, step = %u, temp = 0x%x", DATA_BYTE, k, step, temp);
     if(cond) {
         cpu.eip = temp;
     }
