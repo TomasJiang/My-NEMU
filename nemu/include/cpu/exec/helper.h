@@ -33,3 +33,5 @@ extern char assembly[];
 	print_asm(str(instr) str(SUFFIX) " %s,%s,%s", op_src->str, op_src2->str, op_dest->str)
 
 #endif
+
+void set_flags(uint32_t src, uint32_t dest, uint32_t res, uint32_t data_byte);

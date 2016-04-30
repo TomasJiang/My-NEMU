@@ -238,3 +238,23 @@ static make_helper(_2byte_esc) {
 	ops_decoded.opcode = opcode | 0x100;
 	return _2byte_opcode_table[opcode](eip) + 1;
 }
+
+void set_flags(uint32_t src, uint32_t dest, uint32_t res, uint32_t data_byte) {
+    uint32_t step = 0x8 * data_byte;
+    // Log("step = %u", step);
+
+	unsigned sf = 0x1 & (src >> (step - 1));
+	unsigned df = 0x1 & (dest >> (step - 1));
+	unsigned rf = 0x1 & (res >> (step - 1));
+
+	cpu.eflags.OF = (df && sf && !rf) || (!df && !sf && rf);
+	cpu.eflags.SF = rf;
+	cpu.eflags.ZF = (res == 0);
+	cpu.eflags.CF = (df && sf) || ((df || sf) && !rf);
+
+	res = 0xff & res;
+	unsigned count;
+	for(count = 0; res; ++count)
+		res &= (res - 1);
+	cpu.eflags.PF = !(count % 2);
+}
