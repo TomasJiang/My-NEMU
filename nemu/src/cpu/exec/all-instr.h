@@ -49,4 +49,5 @@
 #include "special/special.h"
 #include "special/cdq.h"
 #include "special/clc.h"
+#include "special/stc.h"
 #include "special/cwtl.h"
