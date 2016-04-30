@@ -191,7 +191,9 @@ static int cmd_fuck(char *args) {
     int i, n;
 	if(!args) {
         n = 1;
-	}
+    } else {
+        n = atoi(args);
+    }
     for(i = 0; i < n; ++i) {
         cmd_si("1");
         cmd_info("r");
