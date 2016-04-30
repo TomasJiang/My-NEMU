@@ -4,20 +4,22 @@
 
 #if DATA_BYTE == 2 || DATA_BYTE == 4
 static void do_execute () {
-	DATA_TYPE in = op_dest->val;
-	DATA_TYPE out = op_src->val;
+	DATA_TYPE in = op_dest->val; // eax low
+	DATA_TYPE out = op_src->val; // edx high
 
 	uint8_t count = reg_b(R_CL);
 	count &= 0x1f;
+    Log("count = %u", count);
 	while(count != 0) {
 		out <<= 1;
-		out |= (in & 1) << ((DATA_BYTE << 3) - 1);
+		out |= (in >> ((DATA_BYTE << 3) - 1)) & 0x1;
 		in <<= 1;
 		count --;
 	}
 
 	OPERAND_W(op_src, out);
 
+    // dest eax; src edx
 	print_asm("shld" str(SUFFIX) " %%cl,%s,%s", op_dest->str, op_src->str);
 }
 
