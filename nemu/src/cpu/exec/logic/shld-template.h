@@ -9,7 +9,7 @@ static void do_execute () {
 
 	uint8_t count = reg_b(R_CL);
 	count &= 0x3f;
-    Log("count = %u, in = 0x%x, out = 0x%x", count, in, out);
+    Log("count = %u, in(eax) = 0x%x, out(edx) = 0x%x", count, in, out);
 	while(count != 0) {
 		out <<= 1;
 		out |= (in >> ((DATA_BYTE << 3) - 1)) & 0x1;
