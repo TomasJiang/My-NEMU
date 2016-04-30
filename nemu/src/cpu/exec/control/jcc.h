@@ -21,6 +21,8 @@ make_helper(jne_b);
 make_helper(jne_v);
 make_helper(jno_b);
 make_helper(jno_v);
+make_helper(jnp_b);
+make_helper(jnp_v);
 make_helper(jns_b);
 make_helper(jns_v);
 make_helper(js_b);

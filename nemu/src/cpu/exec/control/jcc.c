@@ -61,6 +61,12 @@
 #undef cond
 #undef instr
 
+#define instr jnp
+#define cond (!cpu.eflags.PF)
+#include "jcc-template.h"
+#undef cond
+#undef instr
+
 #define instr jns
 #define cond (!cpu.eflags.SF)
 #include "jcc-template.h"
