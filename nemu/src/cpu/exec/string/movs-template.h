@@ -3,6 +3,7 @@
 #define instr movs
 
 make_helper(concat3(instr, _, SUFFIX)) {
+    Log("copy from %u to %u", REG(R_ESI), REG(R_EDI));
     MEM_W(REG(R_EDI), MEM_R(REG(R_ESI)));
     int flag = cpu.eflags.DF;
     cpu.edi += (-2 * flag + 1) * DATA_BYTE;
