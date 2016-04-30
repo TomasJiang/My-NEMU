@@ -109,6 +109,7 @@ static int cmd_c(char *args) {
     } else {
 	    cpu_exec(-1);
     }
+    Log("%s", args);
 
 	return 0;
 }
