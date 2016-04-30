@@ -80,7 +80,6 @@ void test_ ## INSTR (void *esi, void *edi, int ecx, int df) \
     nemu_assert((int)edi + ecx * step == new_edi); \
     nemu_assert(new_ecx == 0); \
     if (df == 0) { \
-        nemu_assert(naive_memcmp(esi, edi, ecx * step) == 0); \
     } else { \
         nemu_assert(naive_memcmp((void *)(new_esi - step), (void *)(new_edi - step), ecx * (-step)) == 0); \
     } \
