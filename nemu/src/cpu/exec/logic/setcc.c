@@ -1,5 +1,11 @@
 #include "cpu/exec/helper.h"
 
+#define instr setb
+#define cond (cpu.eflags.CF)
+#include "setcc-template.h"
+#undef cond
+#undef instr
+
 #define instr sete
 #define cond (cpu.eflags.ZF)
 #include "setcc-template.h"
