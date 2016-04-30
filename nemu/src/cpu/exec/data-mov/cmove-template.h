@@ -8,7 +8,7 @@ static void do_execute() {
         //OPERAND_W(op_dest, op_src->val);
         // myth
         OPERAND_W(op_src, op_dest->val);
-	print_asm_template2();
+	print_asm(str(instr) str(SUFFIX) " %s, %s", op_dest->str, op_src->str);
 }
 
 make_instr_helper(r2rm)
