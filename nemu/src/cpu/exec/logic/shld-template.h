@@ -8,9 +8,9 @@ static void do_execute () {
 	DATA_TYPE out = op_src->val; // edx high
 
 	uint8_t count = reg_b(R_CL);
-	count &= 0x3f;
-    printf("\n");
-    Log("count = %u, in(eax) = 0x%x, out(edx) = 0x%x", count, in, out);
+	count &= 0x1f;
+    // printf("\n");
+    // Log("count = %u, in(eax) = 0x%x, out(edx) = 0x%x", count, in, out);
 	while(count != 0) {
 		out <<= 1;
 		out |= (in >> ((DATA_BYTE << 3) - 1)) & 0x1;
@@ -18,7 +18,7 @@ static void do_execute () {
 		count --;
 	}
 
-    Log("out = 0x%x", out);
+    // Log("out = 0x%x", out);
 	OPERAND_W(op_src, out);
 
     // dest eax; src edx

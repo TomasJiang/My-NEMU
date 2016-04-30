@@ -142,7 +142,7 @@ void test()
         for (j = 0; j <= 64; j++) {
             x = data[i];
             y = x << j;
-            // nemu_assert(y == naive_shift_left(x, j));
+            nemu_assert(y == naive_shift_left(x, j));
             nemu_assert(y == naive_naive_shift_left(x, j));
         }
 }
