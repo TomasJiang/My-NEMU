@@ -52,7 +52,7 @@ clean: clean-cpp
 
 ##### some convinient rules #####
 
-USERPROG := obj/testcase/eflags_byte_add_jcc
+USERPROG := obj/testcase/eflags_byte_add_cmovcc
 #ENTRY := $(kernel_BIN)
 ENTRY := $(USERPROG)
 
