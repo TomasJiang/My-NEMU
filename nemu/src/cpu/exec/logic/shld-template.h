@@ -9,6 +9,7 @@ static void do_execute () {
 
 	uint8_t count = reg_b(R_CL);
 	count &= 0x3f;
+    printf("\n");
     Log("count = %u, in(eax) = 0x%x, out(edx) = 0x%x", count, in, out);
 	while(count != 0) {
 		out <<= 1;
