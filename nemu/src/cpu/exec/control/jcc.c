@@ -7,12 +7,6 @@
 #undef cond
 #undef instr
 
-#define instr jae
-#define cond (cpu.eflags.CF != 0)
-#include "jcc-template.h"
-#undef cond
-#undef instr
-
 #define instr jbe
 #define cond (cpu.eflags.CF || cpu.eflags.ZF)
 #include "jcc-template.h"
@@ -45,6 +39,12 @@
 
 #define instr jle
 #define cond (cpu.eflags.ZF || cpu.eflags.SF != cpu.eflags.OF)
+#include "jcc-template.h"
+#undef cond
+#undef instr
+
+#define instr jnc
+#define cond (!cpu.eflags.CF)
 #include "jcc-template.h"
 #undef cond
 #undef instr
