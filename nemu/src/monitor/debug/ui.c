@@ -84,6 +84,21 @@ static int cmd_bt(char *args) {
 	return 0;
 }
 
+static int cmd_b(char *args) {
+	if(!args) {
+		printf("USAGE: b HEX\n");
+		return 0;
+	}
+
+    // uint32_t addr = (uint32_t)strtol(args, NULL, 0);
+
+	WP *wp = new_wp();
+    sscanf(wp->str, "%%eip==%s", args);
+	wp->oldvalue = false;
+	printf("Add watchpoint\\breakpoint %d: %s\n", wp->NO, wp->str);
+	return 0;
+}
+
 static int cmd_c(char *args) {
 	cpu_exec(-1);
 	return 0;
@@ -253,6 +268,7 @@ static struct {
 	int (*handler) (char *);
 } cmd_table [] = {
 	{ "help", "Display informations about all supported commands", cmd_help },
+	{ "b",  "Add breakpoint frams", cmd_b },
 	{ "bt", "Print frams", cmd_bt },
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "d", "Delete a specified watchpoint", cmd_d },
