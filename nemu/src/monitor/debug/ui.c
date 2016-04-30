@@ -187,6 +187,18 @@ static int cmd_d(char *args) {
 	return 0;
 }
 
+static int cmd_fuck(char *args) {
+    int i, n;
+	if(!args) {
+        n = 1;
+	}
+    for(i = 0; i < n; ++i) {
+        cmd_si("1");
+        cmd_info("r");
+    }
+    return 0;
+}
+
 static int cmd_bt(char *args) {
 	swaddr_t ebp = cpu.ebp;
 	char func_name[128];
@@ -248,15 +260,16 @@ static struct {
 	int (*handler) (char *);
 } cmd_table [] = {
 	{ "help", "Display informations about all supported commands", cmd_help },
+	{ "bt", "Print frams", cmd_bt },
 	{ "c", "Continue the execution of the program", cmd_c },
+	{ "d", "Delete a specified watchpoint", cmd_d },
+	{ "fuck", "excute one command & print info", cmd_fuck },
+	{ "info", "r-List of all registers and their contents\n\t  w-Print status of all watchpoints", cmd_info },
 	{ "q", "Exit NEMU", cmd_q },
 	{ "si", "Step NUM instructions", cmd_si },
-	{ "info", "r-List of all registers and their contents\n\t  w-Print status of all watchpoints", cmd_info },
 	{ "p", "Print value of expression EXP", cmd_p },
-	{ "x", "Examine memory", cmd_x },
 	{ "w", "Set a watchpoint for an expression", cmd_w },
-	{ "d", "Delete a specified watchpoint", cmd_d },
-	{ "bt", "Print frams", cmd_bt }
+	{ "x", "Examine memory", cmd_x }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
