@@ -100,17 +100,7 @@ static int cmd_b(char *args) {
 }
 
 static int cmd_c(char *args) {
-    if(!args && !strcmp("DEBUG", args)) {
-        uint32_t n = 0xffffff, i;
-        for(i = 0; i < n; ++i) {
-            cpu_exec(1);
-            cmd_info("r");
-        }
-    } else {
-	    cpu_exec(-1);
-    }
-    Log("%s", args);
-
+	cpu_exec(-1);
 	return 0;
 }
 
