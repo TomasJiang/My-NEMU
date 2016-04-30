@@ -5,7 +5,8 @@
 static void do_execute() {
     // Move if not sign (SF=0).
     if(cpu.eflags.PF == 1)
-        OPERAND_W(op_dest, op_src->val);
+        //myth OPERAND_W(op_dest, op_src->val);
+        OPERAND_W(op_src, op_dest->val);
 	print_asm_template2();
 }
 
