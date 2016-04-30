@@ -12,3 +12,9 @@
 #undef cond
 #undef instr
 
+#define instr sets
+#define cond (cpu.eflags.SF)
+#include "setcc-template.h"
+#undef cond
+#undef instr
+
