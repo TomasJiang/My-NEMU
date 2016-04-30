@@ -8,7 +8,7 @@ static void do_execute () {
 	DATA_TYPE out = op_src->val; // edx high
 
 	uint8_t count = reg_b(R_CL);
-	count &= 0x1f;
+	count &= 0x3f;
     Log("count = %u, out = 0x%x", count, out);
 	while(count != 0) {
 		out <<= 1;
