@@ -50,4 +50,5 @@
 #include "special/cdq.h"
 #include "special/clc.h"
 #include "special/stc.h"
+#include "special/std.h"
 #include "special/cwtl.h"
