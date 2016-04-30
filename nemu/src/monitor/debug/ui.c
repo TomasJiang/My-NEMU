@@ -125,11 +125,13 @@ static int cmd_d(char *args) {
 }
 
 static int cmd_fuck(char *args) {
-    int i, n;
+    int i;
+    uint32_t n;
 	if(!args) {
         n = 1;
     } else {
         n = atoi(args);
+        Log("%u", n);
     }
     for(i = 0; i < n; ++i) {
         cmd_si("1");
