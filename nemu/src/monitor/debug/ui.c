@@ -197,7 +197,7 @@ static int cmd_fuck(char *args) {
     for(i = 0; i < n; ++i) {
         cmd_si("1");
         cmd_info("r");
-        if (i != 0 && i != n-1)
+        if (i != n-1)
             printf("\n");
     }
     return 0;
