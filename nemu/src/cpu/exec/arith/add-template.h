@@ -14,6 +14,7 @@ static void do_execute() {
 	cpu.eflags.OF = (df && sf && !rf) || (!df && !sf && rf);
 	cpu.eflags.SF = rf;
 	cpu.eflags.ZF = (result == 0);
+    Log("result = %d, ZF = %d", result, cpu.eflags.ZF);
 	cpu.eflags.CF = (df && sf) || ((df || sf) && !rf);
 
 	result = 0xff & result;

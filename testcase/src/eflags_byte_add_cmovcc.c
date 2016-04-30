@@ -56,7 +56,7 @@ int test(int a, int b, char flags[], int g1, int g2)
 
         "movb %b1, %%al\n\t" // a
         "movb %b2, %%cl\n\t" // b
-        "addb %%cl, %%al\n\t" // a = a + b
+        "addb %%cl, %%al\n\t" // a = a + b //change flag
 
         "mov $1, %%ebx\n\t"
 
