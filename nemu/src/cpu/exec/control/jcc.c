@@ -55,6 +55,12 @@
 #undef cond
 #undef instr
 
+#define instr jno
+#define cond (!cpu.eflags.OF)
+#include "jcc-template.h"
+#undef cond
+#undef instr
+
 #define instr js
 #define cond (cpu.eflags.SF)
 #include "jcc-template.h"
