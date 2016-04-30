@@ -5,16 +5,17 @@
 static void do_execute() {
 	DATA_TYPE result = op_dest->val + op_src->val;
 	OPERAND_W(op_dest, result);
+    Log("result = %u", result);
 
+    uint32_t step = (0x8 << DATA_BYTE) - 1;
 	// OF, SF, ZF, CF, and PF
-	unsigned df = 0x1 & (op_dest->val >> 31);
-	unsigned sf = 0x1 & (op_src->val >> 31);
-	unsigned rf = 0x1 & (result >> 31);
+	unsigned df = 0x1 & (op_dest->val >> step);
+	unsigned sf = 0x1 & (op_src->val >> step);
+	unsigned rf = 0x1 & (result >> step);
 
 	cpu.eflags.OF = (df && sf && !rf) || (!df && !sf && rf);
 	cpu.eflags.SF = rf;
 	cpu.eflags.ZF = (result == 0);
-    //Log("result = %d, ZF = %d", result, cpu.eflags.ZF);
 	cpu.eflags.CF = (df && sf) || ((df || sf) && !rf);
 
 	result = 0xff & result;
