@@ -10,6 +10,9 @@
 #define ATS_MAX_EXP 256
 void cpu_exec(uint32_t);
 bool get_function_name(char *name, uint32_t addr);
+static int cmd_si(char *args);
+static int cmd_info(char *args);
+static int cmd_help(char *args);
 
 /* We use the ``readline'' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
@@ -29,35 +32,97 @@ char* rl_gets() {
 	return line_read;
 }
 
+static int cmd_bt(char *args) {
+	swaddr_t ebp = cpu.ebp;
+	char func_name[128];
+	get_function_name(func_name, cpu.eip);
+
+    printf("#0  %s (", func_name);
+    bool blankflag = false;
+    int i;
+    for(i = 0; i < 4; ++i) {
+        uint32_t addr = (ebp + 8) + 4 * i;
+        if(addr >= 0x8000000)
+            break;
+        if(!blankflag) {
+            printf("0x%x", swaddr_read(addr, 4));
+            blankflag = true;
+        } else {
+            printf(", 0x%x", swaddr_read(addr, 4));
+        }
+    }
+    printf("...)\n");
+
+
+	int count = 0;
+	swaddr_t ret_addr;
+	while(ebp) {
+		++count;
+		ret_addr = swaddr_read(ebp + 4, 4) + 1;
+		ebp = swaddr_read(ebp, 4);
+		if(!get_function_name(func_name, ret_addr)) {
+			return 0;
+		}
+
+        printf("#%-3d0x%08x in %s (", count, ret_addr, func_name);
+        bool blankflag = false;
+        int i;
+        for(i = 0; i < 4; ++i) {
+            uint32_t addr = (ebp + 8) + 4 * i;
+            if(addr >= 0x8000000)
+                break;
+            if(!blankflag) {
+                printf("0x%x", swaddr_read(addr, 4));
+                blankflag = true;
+            } else {
+                printf(", 0x%x", swaddr_read(addr, 4));
+            }
+        }
+        printf("...)\n");
+
+	}
+	return 0;
+}
+
 static int cmd_c(char *args) {
 	cpu_exec(-1);
 	return 0;
 }
 
-static int cmd_q(char *args) {
-	return -1;
-}
-
-static int cmd_p(char *args) {
+static int cmd_d(char *args) {
 	if(!args) {
-		printf("USAGE: p EXP\n");
+		printf("USAGE: d NUM\n");
 		return 0;
 	}
-	bool success;
-	uint32_t result = expr(args, &success);
-	Assert(success, "Invalid expression\n");
-	printf("0x%08x\n", result);
-	return 0;
-}
 
-static int cmd_si(char *args) {
-	if(!args) {
-		printf("USAGE: si NUM\n");
-		return 0;
-	}
 	int n = atoi(args);
-	cpu_exec(n);
+	WP *wp = head_wp();
+	while(wp) {
+		if(wp->NO == n) {
+			printf("Delete watchpoint %d: %s\n", wp->NO, wp->str);
+			free_wp(wp);
+			return 0;
+		}
+		wp = wp->next;
+	}
+	printf("No watchpoint %d", n);
 	return 0;
+}
+
+static int cmd_fuck(char *args) {
+    int i, n;
+	if(!args) {
+        n = 1;
+    } else {
+        n = atoi(args);
+    }
+    for(i = 0; i < n; ++i) {
+        cmd_si("1");
+        cmd_info("r");
+        if (i != n-1)
+            printf("\n");
+    }
+    return 0;
 }
 
 static int cmd_info(char *args) {
@@ -94,6 +159,51 @@ static int cmd_info(char *args) {
 	else {
 		printf("USAGE: info r/w\n");
 	}
+	return 0;
+}
+
+static int cmd_p(char *args) {
+	if(!args) {
+		printf("USAGE: p EXP\n");
+		return 0;
+	}
+	bool success;
+	uint32_t result = expr(args, &success);
+	Assert(success, "Invalid expression\n");
+	printf("0x%08x\n", result);
+	return 0;
+}
+
+static int cmd_q(char *args) {
+	return -1;
+}
+
+static int cmd_si(char *args) {
+	if(!args) {
+		printf("USAGE: si NUM\n");
+		return 0;
+	}
+	int n = atoi(args);
+	cpu_exec(n);
+	return 0;
+}
+
+static int cmd_w(char *args) {
+	if(!args) {
+		printf("USAGE: w EXP\n");
+		return 0;
+	}
+
+	WP *wp = new_wp();
+	strcpy(wp->str, args);
+	bool success = false;
+	uint32_t result = expr(args, &success);
+	if(!success) {
+		printf("Invalid expression.");
+		return 0;
+	}
+	wp->oldvalue = result;
+	printf("Add watchpoint %d: %s\n", wp->NO, wp->str);
 	return 0;
 }
 
@@ -134,129 +244,8 @@ static int cmd_x(char *args) {
     }
 
     return 0;
-    /*
-	for(i = 0; i < n; ++i)
-	{
-		unsigned int j, addroff = addr + i*4;
-		printf("0x%08x:\t", addroff);
-		for(j = 0; j < 4; ++j)
-		{
-			printf("%02x ", swaddr_read(addroff + j, 1));
-		}
-		printf("\n");
-	}
-    */
 }
 
-static int cmd_w(char *args) {
-	if(!args) {
-		printf("USAGE: w EXP\n");
-		return 0;
-	}
-
-	WP *wp = new_wp();
-	strcpy(wp->str, args);
-	bool success = false;
-	uint32_t result = expr(args, &success);
-	if(!success) {
-		printf("Invalid expression.");
-		return 0;
-	}
-	wp->oldvalue = result;
-	printf("Add watchpoint %d: %s\n", wp->NO, wp->str);
-	return 0;
-}
-
-static int cmd_d(char *args) {
-	if(!args) {
-		printf("USAGE: d NUM\n");
-		return 0;
-	}
-
-	int n = atoi(args);
-	WP *wp = head_wp();
-	while(wp) {
-		if(wp->NO == n) {
-			printf("Delete watchpoint %d: %s\n", wp->NO, wp->str);
-			free_wp(wp);
-			return 0;
-		}
-		wp = wp->next;
-	}
-	printf("No watchpoint %d", n);
-	return 0;
-}
-
-static int cmd_fuck(char *args) {
-    int i, n;
-	if(!args) {
-        n = 1;
-    } else {
-        n = atoi(args);
-    }
-    for(i = 0; i < n; ++i) {
-        cmd_si("1");
-        cmd_info("r");
-        if (i != n-1)
-            printf("\n");
-    }
-    return 0;
-}
-
-static int cmd_bt(char *args) {
-	swaddr_t ebp = cpu.ebp;
-	char func_name[128];
-	get_function_name(func_name, cpu.eip);
-
-    printf("#0  %s (", func_name);
-    bool blankflag = false;
-    int i;
-    for(i = 0; i < 4; ++i) {
-        uint32_t addr = (ebp + 8) + 4 * i;
-        if(addr >= 0x8000000)
-            break;
-        if(!blankflag) {
-            printf("0x%x", swaddr_read(addr, 4));
-            blankflag = true;
-        } else {
-            printf(", 0x%x", swaddr_read(addr, 4));
-        }
-    }
-    printf("...)\n");
-
-
-
-	int count = 0;
-	swaddr_t ret_addr;
-	while(ebp) {
-		++count;
-		ret_addr = swaddr_read(ebp + 4, 4) + 1;
-		ebp = swaddr_read(ebp, 4);
-		if(!get_function_name(func_name, ret_addr)) {
-			return 0;
-		}
-
-        printf("#%-3d0x%08x in %s (", count, ret_addr, func_name);
-        bool blankflag = false;
-        int i;
-        for(i = 0; i < 4; ++i) {
-            uint32_t addr = (ebp + 8) + 4 * i;
-            if(addr >= 0x8000000)
-                break;
-            if(!blankflag) {
-                printf("0x%x", swaddr_read(addr, 4));
-                blankflag = true;
-            } else {
-                printf(", 0x%x", swaddr_read(addr, 4));
-            }
-        }
-        printf("...)\n");
-
-	}
-	return 0;
-}
-
-static int cmd_help(char *args);
 
 static struct {
 	char *name;
