@@ -7,11 +7,12 @@ static void do_execute() {
 	OPERAND_W(op_dest, result);
     Log("result = %u", result);
 
-    uint32_t step = (0x8 << DATA_BYTE) - 1;
+    uint32_t step = 0x8 * DATA_BYTE;
+    Log("step = %u", step);
 	// OF, SF, ZF, CF, and PF
-	unsigned df = 0x1 & (op_dest->val >> step);
-	unsigned sf = 0x1 & (op_src->val >> step);
-	unsigned rf = 0x1 & (result >> step);
+	unsigned df = 0x1 & (op_dest->val >> (step - 1));
+	unsigned sf = 0x1 & (op_src->val >> (step - 1));
+	unsigned rf = 0x1 & (result >> (step - 1));
 
 	cpu.eflags.OF = (df && sf && !rf) || (!df && !sf && rf);
 	cpu.eflags.SF = rf;
