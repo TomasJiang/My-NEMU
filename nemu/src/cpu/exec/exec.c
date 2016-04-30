@@ -251,6 +251,7 @@ void set_flags(uint32_t src, uint32_t dest, uint32_t res, uint32_t data_byte) {
 	cpu.eflags.SF = rf;
 	cpu.eflags.ZF = (res == 0);
 	cpu.eflags.CF = (df && sf) || ((df || sf) && !rf);
+	// cpu.eflags.CF = (uint32_t) dest < (uint32_t) src; for sub
 
 	res = 0xff & res;
 	unsigned count;
