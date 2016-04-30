@@ -93,7 +93,7 @@ static int cmd_b(char *args) {
     // uint32_t addr = (uint32_t)strtol(args, NULL, 0);
 
 	WP *wp = new_wp();
-    sprintf(wp->str, "%%eip==%s", args);
+    sprintf(wp->str, "$eip==%s", args);
 	wp->oldvalue = false;
 	printf("Add a breakpoint %d: %s\n", wp->NO, args);
 	return 0;
