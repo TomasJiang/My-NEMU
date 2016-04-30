@@ -138,7 +138,7 @@ static int cmd_fuck(char *args) {
         cmd_info("r");
         if (i != n-1)
             printf("\n");
-        if(nemu_state == STOP)
+        if(nemu_state == END)
             break;
     }
     return 0;
