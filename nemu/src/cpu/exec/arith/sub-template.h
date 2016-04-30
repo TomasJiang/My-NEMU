@@ -9,9 +9,10 @@ static void do_execute() {
 	OPERAND_W(op_dest, result);
 
 	// OF, SF, ZF, CF, and PF
-    unsigned sf = 0x1 & (op_src->val >> 31);
-    unsigned df = 0x1 & (op_dest->val >> 31);
-    unsigned rf = 0x1 & (result >> 31);
+    uint32_t step = 0x8 * DATA_BYTE - 1;
+    unsigned sf = 0x1 & (op_src->val >> step);
+    unsigned df = 0x1 & (op_dest->val >> step);
+    unsigned rf = 0x1 & (result >> step);
 
     cpu.eflags.OF = (!df && sf && rf) || (df && !sf && !rf);
     cpu.eflags.SF = rf;
