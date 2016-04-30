@@ -8,10 +8,10 @@ static void do_execute () {
 	DATA_TYPE out = op_src2->val;
 
 	uint8_t count = op_src->val;
-	count &= 0x1f;
+	count &= 0x3f;
 	while(count != 0) {
 		out <<= 1;
-		out |= (in & 1) << ((DATA_BYTE << 3) - 1);
+		out |= (in >> ((DATA_BYTE << 3) - 1)) & 0x1;
 		in <<= 1;
 		count --;
 	}
